@@ -24,7 +24,8 @@ workflows.addOverride(1303,overridesEv5)
 
 ### data ###
 workflows[4.5]  = ['', ['RunCosmicsA','RECOCOSD','ALCACOSD','HARVESTDC']]
-workflows[4.6]  = ['', ['MinimumBias2010A','RECOD','HARVESTD']]
+#workflows[4.6]  = ['', ['MinimumBias2010A','RECOD','HARVESTD']]
+workflows[4.6]  = ['', ['MinimumBias2010A','RECOSKIMALCA','HARVESTD']]
 #workflows[4.7]  = ['', ['MinimumBias2010B','RECODALCA','HARVESTD']]
 #workflows[4.8]  = ['', ['WZMuSkim2010A','RECOD','HARVESTD']]
 #workflows[4.9]  = ['', ['WZEGSkim2010A','RECOD','HARVESTD']]
@@ -60,7 +61,7 @@ workflows[4.32] = ['', ['RunPhoton2011B','HLTD','RECODreHLT','HARVESTDreHLT']]
 workflows[4.33] = ['', ['RunJet2011B','HLTD','RECODreHLT','HARVESTDreHLT']]
 
 workflows[4.34] = ['',['ValSkim2011B','HLTDSKIM','RECODreHLT','HARVESTDreHLT']]
-workflows[4.35] = ['',['WMuSkim2011B','HLTDSKIM','RECODreHLT','HARVESTDreHLT']]
+#workflows[4.35] = ['',['WMuSkim2011B','HLTDSKIM','RECODreHLT','HARVESTDreHLT']]
 workflows[4.36] = ['',['WElSkim2011B','HLTDSKIM','RECODreHLT','HARVESTDreHLT']]
 workflows[4.37] = ['',['ZMuSkim2011B','HLTDSKIM','RECODreHLT','HARVESTDreHLT']]
 workflows[4.38] = ['',['ZElSkim2011B','HLTDSKIM','RECODreHLT','HARVESTDreHLT']]
@@ -112,6 +113,10 @@ workflows[134.703] = ['',['RunDoubleMuon2015B','HLTDR250ns','RECODR250nsreHLT','
 workflows[134.704] = ['',['RunJetHT2015B','HLTDR250ns','RECODR250nsreHLT','HARVESTDR250nsreHLT']]
 workflows[134.705] = ['',['RunMET2015B','HLTDR250ns','RECODR250nsreHLT','HARVESTDR250nsreHLT']]
 workflows[134.706] = ['',['RunMuonEG2015B','HLTDR250ns','RECODR250nsreHLT','HARVESTDR250nsreHLT']]
+workflows[134.707] = ['',['RunSingleEl2015B','HLTDR250ns','RECODR250nsreHLT','HARVESTDR250nsreHLT']]
+workflows[134.708] = ['',['RunSingleMu2015B','HLTDR250ns','RECODR250nsreHLT','HARVESTDR250nsreHLT']]
+workflows[134.709] = ['',['RunSinglePh2015B','HLTDR250ns','RECODR250nsreHLT','HARVESTDR250nsreHLT']]
+workflows[134.710] = ['',['RunZeroBias2015B','HLTDR250ns','RECODR250nsreHLT','HARVESTDR250nsreHLT']]
 
 ### run 2015C 25ns ###
 workflows[134.801] = ['',['RunHLTPhy2015C','HLTDR225ns','RECODR225nsreHLT','HARVESTDR225nsreHLT']]
@@ -122,7 +127,25 @@ workflows[134.805] = ['',['RunMET2015C','HLTDR225ns','RECODR225nsreHLT','HARVEST
 workflows[134.806] = ['',['RunMuonEG2015C','HLTDR225ns','RECODR225nsreHLT','HARVESTDR225nsreHLT']]
 workflows[134.807] = ['',['RunDoubleEGPrpt2015C','HLTDR225ns','RECODR225nsreHLT','HARVESTDR225nsreHLT']]
 workflows[134.808] = ['',['RunSingleMuPrpt2015C','HLTDR225ns','RECODR225nsreHLT','HARVESTDR225nsreHLT']]
-##
+workflows[134.809] = ['',['RunSingleEl2015C','HLTDR225ns','RECODR225nsreHLT','HARVESTDR225nsreHLT']]
+workflows[134.810] = ['',['RunSingleMu2015C','HLTDR225ns','RECODR225nsreHLT','HARVESTDR225nsreHLT']]
+workflows[134.811] = ['',['RunSinglePh2015C','HLTDR225ns','RECODR225nsreHLT','HARVESTDR225nsreHLT']]
+workflows[134.812] = ['',['RunZeroBias2015C','HLTDR225ns','RECODR225nsreHLT','HARVESTDR225nsreHLT']]
+
+
+### run 2015D 25ns ###
+workflows[134.901] = ['',['RunHLTPhy2015D','HLTDR225ns','RECODR225nsreHLT','HARVESTDR225nsreHLT']]
+workflows[134.902] = ['',['RunDoubleEG2015D','HLTDR225ns','RECODR225nsreHLT','HARVESTDR225nsreHLT']]
+workflows[134.903] = ['',['RunDoubleMuon2015D','HLTDR225ns','RECODR225nsreHLT','HARVESTDR225nsreHLT']]
+workflows[134.904] = ['',['RunJetHT2015D','HLTDR225ns','RECODR225nsreHLT','HARVESTDR225nsreHLT']]
+workflows[134.905] = ['',['RunMET2015D','HLTDR225ns','RECODR225nsreHLT','HARVESTDR225nsreHLT']]
+workflows[134.906] = ['',['RunMuonEG2015D','HLTDR225ns','RECODR225nsreHLT','HARVESTDR225nsreHLT']]
+workflows[134.907] = ['',['RunDoubleEGPrpt2015D','HLTDR225ns','RECODR225nsreHLT','HARVESTDR225nsreHLT']]
+workflows[134.908] = ['',['RunSingleMuPrpt2015D','HLTDR225ns','RECODR225nsreHLT','HARVESTDR225nsreHLT']]
+workflows[134.909] = ['',['RunSingleEl2015D','HLTDR225ns','RECODR225nsreHLT','HARVESTDR225nsreHLT']]
+workflows[134.910] = ['',['RunSingleMu2015D','HLTDR225ns','RECODR225nsreHLT','HARVESTDR225nsreHLT']]
+workflows[134.911] = ['',['RunSinglePh2015D','HLTDR225ns','RECODR225nsreHLT','HARVESTDR225nsreHLT']]
+workflows[134.912] = ['',['RunZeroBias2015D','HLTDR225ns','RECODR225nsreHLT','HARVESTDR225nsreHLT']]
 
 ### fastsim ###
 workflows[5.1] = ['TTbar', ['TTbarFS','HARVESTFS']]
@@ -130,7 +153,8 @@ workflows[5.2] = ['SingleMuPt10', ['SingleMuPt10FS','HARVESTFS']]
 workflows[5.3] = ['SingleMuPt100', ['SingleMuPt100FS','HARVESTFS']]
 workflows[5.4] = ['ZEE', ['ZEEFS','HARVESTFS']]
 workflows[5.5] = ['ZTT',['ZTTFS','HARVESTFS']]
-workflows[5.6] = ['QCD_FlatPt_15_3000', ['QCDFlatPt153000FS','HARVESTFS']]
+
+workflows[5.6]  = ['QCD_FlatPt_15_3000', ['QCDFlatPt153000FS','HARVESTFS']]
 workflows[5.7] = ['H130GGgluonfusion', ['H130GGgluonfusionFS','HARVESTFS']]
 
 ### fastsim_13 TeV ###
@@ -140,7 +164,7 @@ workflows[135.3] = ['SingleMuPt100_UP15', ['SingleMuPt100FS_UP15','HARVESTUP15FS
 workflows[135.4] = ['ZEE_13', ['ZEEFS_13','HARVESTUP15FS','MINIAODMCUP15FS']]
 workflows[135.5] = ['ZTT_13',['ZTTFS_13','HARVESTUP15FS','MINIAODMCUP15FS']]
 workflows[135.6] = ['QCD_FlatPt_15_3000_13', ['QCDFlatPt153000FS_13','HARVESTUP15FS','MINIAODMCUP15FS']]
-workflows[135.7] = ['H130GGgluonfusion_13', ['H130GGgluonfusionFS_13','HARVESTUP15FS','MINIAODMCUP15FS']]
+workflows[135.7] = ['H125GGgluonfusion_13', ['H125GGgluonfusionFS_13','HARVESTUP15FS','MINIAODMCUP15FS']]
 workflows[135.9] = ['ZMM_13',['ZMMFS_13','HARVESTUP15FS','MINIAODMCUP15FS']]
 workflows[135.11] = ['SMS-T1tttt_mGl-1500_mLSP-100_13', ['SMS-T1tttt_mGl-1500_mLSP-100FS_13','HARVESTUP15FS','MINIAODMCUP15FS']]
 workflows[135.12] = ['QCD_Pt_80_120_13', ['QCD_Pt_80_120FS_13','HARVESTUP15FS','MINIAODMCUP15FS']]
@@ -213,6 +237,7 @@ workflows[45] = ['', ['ZpTT_1500_8TeV','DIGI','RECO','HARVEST']]
 workflows[1324] = ['', ['TTbarLepton_13','DIGIUP15','RECOUP15','HARVESTUP15']]
 workflows[1335] = ['', ['Wjet_Pt_80_120_13','DIGIUP15','RECOUP15','HARVESTUP15']]
 workflows[1336] = ['', ['Wjet_Pt_3000_3500_13','DIGIUP15','RECOUP15','HARVESTUP15']]
+#workflows[1337] = ['', ['LM1_sfts_13','DIGIUP15','RECOUP15','HARVESTUP15']]
 workflows[1337] = ['', ['SMS-T1tttt_mGl-1500_mLSP-100_13','DIGIUP15','RECOUP15','HARVESTUP15']]
 workflows[1338] = ['', ['QCD_FlatPt_15_3000HS_13','DIGIUP15','RECOUP15','HARVESTUP15']]
 
@@ -223,16 +248,14 @@ workflows.addOverride(1313,overridesEv5)
 workflows[1339] = ['', ['QCD_Pt_600_800_13','DIGIUP15','RECOUP15','HARVESTUP15']]
 
 workflows[1347] = ['', ['Upsilon1SToMuMu_13','DIGIUP15','RECOUP15','HARVESTUP15']]
-workflows[1348] = ['', ['BuToKstarMuMu_13','DIGIUP15','RECOUP15','HARVESTUP15']]
 workflows[1349] = ['', ['BsToMuMu_13','DIGIUP15','RECOUP15','HARVESTUP15']]
 workflows[1350] = ['', ['JpsiMuMu_Pt-15','DIGIUP15','RECOUP15','HARVESTUP15']]
-workflows[1351] = ['', ['BuToKstarPsi2S_13','DIGIUP15','RECOUP15','HARVESTUP15']]
 
 workflows[1325] = ['', ['TTbar_13','DIGIUP15','RECOUP15','HARVESTUP15','ALCATTUP15']]
 workflows[1326] = ['', ['WE_13','DIGIUP15','RECOUP15','HARVESTUP15']]
 workflows[1329] = ['', ['ZEE_13','DIGIUP15','RECOUP15','HARVESTUP15']]
 workflows[1331] = ['', ['ZTT_13','DIGIUP15','RECOUP15','HARVESTUP15']]
-workflows[1332] = ['', ['H130GGgluonfusion_13','DIGIUP15','RECOUP15','HARVESTUP15']]
+workflows[1332] = ['', ['H125GGgluonfusion_13','DIGIUP15','RECOUP15','HARVESTUP15']]
 workflows[1333] = ['', ['PhotonJets_Pt_10_13','DIGIUP15','RECOUP15','HARVESTUP15']]
 workflows[1334] = ['', ['QQH1352T_13','DIGIUP15','RECOUP15','HARVESTUP15']]
 
@@ -247,13 +270,15 @@ workflows[1310] = ['', ['ADDMonoJet_d3MD3_13','DIGIUP15','RECOUP15','HARVESTUP15
 workflows[1312] = ['', ['ZpMM_13','DIGIUP15','RECOUP15','HARVESTUP15']]
 workflows[1314] = ['', ['WpM_13','DIGIUP15','RECOUP15','HARVESTUP15']]
 
-workflows[1340] = ['', ['BuJpsiK_13','DIGIUP15','RECOUP15','HARVESTUP15']]
+workflows[1340] = ['', ['PhiToMuMu_13','DIGIUP15','RECOUP15','HARVESTUP15']]
 workflows[1341] = ['', ['RSKKGluon_m3000GeV_13','DIGIUP15','RECOUP15','HARVESTUP15']]
 
 workflows[1343] = ['', ['ZpMM_2250_13','DIGIUP15','RECOUP15','HARVESTUP15']]
 workflows[1344] = ['', ['ZpEE_2250_13','DIGIUP15','RECOUP15','HARVESTUP15']]
 workflows[1345] = ['', ['ZpTT_1500_13','DIGIUP15','RECOUP15','HARVESTUP15']]
+workflows[1348] = ['', ['EtaBToJpsiJpsi_13','DIGIUP15','RECOUP15','HARVESTUP15']]
 
+workflows[1351] = ['', ['BuMixing_13','DIGIUP15','RECOUP15','HARVESTUP15']]
 workflows[1352] = ['', ['HSCPstop_M_200_13','DIGIUP15','RECOUP15','HARVESTUP15']]
 workflows[1353] = ['', ['RSGravitonToGaGa_13','DIGIUP15','RECOUP15','HARVESTUP15']]
 workflows[1354] = ['', ['WpToENu_M-2000_13','DIGIUP15','RECOUP15','HARVESTUP15']]
@@ -263,10 +288,10 @@ workflows[1355] = ['', ['DisplacedSUSY_stopToBottom_M_300_1000mm_13','DIGIUP15',
 ### HI test ###
 
 ###  Run I cond.
-workflows[140] = ['',['HydjetQ_MinBias_2760GeV','DIGIHI2011','RECOHI2011','HARVESTHI2011']]
+#workflows[140] = ['',['HydjetQ_MinBias_2760GeV','DIGIHI2011','RECOHI2011','HARVESTHI2011']]
 workflows[140.1] = ['',['QCD_Pt_80_120_13_HI','DIGIHI','RECOHI','HARVESTHI']]
 workflows[140.2] = ['',['PhotonJets_Pt_10_13_HI','DIGIHI','RECOHI','HARVESTHI']]
-workflows[140.3] = ['',['ZMM_13_HI','DIGIHI','RECOHI','HARVESTHI']]
+#workflows[140.3] = ['',['ZMM_13_HI','DIGIHI','RECOHI','HARVESTHI']]
 workflows[140.4] = ['',['ZEEMM_13_HI','DIGIHI','RECOHI','HARVESTHI']]
 
 # legacy: 141 => B0; 143 => B3 ; 144 => B5 

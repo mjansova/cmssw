@@ -107,7 +107,7 @@ def miniAOD_customizeCommon(process):
                                      )
     runMetCorAndUncForMiniAODProduction(process,
                                         pfCandColl=cms.InputTag("noHFCands"),
-                                        recomputeMET=True, #needed for HF removal
+                                        recoMetFromPFCs=True, #needed for HF removal
                                         postfix="NoHF"
                                         )
     process.load('PhysicsTools.PatAlgos.slimming.slimmedMETs_cfi')
@@ -179,10 +179,10 @@ def miniAOD_customizeCommon(process):
         setupAllVIDIdsInModule(process,idmod,setupVIDElectronSelection,None,False)
 
     #VID Photon IDs
-    photon_ids = ['RecoEgamma.PhotonIdentification.Identification.cutBasedPhotonID_PHYS14_PU20bx25_V2_cff',
+    photon_ids = ['RecoEgamma.PhotonIdentification.Identification.cutBasedPhotonID_PHYS14_PU20bx25_V2p1_cff',
                   'RecoEgamma.PhotonIdentification.Identification.cutBasedPhotonID_Spring15_50ns_V1_cff',
-                  'RecoEgamma.PhotonIdentification.Identification.mvaPhotonID_Spring15_25ns_nonTrig_V2_cff',
-                  'RecoEgamma.PhotonIdentification.Identification.mvaPhotonID_Spring15_50ns_nonTrig_V2_cff']
+                  'RecoEgamma.PhotonIdentification.Identification.mvaPhotonID_Spring15_25ns_nonTrig_V2p1_cff',
+                  'RecoEgamma.PhotonIdentification.Identification.mvaPhotonID_Spring15_50ns_nonTrig_V2p1_cff']
     switchOnVIDPhotonIdProducer(process,DataFormat.MiniAOD) 
     process.egmPhotonIDs.physicsObjectSrc = \
         cms.InputTag("reducedEgamma","reducedGedPhotons")

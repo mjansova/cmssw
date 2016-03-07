@@ -6,6 +6,7 @@ from DQMOffline.JetMET.metDQMConfig_cff     import *
 from DQMOffline.JetMET.jetAnalyzer_cff   import *
 from DQMOffline.JetMET.SUSYDQMAnalyzer_cfi  import *
 from DQMOffline.JetMET.goodOfflinePrimaryVerticesDQM_cfi import *
+
 from RecoJets.JetProducers.PileupJetID_cfi  import *
 from RecoJets.JetProducers.QGTagger_cfi  import *
 
@@ -90,7 +91,6 @@ jetMETDQMOfflineSource = cms.Sequence(HBHENoiseFilterResultProducer*goodOfflineP
                                       jetPreDQMSeq*
                                       dqmAk4CaloL2L3CorrectorChain*dqmAk4PFL1FastL2L3CorrectorChain*dqmAk4PFCHSL1FastL2L3CorrectorChain*
                                       dqmCorrPfMetType1*pfMETT1*
-                                      jetDQMAnalyzerAk4CaloCleanedMC*jetDQMAnalyzerAk4PFUncleanedMC*jetDQMAnalyzerAk4PFCleanedMC*jetDQMAnalyzerAk4PFCHSCleanedMC*
-                                      caloMetDQMAnalyzerMC*pfMetDQMAnalyzerMC*pfMetT1DQMAnalyzerMC)
+                                      jetDQMAnalyzerSequence*METDQMAnalyzerSequence)
 
 jetMETDQMOfflineSourceMiniAOD = cms.Sequence(goodOfflinePrimaryVerticesDQMforMiniAOD*jetDQMAnalyzerSequenceMiniAOD*METDQMAnalyzerSequenceMiniAOD)

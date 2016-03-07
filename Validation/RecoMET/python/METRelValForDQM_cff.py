@@ -27,15 +27,15 @@ metPreValidSeq=cms.Sequence(ak4PFL1FastjetCorrector * ak4PFL2RelativeCorrector *
 valCorrPfMetType1=corrPfMetType1.clone(jetCorrLabel = cms.InputTag('newAK4PFL1FastL2L3Corrector'))
 
 PfMetT1=pfMetT1.clone(srcCorrections = cms.VInputTag(
-        cms.InputTag('valCorrPfMetType1', 'type1')
-        ))
+         cms.InputTag('valCorrPfMetType1', 'type1')
+     ))
 
 PfMetT0pcT1=pfMetT0pcT1.clone(
-    srcCorrections = cms.VInputTag(
-        cms.InputTag('corrPfMetType0PfCand'),
-        cms.InputTag('valCorrPfMetType1', 'type1')
-        )
-    )
+     srcCorrections = cms.VInputTag(
+         cms.InputTag('corrPfMetType0PfCand'),
+         cms.InputTag('valCorrPfMetType1', 'type1')
+         )
+     )
 
 METRelValSequence = cms.Sequence(
     metAnalyzer*

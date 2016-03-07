@@ -146,3 +146,4 @@ pfType1CorrectedMetAnalyzerMiniAOD = cms.EDAnalyzer(
    PrimaryVertices = cms.InputTag("offlineSlimmedPrimaryVertices")
    )
 
+

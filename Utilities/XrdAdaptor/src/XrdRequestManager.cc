@@ -6,6 +6,7 @@
 
 #include "XrdCl/XrdClFile.hh"
 #include "XrdCl/XrdClDefaultEnv.hh"
+#include "XrdCl/XrdClFileSystem.hh"
 
 #include "FWCore/Utilities/interface/CPUTimer.h"
 #include "FWCore/Utilities/interface/EDMException.h"
@@ -96,7 +97,8 @@ SendMonitoringInfo(XrdCl::File &file)
     file.GetProperty("LastURL", lastUrl);
     if (jobId && lastUrl.size())
     {
-        XrdCl::FileSystem fs = XrdCl::FileSystem(XrdCl::URL(lastUrl));
+        XrdCl::URL url(lastUrl);
+        XrdCl::FileSystem fs(url);
         fs.SendInfo(jobId, &nullHandler, 30);
         edm::LogInfo("XrdAdaptorInternal") << "Set monitoring ID to " << jobId << ".";
     }
@@ -104,7 +106,8 @@ SendMonitoringInfo(XrdCl::File &file)
 
 
 RequestManager::RequestManager(const std::string &filename, XrdCl::OpenFlags::Flags flags, XrdCl::Access::Mode perms)
-    : m_timeout(XRD_DEFAULT_TIMEOUT),
+    : m_serverToAdvertise(nullptr),
+      m_timeout(XRD_DEFAULT_TIMEOUT),
       m_nextInitialSourceToggle(false),
       m_name(filename),
       m_flags(flags),
@@ -229,12 +232,53 @@ RequestManager::initialize(std::weak_ptr<RequestManager> self)
     m_activeSources.push_back(source);
     updateSiteInfo(orig_site);
   }
+  queueUpdateCurrentServer(source->ID());
+  updateCurrentServer();
 
   m_lastSourceCheck = ts;
   ts.tv_sec += XRD_ADAPTOR_SHORT_OPEN_DELAY;
   m_nextActiveSourceCheck = ts;
 }
 
+/**
+ * Update the StatisticsSenderService with the current server info.
+ *
+ * As this accesses the edm::Service infrastructure, this MUST be called
+ * from an edm-managed thread.  It CANNOT be called from an Xrootd-managed
+ * thread.
+ */
+void
+RequestManager::updateCurrentServer()
+{
+    // NOTE: we use memory_order_relaxed here, meaning that we may actually miss
+    // a pending update.  *However*, since we call this for every read, we'll get it
+    // eventually.
+    if (likely(!m_serverToAdvertise.load(std::memory_order_relaxed))) {return;}
+    std::string *hostname_ptr;
+    if ((hostname_ptr = m_serverToAdvertise.exchange(nullptr)))
+    {
+        std::unique_ptr<std::string> hostname(hostname_ptr);
+        edm::Service<edm::storage::StatisticsSenderService> statsService;
+        if (statsService.isAvailable()) {
+            statsService->setCurrentServer(*hostname_ptr);
+        }
+    }
+}
+
+
+void
+RequestManager::queueUpdateCurrentServer(const std::string &id)
+{
+    std::unique_ptr<std::string> hostname(new std::string(id));
+    if (Source::getHostname(id, *hostname))
+    {
+        std::string *null_hostname = nullptr;
+        if (m_serverToAdvertise.compare_exchange_strong(null_hostname, hostname.get()))
+        {
+            hostname.release();
+        }
+    }
+}
 
 void
 RequestManager::updateSiteInfo(std::string orig_site)
@@ -545,6 +589,7 @@ XrdAdaptor::RequestManager::handleOpen(XrdCl::XRootDStatus &status, std::shared_
         {
             m_activeSources.push_back(source);
             updateSiteInfo();
+            queueUpdateCurrentServer(source->ID());
         }
         else
         {
@@ -562,6 +607,7 @@ std::future<IOSize>
 XrdAdaptor::RequestManager::handle(std::shared_ptr<std::vector<IOPosBuffer> > iolist)
 {
     std::lock_guard<std::recursive_mutex> sentry(m_source_mutex);
+    updateCurrentServer();
 
     timespec now;
     GET_CLOCK_MONOTONIC(now);

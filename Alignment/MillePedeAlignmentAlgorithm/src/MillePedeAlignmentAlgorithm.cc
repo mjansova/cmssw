@@ -80,7 +80,7 @@ typedef TrajectoryFactoryBase::ReferenceTrajectoryCollection RefTrajColl;
 
 #include "Alignment/CommonAlignmentParametrization/interface/AlignmentParametersFactory.h"
 
-
+using namespace gbl;
 
 
 // Constructor ----------------------------------------------------------------

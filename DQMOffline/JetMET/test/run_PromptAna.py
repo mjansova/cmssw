@@ -21,14 +21,12 @@ readFiles = cms.untracked.vstring()
 secFiles = cms.untracked.vstring() 
 process.source = cms.Source ("PoolSource",fileNames = readFiles, secondaryFileNames = secFiles)
 readFiles.extend( [
-       '/store/relval/CMSSW_7_5_0_pre6/JetHT/RECO/75X_dataRun1_v2_RelVal_jet2012D-v1/00000/003E50FE-F71B-E511-B849-002590593902.root',
-       '/store/relval/CMSSW_7_5_0_pre6/JetHT/RECO/75X_dataRun1_v2_RelVal_jet2012D-v1/00000/0212B89F-401C-E511-90B7-0025905964A2.root',
-       '/store/relval/CMSSW_7_5_0_pre6/JetHT/RECO/75X_dataRun1_v2_RelVal_jet2012D-v1/00000/02925C10-FC1B-E511-A4B4-0025905B85A2.root',
-       '/store/relval/CMSSW_7_5_0_pre6/JetHT/RECO/75X_dataRun1_v2_RelVal_jet2012D-v1/00000/040DBAE5-FB1B-E511-9854-0025905B85D0.root',
-       '/store/relval/CMSSW_7_5_0_pre6/JetHT/RECO/75X_dataRun1_v2_RelVal_jet2012D-v1/00000/0658D146-2C1C-E511-BCA1-0025905A48F2.root',
-       '/store/relval/CMSSW_7_5_0_pre6/JetHT/RECO/75X_dataRun1_v2_RelVal_jet2012D-v1/00000/0A06BB23-401C-E511-ACE9-0025905A610C.root',
-       '/store/relval/CMSSW_7_5_0_pre6/JetHT/RECO/75X_dataRun1_v2_RelVal_jet2012D-v1/00000/0AA1F5F7-FA1B-E511-B761-0025905A48FC.root',
-       '/store/relval/CMSSW_7_5_0_pre6/JetHT/RECO/75X_dataRun1_v2_RelVal_jet2012D-v1/00000/0C963256-311C-E511-88DA-002618943842.root'
+        '/store/relval/CMSSW_7_5_0_pre6/JetHT/RECO/75X_dataRun1_v2_RelVal_jet2012D-v1/00000/003E50FE-F71B-E511-B849-002590593902.root',
+        '/store/relval/CMSSW_7_5_0_pre6/JetHT/RECO/75X_dataRun1_v2_RelVal_jet2012D-v1/00000/0212B89F-401C-E511-90B7-0025905964A2.root',
+        '/store/relval/CMSSW_7_5_0_pre6/JetHT/RECO/75X_dataRun1_v2_RelVal_jet2012D-v1/00000/02925C10-FC1B-E511-A4B4-0025905B85A2.root',
+        '/store/relval/CMSSW_7_5_0_pre6/JetHT/RECO/75X_dataRun1_v2_RelVal_jet2012D-v1/00000/040DBAE5-FB1B-E511-9854-0025905B85D0.root',
+        '/store/relval/CMSSW_7_5_0_pre6/JetHT/RECO/75X_dataRun1_v2_RelVal_jet2012D-v1/00000/0658D146-2C1C-E511-BCA1-0025905A48F2.root',
+        '/store/relval/CMSSW_7_5_0_pre6/JetHT/RECO/75X_dataRun1_v2_RelVal_jet2012D-v1/00000/0A06BB23-401C-E511-ACE9-0025905A610C.root'
        ] );
 
 

@@ -55,6 +55,9 @@
 
 #include "Fireworks/Core/interface/ActionsList.h"
 
+#include "Fireworks/Core/interface/Context.h"
+#include "Fireworks/Core/interface/FWMagField.h"
+
 #include "Fireworks/Core/src/CmsShowTaskExecutor.h"
 #include "Fireworks/Core/interface/CmsShowMainFrame.h"
 #include "Fireworks/Core/interface/CmsShowSearchFiles.h"

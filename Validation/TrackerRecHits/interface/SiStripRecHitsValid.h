@@ -108,9 +108,9 @@ class SiStripRecHitsValid : public DQMEDAnalyzer {
   struct RecHitProperties{ 
     float x;
     float y;
-    float z;
+//    float z;
     float resolxx;
-    float resolxy;
+//    float resolxy;
     float resolyy;
     float resx;
     float resy;
@@ -211,9 +211,9 @@ class SiStripRecHitsValid : public DQMEDAnalyzer {
 
   /* static const int MAXHIT = 1000; */
 
-  std::vector<RecHitProperties> rechitrphi;
-  std::vector<RecHitProperties> rechitstereo;
-  std::vector<RecHitProperties> rechitmatched;
+//  std::vector<RecHitProperties> rechitrphi;
+//  std::vector<RecHitProperties> rechitstereo;
+//  std::vector<RecHitProperties> rechitmatched;
   RecHitProperties rechitpro;
 
   void rechitanalysis(SiStripRecHit2D const rechit,const StripTopology &topol, TrackerHitAssociator& associate);

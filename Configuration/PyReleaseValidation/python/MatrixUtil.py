@@ -81,7 +81,7 @@ def selectedLS(list_runs=[],maxNum=-1,l_json=data_json2015):
                 # print "total LS so far  %s    -   grow %s"%(ls_count,local_dict)
             #local_dict[runNumber] = [1,2,3]
         else:
-            print "run %s NOT present in json %s\n\n"%(run,l_json)
+            print "run %s is NOT present in json %s\n\n"%(run, l_json)
         # print "++    %s"%(local_dict)
 
     if ( len(local_dict.keys()) > 0 ) :

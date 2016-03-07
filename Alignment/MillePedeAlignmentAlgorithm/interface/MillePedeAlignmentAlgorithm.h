@@ -116,7 +116,7 @@ class MillePedeAlignmentAlgorithm : public AlignmentAlgorithmBase
   /// Returns -1 if any problem (for params cf. globalDerivativesHierarchy)
   int addGlobalData(const edm::EventSetup &setup, const EventInfo &eventInfo,
                     const ReferenceTrajectoryBase::ReferenceTrajectoryPtr &refTrajPtr,
-                    unsigned int iHit, GblPoint &gblPoint);
+                    unsigned int iHit, gbl::GblPoint &gblPoint);
 
   /// Increase hit counting of MillePedeVariables behind each parVec[i]
   /// (and also for parameters higher in hierarchy),
@@ -251,7 +251,7 @@ class MillePedeAlignmentAlgorithm : public AlignmentAlgorithmBase
   std::vector<int>          theIntBuffer;
   bool                      theDoSurveyPixelBarrel;
   // CHK for GBL
-  MilleBinary              *theBinary;
+  gbl::MilleBinary              *theBinary;
   bool                      theGblDoubleBinary;
 };
 
