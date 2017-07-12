@@ -1,4 +1,4 @@
-#include "CalibTracker/SiStripCommon/interface/ShallowTrackClustersProducer.h"
+#include "CalibTracker/SiStripCommon/interface/ShallowTrackClustersProducerCombined.h"
 
 #include "CalibTracker/SiStripCommon/interface/ShallowTools.h"
 
@@ -25,6 +25,7 @@
 #include "Geometry/Records/interface/TrackerTopologyRcd.h"
 #include "DataFormats/SiStripDigi/interface/SiStripProcessedRawDigi.h"
 
+
 #include "CalibTracker/Records/interface/SiStripDependentRecords.h"
 #include <map>
 #include <iostream>
@@ -32,66 +33,77 @@
 
 using namespace std;
 
-uint32_t ev=0;
-uint32_t ntracks =0;
+uint32_t ev2=0;
+uint32_t ntracks2 =0;
 
-  ofstream myfile;
+  ofstream myfile2;
 
-ShallowTrackClustersProducer::ShallowTrackClustersProducer(const edm::ParameterSet& iConfig)
+ShallowTrackClustersProducerCombined::ShallowTrackClustersProducerCombined(const edm::ParameterSet& iConfig)
   :  tracks_token_(consumes<edm::View<reco::Track> >(iConfig.getParameter<edm::InputTag>("Tracks"))),
 		 association_token_(consumes<TrajTrackAssociationCollection>(iConfig.getParameter<edm::InputTag>("Tracks"))),
      clusters_token_( consumes< edmNew::DetSetVector<SiStripCluster> >( iConfig.getParameter<edm::InputTag>("Clusters") ) ),
      theVertexToken_(consumes<std::vector<reco::Vertex> >          (iConfig.getParameter<edm::InputTag>("vertices"))),
      theDigisToken_    (consumes<edm::DetSetVector<SiStripProcessedRawDigi> > (edm::InputTag("siStripProcessedRawDigis", ""))),
      Suffix       ( iConfig.getParameter<std::string>("Suffix")    ),
-     Prefix       ( iConfig.getParameter<std::string>("Prefix") )
+     Prefix       ( iConfig.getParameter<std::string>("Prefix") ),
+     //lorentzAngleName(iConfig.getParameter<std::string>("LorentzAngle")),
+     isData       ( iConfig.getParameter<bool>("isData") )
      //lowBound       ( iConfig.getParameter<int32_t>("lowBound") ),
      //highBound       ( iConfig.getParameter<int32_t>("highBound") ),
      //filename       ( iConfig.getParameter<std::string>("filename") )
 {
-  /*produces<std::vector<int> > ( Prefix + "clusterIdx"      + Suffix ); //link: on trk cluster --> general cluster info 
-  produces<std::vector<int> > ( Prefix + "onTrkClusterIdx" + Suffix ); //link: general cluster info --> on track cluster
-	produces <std::vector<int> > ( Prefix + "onTrkClustersBegin" + Suffix ); //link: track --> onTrkInfo (range)
-	produces <std::vector<int> > ( Prefix + "onTrkClustersEnd" + Suffix ); //link: track --> onTrkInfo (range)
-  produces <std::vector<int> > ( Prefix + "trackindex"  + Suffix ); //link: on trk cluster --> track index
+  produces<std::vector<int> > ( Suffix + "clusterIdx"    ); //link: on trk cluster --> general cluster info 
+  produces<std::vector<int> > ( Suffix + "onTrkClusterIdx" ); //link: general cluster info --> on track cluster
+	produces <std::vector<int> > ( Suffix + "onTrkClustersBegin"  ); //link: track --> onTrkInfo (range)
+	produces <std::vector<int> > ( Suffix + "onTrkClustersEnd" ); //link: track --> onTrkInfo (range)
+  produces <std::vector<int> > ( Suffix + "trackindex" ); //link: on trk cluster --> track index
 
-  produces <std::vector<unsigned int> > ( Prefix + "trackmulti"  + Suffix );
-  produces <std::vector<float> >        ( Prefix + "localtheta"  + Suffix );  
-  produces <std::vector<float> >        ( Prefix + "localphi"    + Suffix );  
-  produces <std::vector<float> >        ( Prefix + "localpitch"  + Suffix );  
-  produces <std::vector<float> >        ( Prefix + "localx"      + Suffix );  
-  produces <std::vector<float> >        ( Prefix + "localy"      + Suffix );  
-  produces <std::vector<float> >        ( Prefix + "localz"      + Suffix );  
-  produces <std::vector<float> >        ( Prefix + "strip"       + Suffix );  
-  produces <std::vector<float> >        ( Prefix + "globaltheta" + Suffix );  
-  produces <std::vector<float> >        ( Prefix + "globalphi"   + Suffix );
-  produces <std::vector<float> >        ( Prefix + "globalx"     + Suffix );
-  produces <std::vector<float> >        ( Prefix + "globaly"     + Suffix );
-  produces <std::vector<float> >        ( Prefix + "globalz"     + Suffix );
-  produces <std::vector<float> >        ( Prefix + "insidistance"+ Suffix );
-  produces <std::vector<float> >        ( Prefix + "covered"     + Suffix );
-  produces <std::vector<float> >        ( Prefix + "projwidth"   + Suffix );
-  produces <std::vector<float> >        ( Prefix + "BdotY"       + Suffix );
+  produces <std::vector<unsigned int> > ( Suffix + "trackmulti"   );
+  produces <std::vector<float> >        ( Suffix + "localtheta"   );  
+  produces <std::vector<float> >        ( Suffix + "localeta"   );  
+  produces <std::vector<float> >        ( Suffix + "localphi"     );  
+  produces <std::vector<float> >        ( Suffix + "localpitch"   );  
+  produces <std::vector<float> >        ( Suffix + "localx"       );  
+  produces <std::vector<float> >        ( Suffix + "localy"       );  
+  produces <std::vector<float> >        ( Suffix + "localz"       );  
+  produces <std::vector<float> >        ( Suffix + "strip"        );  
+  produces <std::vector<float> >        ( Suffix + "globaltheta"  );  
+  produces <std::vector<float> >        ( Suffix + "globaleta"  );  
+  produces <std::vector<float> >        ( Suffix + "globalphi"    );
+  produces <std::vector<float> >        ( Suffix + "globalx"      );
+  produces <std::vector<float> >        ( Suffix + "globaly"      );
+  produces <std::vector<float> >        ( Suffix + "globalz"      );
+  produces <std::vector<float> >        ( Suffix + "transverseCurvature"      );
+  produces <std::vector<float> >        ( Suffix + "trackPt"      );
+  produces <std::vector<float> >        ( Suffix + "trackEta"      );
+  produces <std::vector<float> >        ( Suffix + "insidistance" );
+  produces <std::vector<float> >        ( Suffix + "covered"      );
+  produces <std::vector<float> >        ( Suffix + "projwidth"    );
+  produces <std::vector<float> >        ( Suffix + "BdotX"        );
+  produces <std::vector<float> >        ( Suffix + "BdotY"        );
+  produces <std::vector<float> >        ( Suffix + "BdotZ"        );
+  produces <std::vector<float> >        ( Suffix + "BdotMag"        );
 
-  produces <std::vector<float> >        ( Prefix + "rhlocalx"     + Suffix );   
-  produces <std::vector<float> >        ( Prefix + "rhlocaly"     + Suffix );   
-  produces <std::vector<float> >        ( Prefix + "rhlocalxerr"  + Suffix );   
-  produces <std::vector<float> >        ( Prefix + "rhlocalyerr"  + Suffix );   
-  produces <std::vector<float> >        ( Prefix + "rhglobalx"    + Suffix );   
-  produces <std::vector<float> >        ( Prefix + "rhglobaly"    + Suffix );   
-  produces <std::vector<float> >        ( Prefix + "rhglobalz"    + Suffix );
-  produces <std::vector<float> >        ( Prefix + "rhstrip"      + Suffix );   
-  produces <std::vector<float> >        ( Prefix + "rhmerr"       + Suffix );   
+  produces <std::vector<float> >        ( Suffix + "rhlocalx"      );   
+  produces <std::vector<float> >        ( Suffix + "rhlocaly"      );   
+  produces <std::vector<float> >        ( Suffix + "rhlocalxerr"   );   
+  produces <std::vector<float> >        ( Suffix + "rhlocalyerr"   );   
+  produces <std::vector<float> >        ( Suffix + "rhglobalx"     );   
+  produces <std::vector<float> >        ( Suffix + "rhglobaly"     );   
+  produces <std::vector<float> >        ( Suffix + "rhglobalz"     );
+  produces <std::vector<float> >        ( Suffix + "rhstrip"       );   
+  produces <std::vector<float> >        ( Suffix + "rhmerr"        );   
 
-  produces <std::vector<float> >        ( Prefix + "ubstrip"      + Suffix );   
-  produces <std::vector<float> >        ( Prefix + "ubmerr"       + Suffix );   
+  produces <std::vector<float> >        ( Suffix + "ubstrip"       );   
+  produces <std::vector<float> >        ( Suffix + "ubmerr"        );   
 
-  produces <std::vector<float> >       ( Prefix + "driftx"        + Suffix );
-  produces <std::vector<float> >       ( Prefix + "drifty"        + Suffix );
-  produces <std::vector<float> >       ( Prefix + "driftz"        + Suffix );
-  produces <std::vector<float> >       ( Prefix + "globalZofunitlocalY" + Suffix );            
-*/
+  produces <std::vector<float> >       ( Suffix + "driftx"         );
+  produces <std::vector<float> >       ( Suffix + "drifty"         );
+  produces <std::vector<float> >       ( Suffix + "driftz"         );
+  produces <std::vector<float> >       ( Suffix + "globalZofunitlocalY"  );            
 
+
+  produces <std::vector<float> >    ( Prefix + "lorentzAngle"       );
   produces <std::vector<unsigned> >    ( Prefix + "number"       );
   produces <std::vector<unsigned> >    ( Prefix + "width"        );
   produces <std::vector<float> >       ( Prefix + "variance"     );
@@ -128,15 +140,32 @@ ShallowTrackClustersProducer::ShallowTrackClustersProducer(const edm::ParameterS
   produces <std::vector<int> >         ( Prefix + "stringringrod" );
   produces <std::vector<int> >         ( Prefix + "petal"         );
   produces <std::vector<int> >         ( Prefix + "stereo"        );
-  //produces <std::vector<float> >         ( Prefix + "stripLength"        );
-  //produces <std::vector<float> >         ( Prefix + "thickness"        );
+  produces <std::vector<float> >         ( Prefix + "stripLength"        );
+  produces <std::vector<float> >         ( Prefix + "sensorThickness"        );
+  produces <std::vector<float> >         ( Prefix + "stripCharge"        );
+  produces <std::vector<float> >         ( Prefix + "stripChargeTotCharge"        );
+  produces <std::vector<unsigned> >         ( Prefix + "stripChargeTotWidth"        );
+  produces <std::vector<int> >         ( Prefix + "stripChargeStripNr"        );
+  produces <std::vector<float> >         ( Prefix + "stripChargeLocalTrackPhi"        );
+  produces <std::vector<float> >         ( Prefix + "stripChargeGlobalTrackPhi"        );
+  produces <std::vector<float> >         ( Prefix + "stripChargeLocalTrackTheta"        );
+  produces <std::vector<float> >         ( Prefix + "stripChargeGlobalTrackTheta"        );
+  produces <std::vector<int> >         ( Prefix + "stripChargeSubdetid"        );
+  produces <std::vector<int> >         ( Prefix + "stripChargeLayerwheel"        );
+  produces <std::vector<unsigned> >         ( Prefix + "stripChargeDetid"        );
+  produces <std::vector<float> >         ( Prefix + "stripChargeLocalX"        );
+  produces <std::vector<float> >         ( Prefix + "stripChargeLocalY"        );
+  produces <std::vector<float> >         ( Prefix + "stripChargetrackPt"        );
+
 
   produces <std::vector<float> >        ( "PU"       );
   produces <std::vector<unsigned int> > ( "bx"       );
 
+
+  //
 }
 
-void ShallowTrackClustersProducer::
+void ShallowTrackClustersProducerCombined::
 produce(edm::Event& iEvent, const edm::EventSetup& iSetup) {
   shallow::CLUSTERMAP clustermap = shallow::make_cluster_map(iEvent, clusters_token_);
   edm::Handle<edm::View<reco::Track> > tracks;	             iEvent.getByToken(tracks_token_, tracks);	  
@@ -144,7 +173,7 @@ produce(edm::Event& iEvent, const edm::EventSetup& iSetup) {
 
 
   int size = clustermap.size();
-  cout << "track size " << tracks->size() << "clustermap size " << size <<  endl;
+  //cout << "track size " << tracks->size() << "clustermap size " << size <<  endl;
 
 	//links
   auto clusterIdx        = std::make_unique<std::vector<int>>(); //link: on trk cluster --> general cluster info 
@@ -157,6 +186,7 @@ produce(edm::Event& iEvent, const edm::EventSetup& iSetup) {
 	
   auto  trackmulti   = std::make_unique<std::vector<unsigned int>>(); trackmulti  ->reserve(size);
   auto  localtheta   = std::make_unique<std::vector<float>>(); localtheta  ->reserve(size);
+  auto  localeta   = std::make_unique<std::vector<float>>(); localeta  ->reserve(size);
   auto  localphi     = std::make_unique<std::vector<float>>(); localphi    ->reserve(size);
   auto  localpitch   = std::make_unique<std::vector<float>>(); localpitch  ->reserve(size);
   auto  localx       = std::make_unique<std::vector<float>>(); localx      ->reserve(size);
@@ -164,13 +194,20 @@ produce(edm::Event& iEvent, const edm::EventSetup& iSetup) {
   auto  localz       = std::make_unique<std::vector<float>>(); localz      ->reserve(size);
   auto  strip        = std::make_unique<std::vector<float>>(); strip       ->reserve(size);
   auto  globaltheta  = std::make_unique<std::vector<float>>(); globaltheta ->reserve(size);
+  auto  globaleta  = std::make_unique<std::vector<float>>(); globaleta ->reserve(size);
   auto  globalphi    = std::make_unique<std::vector<float>>(); globalphi   ->reserve(size);
   auto  globalx      = std::make_unique<std::vector<float>>(); globalx     ->reserve(size);
   auto  globaly      = std::make_unique<std::vector<float>>(); globaly     ->reserve(size);
   auto  globalz      = std::make_unique<std::vector<float>>(); globalz     ->reserve(size);
+  auto  transverseCurvature      = std::make_unique<std::vector<float>>(); transverseCurvature     ->reserve(size);
+  auto  trackPt            = std::make_unique<std::vector<float>>(); trackPt     ->reserve(size);
+  auto  trackEta            = std::make_unique<std::vector<float>>(); trackEta     ->reserve(size);
   auto  insidistance = std::make_unique<std::vector<float>>(); insidistance->reserve(size);
   auto  projwidth    = std::make_unique<std::vector<float>>(); projwidth   ->reserve(size);
+  auto  BdotX        = std::make_unique<std::vector<float>>(); BdotX       ->reserve(size);
   auto  BdotY        = std::make_unique<std::vector<float>>(); BdotY       ->reserve(size);
+  auto  BdotZ        = std::make_unique<std::vector<float>>(); BdotZ       ->reserve(size);
+  auto  BdotMag        = std::make_unique<std::vector<float>>(); BdotMag       ->reserve(size);
   auto  covered      = std::make_unique<std::vector<float>>(); covered     ->reserve(size);
   auto  rhlocalx     = std::make_unique<std::vector<float>>(); rhlocalx   ->reserve(size);
   auto  rhlocaly     = std::make_unique<std::vector<float>>(); rhlocaly   ->reserve(size);  
@@ -189,6 +226,7 @@ produce(edm::Event& iEvent, const edm::EventSetup& iSetup) {
   auto  globalZofunitlocalY = std::make_unique<std::vector<float>>(); globalZofunitlocalY->reserve(size);
 
 
+  auto       lorentzAngle         = std::make_unique<std::vector<float>>();
   auto       number        = std::make_unique<std::vector<unsigned>>(7,0);
   auto       width         = std::make_unique<std::vector<unsigned>>();
   auto       variance      = std::make_unique<std::vector<float>>();
@@ -226,14 +264,29 @@ produce(edm::Event& iEvent, const edm::EventSetup& iSetup) {
   auto       petal         = std::make_unique<std::vector<int>>();
   auto       stereo        = std::make_unique<std::vector<int>>();
   auto       stripLength   = std::make_unique<std::vector<float>>();
-  auto       thickness     = std::make_unique<std::vector<float>>();
+  auto       sensorThickness     = std::make_unique<std::vector<float>>();
+  auto       stripCharge     = std::make_unique<std::vector<float>>();
+  auto       stripChargeTotCharge     = std::make_unique<std::vector<float>>();
+  auto       stripChargeTotWidth     = std::make_unique<std::vector<unsigned>>();
+  auto       stripChargeStripNr     = std::make_unique<std::vector<int>>();
+  auto       stripChargeLocalTrackPhi     = std::make_unique<std::vector<float>>();
+  auto       stripChargeGlobalTrackPhi     = std::make_unique<std::vector<float>>();
+  auto       stripChargeLocalTrackTheta     = std::make_unique<std::vector<float>>();
+  auto       stripChargeGlobalTrackTheta     = std::make_unique<std::vector<float>>();
+  auto       stripChargeSubdetid     = std::make_unique<std::vector<int>>();
+  auto       stripChargeLayerwheel     = std::make_unique<std::vector<int>>();
+  auto       stripChargeDetid     = std::make_unique<std::vector<unsigned>>();
+  auto       stripChargeLocalX     = std::make_unique<std::vector<float>>();
+  auto       stripChargeLocalY     = std::make_unique<std::vector<float>>();
+  auto       stripChargetrackPt     = std::make_unique<std::vector<float>>();
+
 
   auto       PU      = std::make_unique<std::vector<float>>();
   auto bx            = std::make_unique<std::vector<unsigned int>>();
 
   edm::ESHandle<TrackerGeometry> theTrackerGeometry;         iSetup.get<TrackerDigiGeometryRecord>().get( theTrackerGeometry );  
-  edm::ESHandle<MagneticField> magfield;		     iSetup.get<IdealMagneticFieldRecord>().get(magfield);		      
-  edm::ESHandle<SiStripLorentzAngle> SiStripLorentzAngle;    iSetup.get<SiStripLorentzAngleDepRcd>().get(SiStripLorentzAngle);      
+  edm::ESHandle<MagneticField> magfield;		     iSetup.get<IdealMagneticFieldRecord>().get(magfield);
+  edm::ESHandle<SiStripLorentzAngle> SiStripLorentzAngle;    iSetup.get<SiStripLorentzAngleDepRcd>().get(SiStripLorentzAngle);
 
   edm::Handle<TrajTrackAssociationCollection> associations;  iEvent.getByToken(association_token_, associations);
 
@@ -248,23 +301,24 @@ produce(edm::Event& iEvent, const edm::EventSetup& iSetup) {
   iSetup.get<TrackerTopologyRcd>().get(tTopoHandle);
   const TrackerTopology* const tTopo = tTopoHandle.product();
 
+
   TrajectoryStateCombiner combiner;
 
 	size_t ontrk_cluster_idx=0;
   std::map<size_t, std::vector<size_t> > mapping; //cluster idx --> on trk cluster idx (multiple)
 
 
-  //myfile.open(filename);
+  //myfile2.open(filename);
   float PU_=0;
   PU_=vtx->size();
   //PU_=5; //@MJ@ TODO completely fake
   //if(PU_>lowBound && PU_<highBound)
   //{
-      ev++;
+      ev2++;
       PU->push_back(PU_);
       bx->push_back(iEvent.bunchCrossing());
  // }
-  //myfile << "n events " << ev << std::endl;
+  //myfile2 << "n events " << ev << std::endl;
 
 
   for( TrajTrackAssociationCollection::const_iterator association = associations->begin(); 
@@ -274,13 +328,19 @@ produce(edm::Event& iEvent, const edm::EventSetup& iSetup) {
 		int trk_idx = shallow::findTrackIndex(tracks, track); 
 		size_t trk_strt_idx = ontrk_cluster_idx;
 
-    
+    bool isGoodTrack = trackFilter(track);
+    if(!isGoodTrack)
+        continue;
+   
+
+
+ 
   //if(PU_>lowBound && PU_<highBound)
   //{
-      ntracks++;
+      ntracks2++;
   //}
-  //myfile << "n tracks " << ntracks << std::endl;
-  //myfile.close();
+  //myfile2 << "n tracks " << ntracks << std::endl;
+  //myfile2.close();
 
     BOOST_FOREACH( const TrajectoryMeasurement measurement, traj->measurements() ) {
       const TrajectoryStateOnSurface tsos = measurement.updatedState();
@@ -337,8 +397,10 @@ produce(edm::Event& iEvent, const edm::EventSetup& iSetup) {
 //{
       (number->at(0))++;
       (number->at(moduleV.subdetid))++;
-
-                                       width->push_back(        cluster_ptr->amplitudes().size()                              );
+                     
+                      float langle = (SiStripLorentzAngle.isValid()) ? SiStripLorentzAngle->getLorentzAngle(id) : 0.;;
+                      lorentzAngle->push_back(langle);
+                      width->push_back(        cluster_ptr->amplitudes().size()                              );
 		      barystrip->push_back(    cluster_ptr->barycenter()                                     );
 		      variance->push_back(     info.variance()                                         );
 		      middlestrip->push_back(  info.firstStrip() + info.width()/2.0                    );
@@ -377,14 +439,33 @@ produce(edm::Event& iEvent, const edm::EventSetup& iSetup) {
 
 
       stripLength->push_back(           theStripDet->specificTopology().stripLength() );
-      thickness->push_back(             theStripDet->specificSurface().bounds().thickness() );
+      sensorThickness->push_back(             theStripDet->specificSurface().bounds().thickness() );
 
-//}
+
+      uint32_t strips=0;
+      for( auto itAmpl = cluster_ptr->amplitudes().begin(); itAmpl != cluster_ptr->amplitudes().end(); ++itAmpl){
+          stripCharge->push_back(*itAmpl);//@MJ@ 
+          stripChargeTotCharge->push_back(info.charge());
+          stripChargeTotWidth->push_back(cluster_ptr->amplitudes().size());
+          stripChargeStripNr->push_back(info.firstStrip() + strips);
+          stripChargeLocalTrackPhi->push_back(  (theStripDet->toLocal(tsos.globalDirection())).phi());
+          stripChargeGlobalTrackPhi->push_back(  tsos.globalDirection().phi());
+          stripChargeLocalTrackTheta->push_back(  (theStripDet->toLocal(tsos.globalDirection())).theta());
+          stripChargeGlobalTrackTheta->push_back(  tsos.globalDirection().theta());
+          stripChargeSubdetid->push_back(moduleV.subdetid);
+          stripChargeLayerwheel->push_back(moduleV.layerwheel);
+          stripChargeDetid->push_back(id); //@MJ@ TODO define
+          stripChargeLocalX->push_back((theStripDet->toLocal(tsos.globalPosition())).x());
+          stripChargeLocalY->push_back((theStripDet->toLocal(tsos.globalPosition())).y());
+          stripChargetrackPt->push_back(   track->pt() );                         
+          ++strips; 
+      }
 
 
 				trackmulti->push_back(  nassociations );
 				trackindex->push_back(  trk_idx );
 				localtheta->push_back(  (theStripDet->toLocal(tsos.globalDirection())).theta() ); 
+				localeta->push_back(  (theStripDet->toLocal(tsos.globalDirection())).eta() ); 
 				localphi->push_back(    (theStripDet->toLocal(tsos.globalDirection())).phi() );   
 				localpitch->push_back(  (theStripDet->specificTopology()).localPitch(theStripDet->toLocal(tsos.globalPosition())) ); 
 				localx->push_back(      (theStripDet->toLocal(tsos.globalPosition())).x() );    
@@ -392,13 +473,22 @@ produce(edm::Event& iEvent, const edm::EventSetup& iSetup) {
 				localz->push_back(      (theStripDet->toLocal(tsos.globalPosition())).z() );    
 				strip->push_back(       (theStripDet->specificTopology()).strip(theStripDet->toLocal(tsos.globalPosition())) );
 				globaltheta->push_back( tsos.globalDirection().theta() );                       
+				globaleta->push_back( tsos.globalDirection().eta() );                       
 				globalphi->push_back(   tsos.globalDirection().phi() );                         
 				globalx->push_back(     tsos.globalPosition().x() );                            
 				globaly->push_back(     tsos.globalPosition().y() );                            
 				globalz->push_back(     tsos.globalPosition().z() );                            
+				transverseCurvature->push_back(     tsos.transverseCurvature() );      
+
+                                //cout << "track pt" << track->pt() << endl;                      
+                                trackPt->push_back(   track->pt() );                         
+                                trackEta->push_back(   track->eta() );                         
 				insidistance->push_back(1./fabs(cos(localtheta->at(ontrk_cluster_idx))) );                      
 				projwidth->push_back(   tan(localtheta->at(ontrk_cluster_idx))*cos(localphi->at(ontrk_cluster_idx)) );         
+				BdotX->push_back(       (theStripDet->surface()).toLocal( magfield->inTesla(theStripDet->surface().position())).x() );
 				BdotY->push_back(       (theStripDet->surface()).toLocal( magfield->inTesla(theStripDet->surface().position())).y() );
+				BdotZ->push_back(       (theStripDet->surface()).toLocal( magfield->inTesla(theStripDet->surface().position())).z() );
+				BdotMag->push_back(       (theStripDet->surface()).toLocal( magfield->inTesla(theStripDet->surface().position())).mag() );
 				covered->push_back(     drift.z()/localpitch->at(ontrk_cluster_idx) * fabs(projwidth->at(ontrk_cluster_idx) - drift.x()/drift.z()) );
 				rhlocalx->push_back(    hit->localPosition().x() );
 				rhlocaly->push_back(    hit->localPosition().y() );
@@ -415,7 +505,11 @@ produce(edm::Event& iEvent, const edm::EventSetup& iSetup) {
 				drifty->push_back(      drift.y() );
 				driftz->push_back(      drift.z() );
 				globalZofunitlocalY->push_back( (theStripDet->toGlobal(LocalVector(0,1,0))).z() );
-				
+
+
+                                //globalMomentum(), transverseCurvature //http://cmsdoxygen.web.cern.ch/cmsdoxygen/CMSSW_9_2_0/doc/html/dc/d78/TrajectoryStateOnSurface_8h_source.html
+                                //http://cmsdoxygen.web.cern.ch/cmsdoxygen/CMSSW_9_2_0/doc/html/d6/d85/PV3DBase_8h_source.html
+            				
 				ontrk_cluster_idx++;
       } //for(unsigned h=0; h<2; h++) { //loop over possible Hit options (1D, 2D)
     } //BOOST_FOREACH( const TrajectoryMeasurement measurement, traj->measurements() )
@@ -425,47 +519,55 @@ produce(edm::Event& iEvent, const edm::EventSetup& iSetup) {
 
   } //for(TrajTrackAssociationCollection::const_iterator association = associations->begin();
 
-/*  iEvent.put(std::move(clusterIdx        ), Prefix + "clusterIdx" + Suffix );
-  iEvent.put(std::move(charge),      Prefix + "charge"   + Suffix      );
-  iEvent.put(std::move(onTrkClusterIdx   ), Prefix + "onTrkClusterIdx" + Suffix );
-  iEvent.put(std::move(onTrkClustersBegin), Prefix + "onTrkClustersBegin" + Suffix );
-  iEvent.put(std::move(onTrkClustersEnd  ), Prefix + "onTrkClustersEnd" + Suffix );
-  iEvent.put(std::move(trackindex),  Prefix + "trackindex"  + Suffix );
+  iEvent.put(std::move(clusterIdx        ), Suffix + "clusterIdx"  );
+  iEvent.put(std::move(onTrkClusterIdx   ), Suffix + "onTrkClusterIdx"  );
+  iEvent.put(std::move(onTrkClustersBegin), Suffix + "onTrkClustersBegin"  );
+  iEvent.put(std::move(onTrkClustersEnd  ), Suffix + "onTrkClustersEnd"  );
+  iEvent.put(std::move(trackindex),  Suffix + "trackindex"   );
 
-  iEvent.put(std::move(trackmulti),  Prefix + "trackmulti"  + Suffix );
-  iEvent.put(std::move(localtheta),  Prefix + "localtheta"  + Suffix );
-  iEvent.put(std::move(localphi),    Prefix + "localphi"    + Suffix );
-  iEvent.put(std::move(localpitch),  Prefix + "localpitch"  + Suffix );
-  iEvent.put(std::move(localx),      Prefix + "localx"      + Suffix );
-  iEvent.put(std::move(localy),      Prefix + "localy"      + Suffix );
-  iEvent.put(std::move(localz),      Prefix + "localz"      + Suffix );
-  iEvent.put(std::move(strip),       Prefix + "strip"       + Suffix );
-  iEvent.put(std::move(globaltheta), Prefix + "globaltheta" + Suffix );
-  iEvent.put(std::move(globalphi),   Prefix + "globalphi"   + Suffix );
-  iEvent.put(std::move(globalx),     Prefix + "globalx"     + Suffix );
-  iEvent.put(std::move(globaly),     Prefix + "globaly"     + Suffix );
-  iEvent.put(std::move(globalz),     Prefix + "globalz"     + Suffix );  
-  iEvent.put(std::move(insidistance),Prefix + "insidistance"+ Suffix );
-  iEvent.put(std::move(covered),     Prefix + "covered"     + Suffix );
-  iEvent.put(std::move(projwidth),   Prefix + "projwidth"   + Suffix );
-  iEvent.put(std::move(BdotY),       Prefix + "BdotY"       + Suffix );
-  iEvent.put(std::move(rhlocalx),    Prefix + "rhlocalx"    + Suffix );   
-  iEvent.put(std::move(rhlocaly),    Prefix + "rhlocaly"    + Suffix );   
-  iEvent.put(std::move(rhlocalxerr), Prefix + "rhlocalxerr" + Suffix );   
-  iEvent.put(std::move(rhlocalyerr), Prefix + "rhlocalyerr" + Suffix );   
-  iEvent.put(std::move(rhglobalx),   Prefix + "rhglobalx"   + Suffix );   
-  iEvent.put(std::move(rhglobaly),   Prefix + "rhglobaly"   + Suffix );   
-  iEvent.put(std::move(rhglobalz),   Prefix + "rhglobalz"   + Suffix );   
-  iEvent.put(std::move(rhstrip),     Prefix + "rhstrip"     + Suffix );   
-  iEvent.put(std::move(rhmerr),      Prefix + "rhmerr"      + Suffix );   
-  iEvent.put(std::move(ubstrip),     Prefix + "ubstrip"     + Suffix );   
-  iEvent.put(std::move(ubmerr),      Prefix + "ubmerr"      + Suffix );   
-  iEvent.put(std::move(driftx),      Prefix + "driftx"      + Suffix );
-  iEvent.put(std::move(drifty),      Prefix + "drifty"      + Suffix );
-  iEvent.put(std::move(driftz),      Prefix + "driftz"      + Suffix );
-  iEvent.put(std::move(globalZofunitlocalY), Prefix + "globalZofunitlocalY" + Suffix );
-*/
+  iEvent.put(std::move(trackmulti),  Suffix + "trackmulti"   );
+  iEvent.put(std::move(localtheta),  Suffix + "localtheta"   );
+  iEvent.put(std::move(localeta),  Suffix + "localeta"   );
+  iEvent.put(std::move(localphi),    Suffix + "localphi"     );
+  iEvent.put(std::move(localpitch),  Suffix + "localpitch"   );
+  iEvent.put(std::move(localx),      Suffix + "localx"       );
+  iEvent.put(std::move(localy),      Suffix + "localy"       );
+  iEvent.put(std::move(localz),      Suffix + "localz"       );
+  iEvent.put(std::move(strip),       Suffix + "strip"        );
+  iEvent.put(std::move(globaltheta), Suffix + "globaltheta"  );
+  iEvent.put(std::move(globaleta), Suffix + "globaleta"  );
+  iEvent.put(std::move(globalphi),   Suffix + "globalphi"    );
+  iEvent.put(std::move(globalx),     Suffix + "globalx"      );
+  iEvent.put(std::move(globaly),     Suffix + "globaly"      );
+  iEvent.put(std::move(globalz),     Suffix + "globalz"      );  
+  iEvent.put(std::move(transverseCurvature),     Suffix + "transverseCurvature"      );  
+  iEvent.put(std::move(trackPt),     Suffix + "trackPt"      );  
+  iEvent.put(std::move(trackEta),     Suffix + "trackEta"      );  
+  iEvent.put(std::move(insidistance),Suffix + "insidistance" );
+  iEvent.put(std::move(covered),     Suffix + "covered"      );
+  iEvent.put(std::move(projwidth),   Suffix + "projwidth"    );
+  iEvent.put(std::move(BdotX),       Suffix + "BdotX"        );
+  iEvent.put(std::move(BdotY),       Suffix + "BdotY"        );
+  iEvent.put(std::move(BdotZ),       Suffix + "BdotZ"        );
+  iEvent.put(std::move(BdotMag),       Suffix + "BdotMag"        );
+  iEvent.put(std::move(rhlocalx),    Suffix + "rhlocalx"     );   
+  iEvent.put(std::move(rhlocaly),    Suffix + "rhlocaly"     );   
+  iEvent.put(std::move(rhlocalxerr), Suffix + "rhlocalxerr"  );   
+  iEvent.put(std::move(rhlocalyerr), Suffix + "rhlocalyerr"  );   
+  iEvent.put(std::move(rhglobalx),   Suffix + "rhglobalx"    );   
+  iEvent.put(std::move(rhglobaly),   Suffix + "rhglobaly"    );   
+  iEvent.put(std::move(rhglobalz),   Suffix + "rhglobalz"    );   
+  iEvent.put(std::move(rhstrip),     Suffix + "rhstrip"      );   
+  iEvent.put(std::move(rhmerr),      Suffix + "rhmerr"       );   
+  iEvent.put(std::move(ubstrip),     Suffix + "ubstrip"      );   
+  iEvent.put(std::move(ubmerr),      Suffix + "ubmerr"       );   
+  iEvent.put(std::move(driftx),      Suffix + "driftx"       );
+  iEvent.put(std::move(drifty),      Suffix + "drifty"       );
+  iEvent.put(std::move(driftz),      Suffix + "driftz"       );
+  iEvent.put(std::move(globalZofunitlocalY), Suffix + "globalZofunitlocalY"  );
 
+
+  iEvent.put(std::move(lorentzAngle),      Prefix + "lorentzAngle"       );
   iEvent.put(std::move(number),      Prefix + "number"       );
   iEvent.put(std::move(width),       Prefix + "width"        );
   iEvent.put(std::move(variance),    Prefix + "variance"     );
@@ -502,16 +604,40 @@ produce(edm::Event& iEvent, const edm::EventSetup& iSetup) {
   iEvent.put(std::move(stringringrod),Prefix + "stringringrod" );
   iEvent.put(std::move(petal),        Prefix + "petal"         );
   iEvent.put(std::move(stereo),       Prefix + "stereo"        );
-  //iEvent.put(std::move(stripLength),       Prefix + "stripLength"        );
-  //iEvent.put(std::move(thickness),       Prefix + "thickness"        );
+  iEvent.put(std::move(stripLength),       Prefix + "stripLength"        );
+  iEvent.put(std::move(sensorThickness),       Prefix + "sensorThickness"        );
+  iEvent.put(std::move(stripCharge),       Prefix + "stripCharge"        );
+  iEvent.put(std::move(stripChargeTotCharge),       Prefix + "stripChargeTotCharge"        );
+  iEvent.put(std::move(stripChargeTotWidth),       Prefix + "stripChargeTotWidth"        );
+  iEvent.put(std::move(stripChargeStripNr),       Prefix + "stripChargeStripNr"        );
+  iEvent.put(std::move(stripChargeLocalTrackPhi),       Prefix + "stripChargeLocalTrackPhi"        );
+  iEvent.put(std::move(stripChargeGlobalTrackPhi),       Prefix + "stripChargeGlobalTrackPhi"        );
+  iEvent.put(std::move(stripChargeLocalTrackTheta),       Prefix + "stripChargeLocalTrackTheta"        );
+  iEvent.put(std::move(stripChargeGlobalTrackTheta),       Prefix + "stripChargeGlobalTrackTheta"        );
+  iEvent.put(std::move(stripChargeSubdetid),     Prefix + "stripChargeSubdetid"      );
+  iEvent.put(std::move(stripChargeLayerwheel),   Prefix + "stripChargeLayerwheel"    );
+  iEvent.put(std::move(stripChargeDetid),   Prefix + "stripChargeDetid"    );
+  iEvent.put(std::move(stripChargeLocalX),   Prefix + "stripChargeLocalX"    );
+  iEvent.put(std::move(stripChargeLocalY),   Prefix + "stripChargeLocalY"    );
+  iEvent.put(std::move(stripChargetrackPt),   Prefix + "stripChargetrackPt"    );
 
   iEvent.put(std::move(PU),       "PU"        );
   iEvent.put(std::move(bx),       "bx"        );
 
-
 }
 
-ShallowTrackClustersProducer::NearDigis::
+bool ShallowTrackClustersProducerCombined::trackFilter(const reco::Track* trk)
+{
+  if (trk->pt() < 0.8) return false;
+  if (trk->p()  < 2.0) return false;
+  if (trk->hitPattern().numberOfValidTrackerHits()  <= 6) return false;
+  if (trk->normalizedChi2() > 10.0) return false;
+  //check PV compatibility ??
+  return true;
+}
+
+
+ShallowTrackClustersProducerCombined::NearDigis::
 NearDigis(const SiStripClusterInfo& info) {
   max =  info.maxCharge();
   left =           info.maxIndex()    > uint16_t(0)                ? info.stripCharges()[info.maxIndex()-1]      : 0 ;
@@ -522,7 +648,7 @@ NearDigis(const SiStripClusterInfo& info) {
   last =  info.stripCharges()[info.width()-1];
 }
 
-ShallowTrackClustersProducer::NearDigis::
+ShallowTrackClustersProducerCombined::NearDigis::
 NearDigis(const SiStripClusterInfo& info, const edm::DetSetVector<SiStripProcessedRawDigi>& rawProcessedDigis) {
   edm::DetSetVector<SiStripProcessedRawDigi>::const_iterator digiframe = rawProcessedDigis.find(info.detId());
   if( digiframe != rawProcessedDigis.end()) {
@@ -538,7 +664,7 @@ NearDigis(const SiStripClusterInfo& info, const edm::DetSetVector<SiStripProcess
   }
 }
 
-ShallowTrackClustersProducer::moduleVars::
+ShallowTrackClustersProducerCombined::moduleVars::
 moduleVars(uint32_t detid, const TrackerTopology* tTopo) {
   SiStripDetId subdet(detid);
   subdetid = subdet.subDetector();

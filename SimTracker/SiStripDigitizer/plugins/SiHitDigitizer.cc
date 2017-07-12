@@ -23,6 +23,8 @@ SiHitDigitizer::SiHitDigitizer(const edm::ParameterSet& conf) :
          depletionVoltage,
          conf.getParameter<double>("AppliedVoltage"))),
   theSiInduceChargeOnStrips(new SiTrivialInduceChargeOnStrips(conf, conf.getParameter<double>("GevPerElectron"))) {
+
+std::cout << "temperature set to: " << conf.getParameter<double>("Temperature") << std::endl;
 }
 
 SiHitDigitizer::~SiHitDigitizer(){

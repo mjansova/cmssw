@@ -21,6 +21,7 @@ DEFINE_FWK_SERVICE(TkDetMap);
 #include "CalibTracker/SiStripCommon/interface/ShallowDigisProducer.h"
 #include "CalibTracker/SiStripCommon/interface/ShallowClustersProducer.h"
 #include "CalibTracker/SiStripCommon/interface/ShallowTrackClustersProducer.h"
+#include "CalibTracker/SiStripCommon/interface/ShallowTrackClustersProducerCombined.h"
 #include "CalibTracker/SiStripCommon/interface/ShallowRechitClustersProducer.h"
 #include "CalibTracker/SiStripCommon/interface/ShallowSimhitClustersProducer.h"
 #include "CalibTracker/SiStripCommon/interface/ShallowTracksProducer.h"
@@ -32,6 +33,7 @@ DEFINE_FWK_MODULE(ShallowEventDataProducer);
 DEFINE_FWK_MODULE(ShallowDigisProducer);
 DEFINE_FWK_MODULE(ShallowClustersProducer);
 DEFINE_FWK_MODULE(ShallowTrackClustersProducer);
+DEFINE_FWK_MODULE(ShallowTrackClustersProducerCombined);
 DEFINE_FWK_MODULE(ShallowRechitClustersProducer);
 DEFINE_FWK_MODULE(ShallowSimhitClustersProducer);
 DEFINE_FWK_MODULE(ShallowTracksProducer);

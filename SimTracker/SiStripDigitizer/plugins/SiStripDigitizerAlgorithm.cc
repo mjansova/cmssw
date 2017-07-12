@@ -37,6 +37,7 @@
 
 SiStripDigitizerAlgorithm::SiStripDigitizerAlgorithm(const edm::ParameterSet& conf):
   lorentzAngleName(conf.getParameter<std::string>("LorentzAngle")),
+  lorentzAngleValue(conf.getParameter<double>("LorentzAngleValue")),
   theThreshold(conf.getParameter<double>("NoiseSigmaThreshold")),
   cmnRMStib(conf.getParameter<double>("cmnRMStib")),
   cmnRMStob(conf.getParameter<double>("cmnRMStob")),
@@ -163,7 +164,15 @@ SiStripDigitizerAlgorithm::accumulateSimHits(std::vector<PSimHit>::const_iterato
   size_t thisFirstChannelWithSignal = numStrips;
   size_t thisLastChannelWithSignal = 0;
 
-  float langle = (lorentzAngleHandle.isValid()) ? lorentzAngleHandle->getLorentzAngle(detID) : 0.;
+  
+  float langle;
+  if(lorentzAngleValue == 0)
+      langle = (lorentzAngleHandle.isValid()) ? lorentzAngleHandle->getLorentzAngle(detID) : 0.;
+  else
+  {
+      langle = lorentzAngleValue;
+      std::cout << "Lorentz angle set to: " << langle << std::endl;
+  }
 
   std::vector<float> locAmpl(numStrips, 0.);
 

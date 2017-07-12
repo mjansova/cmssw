@@ -100,6 +100,7 @@ class SiStripDigitizerAlgorithm {
   
  private:
   const std::string lorentzAngleName;
+  const double lorentzAngleValue;
   const double theThreshold;
   const double cmnRMStib;
   const double cmnRMStob;
