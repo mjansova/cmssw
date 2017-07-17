@@ -1,9 +1,17 @@
 //./makeAndCompareDistributions test_shallowTrackAndClusterFullInfoNoPU2016DatastripProp.root test_shallowTrackAndClusterFullInfoNoPU2016MCstripProp.root TOB 0 5 yes distributions
 //./makeAndCompareDistributions noPU2016Data_v2_fullInfo.root noPU2016MC_v2_fullInfo.root TOB 0 5 yes distributions
+//./makeAndCompareDistributions test_shallowTrackAndClusterFullInfoNoPU2016_newData.root test_shallowTrackAndClusterFullInfo.rootCT3fix_0.80499999999999994step3.root TOB 0 5 yes distributionsDataToTunedCTTOB05
+//./makeAndCompareDistributions test_shallowTrackAndClusterFullInfoNoPU2016_newMC.root test_shallowTrackAndClusterFullInfo.rootCT3fix_0.80499999999999994step3.root TOB 0 5 yes distributionsMCToTunedCTTOB05
 //
+//./makeAndCompareDistributions test_shallowTrackAndClusterFullInfoNoPU2016_newMC.root test_shallowTrackAndClusterFullInfo.rootCT3_0.805step3.root TOB 0 5 yes distributionsMCToTunedCTTOB05 //more stats
 //
-
-
+//TUNED coll MC
+//./makeAndCompareDistributions test_shallowTrackAndClusterFullInfoNoPU2016_newData.root test_shallowTrackAndClusterFullInfo.rootCT3_0.805step3.root  TOB 0 5 yes distributionsDataToTunedCTTOB05
+//
+//TUNED cruzet MC
+//./makeAndCompareDistributions test_shallowTrackClusterUP17CosmicsData0T.root test_shallowTrackClusterUP17CosmicsMC0TCT0.805.root  TOB 0 5 yes distributionsCRUZETDataToTunedCTTOB05
+//
+//test_shallowTrackClusterUP17CosmicsData0T.root test_shallowTrackClusterUP17CosmicsMC0T.root test_shallowTrackClusterUP17CosmicsMC0TCT0.805.root
 #include <fstream>
 #include <iostream>
 #include <vector>
@@ -181,8 +189,8 @@ int main(int argc, char *argv[]){
        vector<float> subtsoslocalphi2;
        vector<float> subtsoslocaltheta;
        vector<float> subtsoslocaltheta2;
-       vector<float>* subtsosBdotY = 0;
-       vector<float>* subtsosBdotY2 = 0;
+       vector<float> subtsosBdotY;
+       vector<float> subtsosBdotY2;
 
 
        t1->SetBranchAddress("clustersubdetid",  &partition );
@@ -207,6 +215,7 @@ int main(int argc, char *argv[]){
        t1->SetBranchAddress("tsostrackPt",  &tsostrackPt );
        t1->SetBranchAddress("tsoslocalphi",  &tsoslocalphi );
        t1->SetBranchAddress("tsoslocaltheta",  &tsoslocaltheta );
+       t1->SetBranchAddress("tsosBdotY",  &tsosBdotY );
 
        t2->SetBranchAddress("clustersubdetid",  &partition2 );
        t2->SetBranchAddress("clustercharge",  &clustercharge2 );
@@ -230,6 +239,7 @@ int main(int argc, char *argv[]){
        t2->SetBranchAddress("tsostrackPt",  &tsostrackPt2 );
        t2->SetBranchAddress("tsoslocalphi",  &tsoslocalphi2 );
        t2->SetBranchAddress("tsoslocaltheta",  &tsoslocaltheta2 );
+       t2->SetBranchAddress("tsosBdotY",  &tsosBdotY2 );
 
    //data always first
     
@@ -262,6 +272,7 @@ int main(int argc, char *argv[]){
                        subtsostrackPt.push_back(tsostrackPt->at(k));
                        subtsoslocalphi.push_back(tsoslocalphi->at(k));
                        subtsoslocaltheta.push_back(tsoslocaltheta->at(k));
+                       subtsosBdotY.push_back(tsosBdotY->at(k));
                    }
                }
            }
@@ -316,6 +327,7 @@ int main(int argc, char *argv[]){
                        subtsostrackPt2.push_back(tsostrackPt2->at(k));
                        subtsoslocalphi2.push_back(tsoslocalphi2->at(k));
                        subtsoslocaltheta2.push_back(tsoslocaltheta2->at(k));
+                       subtsosBdotY2.push_back(tsosBdotY2->at(k));
                    }
                }
            }
@@ -390,11 +402,12 @@ int main(int argc, char *argv[]){
        {
            chargeForAllWidthsData->Fill(subclustercharge.at(m));
            
+           int factor = subtsosBdotY.at(m) > 0 ? 1 : -1;
            if(subclusterlayerwheel.at(m) == 3)
            {
                clusterWidthAsFceTanPhiData->Fill(tan(subtsoslocalphi.at(m)), subclusterwidth.at(m));
-               clusterWidthAsFceTanThetaData->Fill(tan(subtsoslocaltheta.at(m)), subclusterwidth.at(m));
-               clusterWidthAsFceTanThetaLorData->Fill(tan(subtsoslocaltheta.at(m))*cos(subtsoslocalphi.at(m)), subclusterwidth.at(m));
+               clusterWidthAsFceTanThetaData->Fill(factor*tan(subtsoslocaltheta.at(m)), subclusterwidth.at(m));
+               clusterWidthAsFceTanThetaLorData->Fill(factor*tan(subtsoslocaltheta.at(m))*cos(subtsoslocalphi.at(m)), subclusterwidth.at(m));
            }
            
            if(subclusterwidth.at(m) == 1)
@@ -402,7 +415,7 @@ int main(int argc, char *argv[]){
               chargeForWidth1Data->Fill(subclustercharge.at(m));
                if(subclusterlayerwheel.at(m) == 3)
                {
-                  tanThetaLorForWidth1Data->Fill(tan(subtsoslocaltheta.at(m))*cos(subtsoslocalphi.at(m)));
+                  tanThetaLorForWidth1Data->Fill(factor*tan(subtsoslocaltheta.at(m))*cos(subtsoslocalphi.at(m)));
                }
            }
            if(subclusterwidth.at(m) == 2)
@@ -444,11 +457,12 @@ int main(int argc, char *argv[]){
        {
            chargeForAllWidthsMC->Fill(subclustercharge2.at(m));
            
+           int factor = subtsosBdotY2.at(m) > 0 ? 1 : -1;
            if(subclusterlayerwheel2.at(m) == 3)
            {
                clusterWidthAsFceTanPhiMC->Fill(tan(subtsoslocalphi2.at(m)), subclusterwidth2.at(m));
-               clusterWidthAsFceTanThetaMC->Fill(tan(subtsoslocaltheta2.at(m)), subclusterwidth2.at(m));
-               clusterWidthAsFceTanThetaLorMC->Fill(tan(subtsoslocaltheta2.at(m))*cos(subtsoslocalphi2.at(m)), subclusterwidth2.at(m));
+               clusterWidthAsFceTanThetaMC->Fill(factor*tan(subtsoslocaltheta2.at(m)), subclusterwidth2.at(m));
+               clusterWidthAsFceTanThetaLorMC->Fill(factor*tan(subtsoslocaltheta2.at(m))*cos(subtsoslocalphi2.at(m)), subclusterwidth2.at(m));
            }
 
            if(subclusterwidth2.at(m) == 1)
@@ -456,7 +470,7 @@ int main(int argc, char *argv[]){
               chargeForWidth1MC->Fill(subclustercharge2.at(m));
               if(subclusterlayerwheel2.at(m) == 3)
               {
-                  tanThetaLorForWidth1MC->Fill(tan(subtsoslocaltheta2.at(m))*cos(subtsoslocalphi2.at(m)));
+                  tanThetaLorForWidth1MC->Fill(factor*tan(subtsoslocaltheta2.at(m))*cos(subtsoslocalphi2.at(m)));
               }
            }
            if(subclusterwidth2.at(m) == 2)

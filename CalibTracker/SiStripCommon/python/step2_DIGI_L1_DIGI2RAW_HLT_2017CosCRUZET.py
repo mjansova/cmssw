@@ -16,7 +16,7 @@ process.load('FWCore.MessageService.MessageLogger_cfi')
 process.load('Configuration.EventContent.EventContentCosmics_cff')
 process.load('SimGeneral.MixingModule.mixCosmics_cfi')
 process.load('Configuration.StandardSequences.GeometryRecoDB_cff')
-process.load('Configuration.StandardSequences.MagneticField_cff')
+process.load('Configuration.StandardSequences.MagneticField_0T_cff')
 process.load('Configuration.StandardSequences.DigiCosmics_cff')
 process.load('Configuration.StandardSequences.SimL1Emulator_cff')
 process.load('Configuration.StandardSequences.DigiToRaw_cff')
@@ -31,7 +31,7 @@ process.maxEvents = cms.untracked.PSet(
 # Input source
 process.source = cms.Source("PoolSource",
     dropDescendantsOfDroppedBranches = cms.untracked.bool(False),
-    fileNames = cms.untracked.vstring('file:step1CRAFT.root'),
+    fileNames = cms.untracked.vstring('file:step1CRUZET.root'),
     inputCommands = cms.untracked.vstring('keep *', 
         'drop *_genParticles_*_*', 
         'drop *_genParticlesForJets_*_*', 
@@ -71,7 +71,7 @@ process.FEVTDEBUGoutput = cms.OutputModule("PoolOutputModule",
         filterName = cms.untracked.string('')
     ),
     eventAutoFlushCompressedSize = cms.untracked.int32(5242880),
-    fileName = cms.untracked.string('file:step2CRAFT.root'),
+    fileName = cms.untracked.string('file:step2CRUZET.root'),
     outputCommands = process.FEVTDEBUGEventContent.outputCommands,
     splitLevel = cms.untracked.int32(0)
 )

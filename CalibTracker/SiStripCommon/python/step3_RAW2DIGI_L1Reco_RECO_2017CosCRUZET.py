@@ -16,7 +16,7 @@ process.load('FWCore.MessageService.MessageLogger_cfi')
 process.load('Configuration.EventContent.EventContentCosmics_cff')
 process.load('SimGeneral.MixingModule.mixCosmics_cfi')
 process.load('Configuration.StandardSequences.GeometryRecoDB_cff')
-process.load('Configuration.StandardSequences.MagneticField_cff')
+process.load('Configuration.StandardSequences.MagneticField_0T_cff')
 process.load('Configuration.StandardSequences.RawToDigi_cff')
 process.load('Configuration.StandardSequences.L1Reco_cff')
 process.load('Configuration.StandardSequences.ReconstructionCosmics_cff')
@@ -29,7 +29,7 @@ process.maxEvents = cms.untracked.PSet(
 
 # Input source
 process.source = cms.Source("PoolSource",
-    fileNames = cms.untracked.vstring('file:step2CRAFT.root'),
+    fileNames = cms.untracked.vstring('file:step2CRUZET.root'),
     secondaryFileNames = cms.untracked.vstring()
 )
 
@@ -52,7 +52,7 @@ process.RECOSIMoutput = cms.OutputModule("PoolOutputModule",
         filterName = cms.untracked.string('')
     ),
     eventAutoFlushCompressedSize = cms.untracked.int32(5242880),
-    fileName = cms.untracked.string('file:step3CRAFT.root'),
+    fileName = cms.untracked.string('file:step3CRUZET.root'),
     outputCommands = process.RECOSIMEventContent.outputCommands,
     splitLevel = cms.untracked.int32(0)
 )

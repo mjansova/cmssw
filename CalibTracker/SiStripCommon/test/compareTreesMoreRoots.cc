@@ -26,8 +26,19 @@
 //CT other two param TOB
 //./compareTreesMoreRoots 6 test_shallowTrackAndClusterFullInfoNoPU2016_newData.root test_shallowTrackAndClusterFullInfoNoPU2016_newMC.root test_shallowTrackAndClusterFullInfo.rootCT3_0.8401step3.root test_shallowTrackAndClusterFullInfo.rootCT3_0.8402step3.root test_shallowTrackAndClusterFullInfo.rootCT3_0.8403step3.root test_shallowTrackAndClusterFullInfo.rootCT3_0.8404step3.root TOB yes lowPU2016CrossTalkTOBL1tuningFiner > logsMean/lowPU2016CrossTalkTOBL1tuningFinerTOB
 
+//one layer test
  //./compareTreesMoreRoots 2 test_shallowTrackAndClusterFullInfoNoPU2016_newData.root test_shallowTrackAndClusterFullInfoNoPU2016_newMC.root TOB yes lowPU2016layer3dataMC > logsMean/lowPU2016layer3dataMCTOB
 
+//TOB tuned
+ //./compareTreesMoreRoots 3 test_shallowTrackAndClusterFullInfoNoPU2016_newData.root test_shallowTrackAndClusterFullInfoNoPU2016_newMC.root test_shallowTrackAndClusterFullInfo.rootCT3_0.805step3.root TOB yes lowPU2016dataMCTOBtuned > logsMean/lowPU2016dataMCTOBtunedTOB
+
+
+//TOB tuned more stats
+ //./compareTreesMoreRoots 3 test_shallowTrackAndClusterFullInfoNoPU2016_newData.root test_shallowTrackAndClusterFullInfo.rootCT_defstep3.root test_shallowTrackAndClusterFullInfo.rootCT3_0.805step3.root TOB yes test
+
+//TOBCRUZET tuned
+//
+ //./compareTreesMoreRoots 3 test_shallowTrackClusterUP17CosmicsData0T.root test_shallowTrackClusterUP17CosmicsMC0T.root test_shallowTrackClusterUP17CosmicsMC0TCT0.805.root TOB yes CRUZETdataMCTOBtuned > logsMean/CRUZETdataMCTOBtunedTOB
 
 //@MJ@ TODO get rid of layer 5 cut!!!!!!
 //
@@ -219,7 +230,7 @@ gROOT->ForceStyle();
 
                if(var.at(posSdId)->at(k) == sdId)
                {
-                   if(var.at(posSdIdLayer)->at(k)<3) //@MJ@ TODO temporaray solution!!!!
+                   if(var.at(posSdIdLayer)->at(k)<5) //@MJ@ TODO temporaray solution!!!!
                        varTot.at(j).push_back(var.at(j)->at(k));
                }
    //cout << "in here d" << endl;
@@ -297,15 +308,15 @@ gROOT->ForceStyle();
     //cout << "in here 1.3"  << endl;
        float end = varTot.at(h).at(size1) > varTotT2.at(0).at(h).at(size2) ? varTot.at(h).at(size1) : varTotT2.at(0).at(h).at(size2);
     //cout << "in here 1.4"  << endl;
-       hists.at(h) = new TH1F(observables.at(h).c_str(), observables.at(h).c_str(), 1000, start, end );
-       //hists.at(h) = new TH1F(observables.at(h).c_str(), observables.at(h).c_str(), 25, 0, 500 );
+       //hists.at(h) = new TH1F(observables.at(h).c_str(), observables.at(h).c_str(), 1000, start, end );
+       hists.at(h) = new TH1F(observables.at(h).c_str(), observables.at(h).c_str(), 100, 0, 1000 );
     //cout << "in here 1.5"  << endl;
        
        for(uint32_t t=0;t<t2.size();t++)
        {
            histsT2.at(t).resize(varTotT2.at(t).size());
-           histsT2.at(t).at(h) = new TH1F((observables.at(h)+"T2").c_str(), (observables.at(h)+"T2").c_str(), 1000, start, end );
-           //histsT2.at(t).at(h) = new TH1F((observables.at(h)+"T2").c_str(), (observables.at(h)+"T2").c_str(), 25, 0, 500 );
+           //histsT2.at(t).at(h) = new TH1F((observables.at(h)+"T2").c_str(), (observables.at(h)+"T2").c_str(), 1000, start, end );
+           histsT2.at(t).at(h) = new TH1F((observables.at(h)+"T2").c_str(), (observables.at(h)+"T2").c_str(), 100, 0, 1000 );
        }
 
     cout << "in here 2"  << endl;
@@ -338,7 +349,7 @@ gROOT->ForceStyle();
        hists.at(h)->GetXaxis()->SetTitle(observables.at(h).c_str());
        hists.at(h)->GetYaxis()->SetTitle("entries");
        float maxm = hists.at(h)->GetMaximum();
-       hists.at(h)->SetMaximum(2.5*maxm);
+       hists.at(h)->SetMaximum(1.5*maxm);
        hists.at(h)->SetTitle("");
        //hists.at(h)->Draw("*H");
        hists.at(h)->Draw("P");
@@ -348,14 +359,14 @@ gROOT->ForceStyle();
        //double n = 80654/5948; 
        for(uint32_t t=0;t<t2.size();t++)
        {
-           histsT2.at(t).at(h)->SetLineColor(2+t);
+           histsT2.at(t).at(h)->SetLineColor(2+(2*t));
            cout << "hist nr " << t << " color " << 2+t << endl;
            if(norm == "yes")
            {
-               histsT2.at(t).at(h)->DrawNormalized("same", n);
+               histsT2.at(t).at(h)->DrawNormalized("same hist e", n);
            }
            else
-               histsT2.at(t).at(h)->Draw("same");
+               histsT2.at(t).at(h)->Draw("same hist e");
   
            cout << "hist " << observables.at(h) << " mean 1 " << hists.at(h)->GetMean() << "  mean2 " <<  histsT2.at(t).at(h)->GetMean()<< " mean 1 err " << hists.at(h)->GetMeanError() << "  mean2 err " <<  histsT2.at(t).at(h)->GetMeanError() << endl;
  
@@ -372,9 +383,10 @@ gROOT->ForceStyle();
            n2.at(t) = histsT2.at(t).at(h)->GetEntries();
            histD.at(t)->Scale(n/n2.at(t));
            histD.at(t)->Divide(hists.at(h));
-           histD.at(t)->SetLineColor(2+t);
+           histD.at(t)->SetLineColor(2+(2*t));
            histD.at(t)->SetMaximum(2);
            histD.at(t)->SetMinimum(0);
+           histD.at(t)->SetTitle("");
            if(t==0)
                histD.at(t)->Draw("");
            else
@@ -383,7 +395,7 @@ gROOT->ForceStyle();
        cout << "hist " << h << " drawn" << endl; 
 
        c.Update();
-       c.SaveAs(("output/"+(string)dir+"/"+observables.at(h) + (string)subDet + ".root").c_str());
+       //c.SaveAs(("output/"+(string)dir+"/"+observables.at(h) + (string)subDet + ".root").c_str());
        c.SaveAs(("output/"+(string)dir+"/"+observables.at(h) + (string)subDet + ".eps").c_str());
        //delete histD; //do i need that actually?!
    }

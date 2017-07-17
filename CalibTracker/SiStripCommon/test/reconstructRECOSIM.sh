@@ -1,0 +1,23 @@
+#cmsRun trackCluster_test.py Temperature_min20_218.4step3.root
+#cmsRun trackCluster_test.py Temperature_min10_245.7step3.root
+#cmsRun trackCluster_test.py Temperature_def_273step3.root
+#cmsRun trackCluster_test.py Temperature_pl20_327.6step3.root
+#cmsRun trackCluster_test.py Temperature_pl10_300.3step3.root
+#cmsRun trackCluster_test.py DepletionVoltage_min20_136step3.root
+#cmsRun trackCluster_test.py DepletionVoltage_min10_153step3.root
+#cmsRun trackCluster_test.py DepletionVoltage_def_170step3.root
+#cmsRun trackCluster_test.py DepletionVoltage_pl10_187step3.root
+#cmsRun trackCluster_test.py DepletionVoltage_pl20_204step3.root
+#cmsRun trackCluster_test.py AppliedVoltage_min20_240step3.root
+#cmsRun trackCluster_test.py AppliedVoltage_min10_270step3.root
+#cmsRun trackCluster_test.py AppliedVoltage_def_300step3.root
+#cmsRun trackCluster_test.py AppliedVoltage_pl10_330step3.root
+#cmsRun trackCluster_test.py AppliedVoltage_pl20_360step3.root
+#cmsRun trackCluster_test.py ChargeMobility_min20_248step3.root
+#cmsRun trackCluster_test.py ChargeMobility_min10_279step3.root
+#cmsRun trackCluster_test.py ChargeMobility_def_310step3.root
+#cmsRun trackCluster_test.py ChargeMobility_pl10_341step3.root
+#cmsRun trackCluster_test.py ChargeMobility_pl20_372step3.root
+cmsRun trackCluster_test.py CT_1step3.root
+cmsRun trackCluster_test.py CT_0.4v2step3.root
+

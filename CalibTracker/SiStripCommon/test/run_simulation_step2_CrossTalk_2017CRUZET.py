@@ -15,10 +15,9 @@ SiStripSimBlock.CouplingConstantDecOB2  = cms.vdouble(value[0], value[1], value[
 SiStripSimBlock.CouplingConstantPeakOB1 = cms.vdouble(value[0], value[1], value[2])                           
 SiStripSimBlock.CouplingConstantPeakOB2 = cms.vdouble(value[0], value[1], value[2])
 
-from CalibTracker.SiStripCommon.step2_DIGI_L1_DIGI2RAW_HLT_2016 import * #good name
+from CalibTracker.SiStripCommon.step2_DIGI_L1_DIGI2RAW_HLT_2017CosCRUZET import * #good name
 
-#process.source.fileNames = cms.untracked.vstring(sys.argv[2] + "step1.root")
-process.FEVTDEBUGHLToutput.fileName = sys.argv[2] + ".root" 
+process.FEVTDEBUGoutput.fileName = sys.argv[2] + ".root" 
 
 print(sys.argv[3])
 

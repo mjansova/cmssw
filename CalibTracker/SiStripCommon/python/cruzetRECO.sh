@@ -1,0 +1,3 @@
+cmsRun UndergroundCosmicMu_cfi_py_GEN_SIM_2017CosCRUZET.py
+cmsRun step2_DIGI_L1_DIGI2RAW_HLT_2017CosCRUZET.py
+cmsRun step3_RAW2DIGI_L1Reco_RECO_2017CosCRUZET.py

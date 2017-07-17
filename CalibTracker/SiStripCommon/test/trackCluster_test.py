@@ -13,7 +13,7 @@ if found > 0:
     process.TFileService.fileName = 'test_shallowTrackAndClusterFullInfo.root' + inputStr
     print(input)
 else:
-    process.TFileService.fileName = 'test_shallowTrackAndClusterFullInfoNoPU2016_tests.root'
+    process.TFileService.fileName = 'test_shallowTrackAndClusterFullInfoNoPU2016_testsBla.root'
 
 #process.source.fileNames = cms.untracked.vstring('root://cms-xrd-global.cern.ch//store/relval/CMSSW_9_0_0/RelValMinBias_13/GEN-SIM-RECO/90X_upgrade2017_realistic_v20_resub-v1/00000/7E9D0F0A-CC10-E711-BDBD-0CC47A7C354A.root') #test_shallowTrackClusterNoPUMCupgrade2017.root
 
@@ -31,7 +31,7 @@ else:
 
 
 process.maxEvents = cms.untracked.PSet(
-    input = cms.untracked.int32(-1)
+    input = cms.untracked.int32(10)
 )
 
 from RecoTracker.TrackProducer.TrackRefitter_cfi import TrackRefitter

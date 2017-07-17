@@ -18,7 +18,7 @@ process.load('Configuration.EventContent.EventContentCosmics_cff')
 process.load('SimGeneral.MixingModule.mixCosmics_cfi')
 process.load('Configuration.StandardSequences.GeometryRecoDB_cff')
 process.load('Configuration.Geometry.GeometrySimDB_cff')
-process.load('Configuration.StandardSequences.MagneticField_cff')
+process.load('Configuration.StandardSequences.MagneticField_0T_cff')
 process.load('Configuration.StandardSequences.Generator_cff')
 process.load('Configuration.StandardSequences.VtxSmearedNoSmear_cff')
 process.load('GeneratorInterface.Core.genFilterSummary_cff')
@@ -55,7 +55,7 @@ process.RAWSIMoutput = cms.OutputModule("PoolOutputModule",
         filterName = cms.untracked.string('')
     ),
     eventAutoFlushCompressedSize = cms.untracked.int32(5242880),
-    fileName = cms.untracked.string('file:step1CRAFT.root'),
+    fileName = cms.untracked.string('file:step1CRUZET.root'),
     outputCommands = process.RAWSIMEventContent.outputCommands,
     splitLevel = cms.untracked.int32(0)
 )
