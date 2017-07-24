@@ -2,10 +2,11 @@ from CalibTracker.SiStripCommon.shallowTree_test_template import *
 process.TFileService.fileName = 'bla.root'
 import sys
 
+process.source.fileNames = cms.untracked.vstring('root://cms-xrd-global.cern.ch//store/relval/CMSSW_9_2_2/RelValCosmics_UP17/GEN-SIM-RECO/92X_upgrade2017cosmics_realistic_deco_v1-v1/10000/EA54DA55-AF4D-E711-BCE7-0025905A6122.root')
 #process.source.fileNames = cms.untracked.vstring('file:step3CRUZET.root') #0T gen
 #process.source.fileNames = cms.untracked.vstring('file:CTcruzet_0.805step3.root') #0T gen
 
-process.source.fileNames = cms.untracked.vstring('root://cms-xrd-global.cern.ch//store/data/Run2017B/Cosmics/RECO/PromptReco-v2/000/298/647/00000/14EC1D25-5E66-E711-8C7C-02163E01A3A5.root') #2017 runB craft data
+#process.source.fileNames = cms.untracked.vstring('root://cms-xrd-global.cern.ch//store/data/Run2017B/Cosmics/RECO/PromptReco-v2/000/298/647/00000/14EC1D25-5E66-E711-8C7C-02163E01A3A5.root') #2017 runB craft data
 #process.source.fileNames = cms.untracked.vstring('root://cms-xrd-global.cern.ch//store/data/Run2016H/Cosmics/RECO/PromptReco-v2/000/281/214/00000/2CBD8474-6782-E611-9360-02163E0145CC.root') #2016 runH craft data
 
 inputStr = sys.argv[2]
@@ -16,7 +17,7 @@ if found > 0:
     process.TFileService.fileName = 'test_shallowTrackAndClusterFullInfo.root' + inputStr
     print(input)
 else:
-    process.TFileService.fileName = 'test_shallowTrackAndClusterCRAFT_tests.root'
+    process.TFileService.fileName = 'test_shallowTrackAndClusterCRAFT_CRAFTMCdefFromDAS.root'
 
 
 process.maxEvents = cms.untracked.PSet(

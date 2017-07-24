@@ -1,18 +1,20 @@
 from CalibTracker.SiStripCommon.shallowTree_test_template_cruzet import *
 process.TFileService.fileName = 'bla2.root'
+import sys
+
 
 #process.source.fileNames = cms.untracked.vstring('file:step3CRUZET.root') #0T gen
-process.source.fileNames = cms.untracked.vstring('file:CTcruzet_0.805step3.root') #0T gen
-#process.source.fileNames = cms.untracked.vstring('root://cms-xrd-global.cern.ch//store/data/Run2017B/Cosmics/RECO/PromptReco-v1/000/298/211/00000/46EABE1D-5663-E711-B53F-02163E0142C5.root') #2017 runB data
+#process.source.fileNames = cms.untracked.vstring('file:CTcruzet_0.805step3.root') #0T gen
+process.source.fileNames = cms.untracked.vstring('root://cms-xrd-global.cern.ch//store/data/Run2017B/Cosmics/RECO/PromptReco-v1/000/298/211/00000/46EABE1D-5663-E711-B53F-02163E0142C5.root') #2017 runB data
 inputStr = sys.argv[2]
 found = inputStr.find("root")
 
 if found > 0:
     process.source.fileNames = cms.untracked.vstring("file:"+inputStr)
-    process.TFileService.fileName = 'test_shallowTrackAndClusterFullInfo.root' + inputStr
+    process.TFileService.fileName = 'test_shallowTrackAndClusterNarrowInfoCRUZET.root' + inputStr
     print(input)
 else:
-    process.TFileService.fileName = 'test_shallowTrackAndClusterFullInfoCRUZET_tests.root'
+    process.TFileService.fileName = 'test_shallowTrackAndClusterNarrowInfoCRUZETdata.root'
 
 
 #process.source.fileNames = cms.untracked.vstring('root://cms-xrd-global.cern.ch//store/mc/CosmicFall16PhaseIDR/TKCosmics_38T/GEN-SIM-RECO/DECO_90X_upgrade2017cosmics_realistic_deco_v18-v1/00000/0A229457-9122-E711-8E68-0CC47A78A4A6.root') #3.8 cosmics MC 28300ev

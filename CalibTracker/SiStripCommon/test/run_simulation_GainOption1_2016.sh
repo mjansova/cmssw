@@ -1,0 +1,5 @@
+#cmsRun run_simulation_step1_2016.py CT_def
+cmsRun run_simulation_step2_gainOption1_2016.py gainOption1
+cmsRun run_simulation_step3_gainOption1_2016.py gainOption1
+cmsRun trackCluster_test.py  gainOption1step3.root
+

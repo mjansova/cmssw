@@ -156,7 +156,9 @@ ShallowTrackClustersProducerCombined::ShallowTrackClustersProducerCombined(const
   produces <std::vector<float> >         ( Prefix + "stripChargeLocalX"        );
   produces <std::vector<float> >         ( Prefix + "stripChargeLocalY"        );
   produces <std::vector<float> >         ( Prefix + "stripChargetrackPt"        );
-
+  produces <std::vector<float> >         ( Prefix + "stripChargelocalpitch"        );
+  produces <std::vector<float> >         ( Prefix + "stripChargesensorThickness"        );
+  produces <std::vector<float> >         ( Prefix + "stripChargeBdotY"        );
 
   produces <std::vector<float> >        ( "PU"       );
   produces <std::vector<unsigned int> > ( "bx"       );
@@ -279,7 +281,9 @@ produce(edm::Event& iEvent, const edm::EventSetup& iSetup) {
   auto       stripChargeLocalX     = std::make_unique<std::vector<float>>();
   auto       stripChargeLocalY     = std::make_unique<std::vector<float>>();
   auto       stripChargetrackPt     = std::make_unique<std::vector<float>>();
-
+  auto       stripChargelocalpitch    = std::make_unique<std::vector<float>>();
+  auto       stripChargesensorThickness    = std::make_unique<std::vector<float>>();
+  auto       stripChargeBdotY   = std::make_unique<std::vector<float>>();
 
   auto       PU      = std::make_unique<std::vector<float>>();
   auto bx            = std::make_unique<std::vector<unsigned int>>();
@@ -458,6 +462,9 @@ produce(edm::Event& iEvent, const edm::EventSetup& iSetup) {
           stripChargeLocalX->push_back((theStripDet->toLocal(tsos.globalPosition())).x());
           stripChargeLocalY->push_back((theStripDet->toLocal(tsos.globalPosition())).y());
           stripChargetrackPt->push_back(   track->pt() );                         
+          stripChargelocalpitch->push_back(  (theStripDet->specificTopology()).localPitch(theStripDet->toLocal(tsos.globalPosition())) ); 
+          stripChargesensorThickness->push_back(             theStripDet->specificSurface().bounds().thickness() );
+	  stripChargeBdotY->push_back(       (theStripDet->surface()).toLocal( magfield->inTesla(theStripDet->surface().position())).y() );
           ++strips; 
       }
 
@@ -620,7 +627,9 @@ produce(edm::Event& iEvent, const edm::EventSetup& iSetup) {
   iEvent.put(std::move(stripChargeLocalX),   Prefix + "stripChargeLocalX"    );
   iEvent.put(std::move(stripChargeLocalY),   Prefix + "stripChargeLocalY"    );
   iEvent.put(std::move(stripChargetrackPt),   Prefix + "stripChargetrackPt"    );
-
+  iEvent.put(std::move(stripChargelocalpitch),   Prefix + "stripChargelocalpitch"    );
+  iEvent.put(std::move(stripChargesensorThickness),   Prefix + "stripChargesensorThickness"    );
+  iEvent.put(std::move(stripChargeBdotY),   Prefix + "stripChargeBdotY"    );
   iEvent.put(std::move(PU),       "PU"        );
   iEvent.put(std::move(bx),       "bx"        );
 

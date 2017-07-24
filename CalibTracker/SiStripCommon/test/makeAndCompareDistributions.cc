@@ -7,11 +7,29 @@
 //
 //TUNED coll MC
 //./makeAndCompareDistributions test_shallowTrackAndClusterFullInfoNoPU2016_newData.root test_shallowTrackAndClusterFullInfo.rootCT3_0.805step3.root  TOB 0 5 yes distributionsDataToTunedCTTOB05
+//NOT TUNED coll MC
+//./makeAndCompareDistributions test_shallowTrackAndClusterFullInfoNoPU2016_newData.root test_shallowTrackAndClusterFullInfo.rootCT_defstep3.root  TOB 0 5 yes distributionsDataToNotTunedTunedCTTOB05
+
+//./makeAndCompareDistributions test_shallowTrackAndClusterFullInfoNoPU2016_newData.root test_shallowTrackAndClusterFullInfoNoPU2016_newMC.root  TOB 0 5 yes distributionsDataToNotTunedTunedCTTOB05
 //
 //TUNED cruzet MC
-//./makeAndCompareDistributions test_shallowTrackClusterUP17CosmicsData0T.root test_shallowTrackClusterUP17CosmicsMC0TCT0.805.root  TOB 0 5 yes distributionsCRUZETDataToTunedCTTOB05
-//
+//./makeAndCompareDistributions test_shallowTrackClusterUP17CosmicsData0T.root test_shallowTrackAndClusterFullInfo.rootCTcruzet_0.805step3.root  TOB 0 5 yes distributionsCRUZETDataToTunedCTTOB05
+
+//TUNED craft MC
+//./makeAndCompareDistributions test_shallowTrackCluster2017CRAFTCosmicsRun298647.root  test_shallowTrackAndClusterFullInfo.rootCTcraft_0.805step3.root  TOB 0 5 yes distributionsCRAFTDataToTunedCTTOB05
+
 //test_shallowTrackClusterUP17CosmicsData0T.root test_shallowTrackClusterUP17CosmicsMC0T.root test_shallowTrackClusterUP17CosmicsMC0TCT0.805.root
+//
+//different CT tries
+//
+//./makeAndCompareDistributions test_shallowTrackAndClusterFullInfoNoPU2016_newData.root test_shallowTrackAndClusterFullInfo.rootCT_0.84step3.root  TOB 0 5 yes distributionsDataMCCT084_008_0
+//./makeAndCompareDistributions test_shallowTrackAndClusterFullInfoNoPU2016_newData.root test_shallowTrackAndClusterFullInfo.rootCT3fix_0.79999999999999993step3.root  TOB 0 5 yes distributionsDataMCCT080_008_002
+
+//CRUZET narrow tuned
+//./makeAndCompareDistributions test_shallowTrackAndClusterNarrowInfoCRUZETdata.root test_shallowTrackAndClusterNarrowInfoCRUZET.rootCTcruzet_0.805step3.root  TOB 0 5 yes distributionsCRUZETDataToTunedCTTOB05
+//-rw-r--r--  1 mjansova cms   23758358 20 juil. 14:17 test_shallowTrackAndClusterNarrowInfoCRUZET.rootCTcruzet_defstep3.root
+
+//CRUZET narrow not tuned
 #include <fstream>
 #include <iostream>
 #include <vector>
@@ -144,8 +162,18 @@ int main(int argc, char *argv[]){
        vector<float>* tsoslocalphi2 = 0;
        vector<float>* tsoslocaltheta = 0;
        vector<float>* tsoslocaltheta2 = 0;
+       vector<float>* tsoslocalpitch = 0;
+       vector<float>* tsoslocalpitch2 = 0;
+       vector<float>* clustersensorThickness = 0;
+       vector<float>* clustersensorThickness2 = 0;
        vector<float>* tsosBdotY = 0;
        vector<float>* tsosBdotY2 = 0;
+       vector<float>* clusterstripChargelocalpitch = 0;
+       vector<float>* clusterstripChargelocalpitch2  = 0;
+       vector<float>* clusterstripChargesensorThickness = 0;
+       vector<float>* clusterstripChargesensorThickness2  = 0;
+       vector<float>* clusterstripChargeBdotY = 0;
+       vector<float>* clusterstripChargeBdotY2  = 0;
 
        vector<float> subpartition;
        vector<float> subpartition2;
@@ -189,8 +217,18 @@ int main(int argc, char *argv[]){
        vector<float> subtsoslocalphi2;
        vector<float> subtsoslocaltheta;
        vector<float> subtsoslocaltheta2;
+       vector<float> subtsoslocalpitch;
+       vector<float> subtsoslocalpitch2;
+       vector<float> subclustersensorThickness;
+       vector<float> subclustersensorThickness2;
        vector<float> subtsosBdotY;
        vector<float> subtsosBdotY2;
+       vector<float> subclusterstripChargelocalpitch;
+       vector<float> subclusterstripChargelocalpitch2;
+       vector<float> subclusterstripChargesensorThickness;
+       vector<float> subclusterstripChargesensorThickness2;
+       vector<float> subclusterstripChargeBdotY;
+       vector<float> subclusterstripChargeBdotY2;
 
 
        t1->SetBranchAddress("clustersubdetid",  &partition );
@@ -215,7 +253,12 @@ int main(int argc, char *argv[]){
        t1->SetBranchAddress("tsostrackPt",  &tsostrackPt );
        t1->SetBranchAddress("tsoslocalphi",  &tsoslocalphi );
        t1->SetBranchAddress("tsoslocaltheta",  &tsoslocaltheta );
+       t1->SetBranchAddress("tsoslocalpitch",  &tsoslocalpitch );
+       t1->SetBranchAddress("clustersensorThickness",  &clustersensorThickness );
        t1->SetBranchAddress("tsosBdotY",  &tsosBdotY );
+       t1->SetBranchAddress("clusterstripChargelocalpitch",  &clusterstripChargelocalpitch );
+       t1->SetBranchAddress("clusterstripChargesensorThickness",  &clusterstripChargesensorThickness );
+       t1->SetBranchAddress("clusterstripChargeBdotY",  &clusterstripChargeBdotY );
 
        t2->SetBranchAddress("clustersubdetid",  &partition2 );
        t2->SetBranchAddress("clustercharge",  &clustercharge2 );
@@ -239,7 +282,12 @@ int main(int argc, char *argv[]){
        t2->SetBranchAddress("tsostrackPt",  &tsostrackPt2 );
        t2->SetBranchAddress("tsoslocalphi",  &tsoslocalphi2 );
        t2->SetBranchAddress("tsoslocaltheta",  &tsoslocaltheta2 );
+       t2->SetBranchAddress("tsoslocalpitch",  &tsoslocalpitch2 );
+       t2->SetBranchAddress("clustersensorThickness",  &clustersensorThickness2 );
        t2->SetBranchAddress("tsosBdotY",  &tsosBdotY2 );
+       t2->SetBranchAddress("clusterstripChargelocalpitch",  &clusterstripChargelocalpitch2 );
+       t2->SetBranchAddress("clusterstripChargesensorThickness",  &clusterstripChargesensorThickness2 );
+       t2->SetBranchAddress("clusterstripChargeBdotY",  &clusterstripChargeBdotY2 );
 
    //data always first
     
@@ -272,6 +320,8 @@ int main(int argc, char *argv[]){
                        subtsostrackPt.push_back(tsostrackPt->at(k));
                        subtsoslocalphi.push_back(tsoslocalphi->at(k));
                        subtsoslocaltheta.push_back(tsoslocaltheta->at(k));
+                       subtsoslocalpitch.push_back(tsoslocalpitch->at(k));
+                       subclustersensorThickness.push_back(clustersensorThickness->at(k));
                        subtsosBdotY.push_back(tsosBdotY->at(k));
                    }
                }
@@ -298,6 +348,9 @@ int main(int argc, char *argv[]){
                        subclusterstripChargeLocalX.push_back(clusterstripChargeLocalX->at(k));
                        subclusterstripChargeLocalY.push_back(clusterstripChargeLocalY->at(k));
                        subclusterstripChargetrackPt.push_back(clusterstripChargetrackPt->at(k));
+                       subclusterstripChargelocalpitch.push_back(clusterstripChargelocalpitch->at(k));
+                       subclusterstripChargesensorThickness.push_back(clusterstripChargesensorThickness->at(k));
+                       subclusterstripChargeBdotY.push_back(clusterstripChargeBdotY->at(k));
                    }
                }
            }
@@ -327,6 +380,8 @@ int main(int argc, char *argv[]){
                        subtsostrackPt2.push_back(tsostrackPt2->at(k));
                        subtsoslocalphi2.push_back(tsoslocalphi2->at(k));
                        subtsoslocaltheta2.push_back(tsoslocaltheta2->at(k));
+                       subtsoslocalpitch2.push_back(tsoslocalpitch2->at(k));
+                       subclustersensorThickness2.push_back(clustersensorThickness2->at(k));
                        subtsosBdotY2.push_back(tsosBdotY2->at(k));
                    }
                }
@@ -353,6 +408,9 @@ int main(int argc, char *argv[]){
                        subclusterstripChargeLocalX2.push_back(clusterstripChargeLocalX2->at(k));
                        subclusterstripChargeLocalY2.push_back(clusterstripChargeLocalY2->at(k));
                        subclusterstripChargetrackPt2.push_back(clusterstripChargetrackPt2->at(k));
+                       subclusterstripChargelocalpitch2.push_back(clusterstripChargelocalpitch2->at(k));
+                       subclusterstripChargesensorThickness2.push_back(clusterstripChargesensorThickness2->at(k));
+                       subclusterstripChargeBdotY2.push_back(clusterstripChargeBdotY2->at(k));
                    }
                }
            }
@@ -387,8 +445,8 @@ int main(int argc, char *argv[]){
        TProfile* clusterWidthAsFceTanPhiMC = new TProfile("clusterWidthAsFceTanPhiMC", "clusterWidthAsFceTanPhiMC" , 1000, -15, 15, 0, 30 );
        TProfile* clusterWidthAsFceTanThetaMC = new TProfile("clusterWidthAsFceTanThetaMC", "clusterWidthAsFceTanThetaMC" , 50, -4, 4, 0, 30 );
 
-       TProfile* clusterWidthAsFceTanThetaLorData = new TProfile("clusterWidthAsFceTanThetaLorData", "clusterWidthAsFceTanThetaLorData" , 100, -2, 2, 0, 30 );
-       TProfile* clusterWidthAsFceTanThetaLorMC = new TProfile("clusterWidthAsFceTanTheatLorMC", "clusterWidthAsFceTanThetaLorMC" , 100, -2, 2, 0, 30 );
+       TProfile* clusterWidthAsFceTanThetaLorData = new TProfile("clusterWidthAsFceTanThetaLorData", "clusterWidthAsFceTanThetaLorData" , 50, -1, 1, 0, 30 );
+       TProfile* clusterWidthAsFceTanThetaLorMC = new TProfile("clusterWidthAsFceTanTheatLorMC", "clusterWidthAsFceTanThetaLorMC" , 50, -1, 1, 0, 30 );
 
        TH1F* clusterWidthAsFceTanThetaLorAssymetryData = new TH1F("clusterWidthAsFceTanThetaLorAssymetryData", "clusterWidthAsFceTanThetaLorAssymetryData" , 50, 0, 2);
        TH1F* clusterWidthAsFceTanThetaLorAssymetryMC = new TH1F("clusterWidthAsFceTanTheatLorAssymetryMC", "clusterWidthAsFceTanThetaLorAssymetryMC" ,  50, 0, 2 );
@@ -397,12 +455,26 @@ int main(int argc, char *argv[]){
        TH1F* tanThetaLorForWidth1Data = new TH1F("tanThetaLorForWidth1Data", "tanThetaLorForWidth1Data" , 100, -2, 2 );
        TH1F* tanThetaLorForWidth1MC = new TH1F("tanThetaLorForWidth1MC", "tanThetaLorForWidth1MC" , 100, -2, 2 );
 
+       
+       TH2F* chargeVsWidthData = new TH2F("chargeVsWidthData", "chargeVsWidthData" , 150, 0, 1500, 20, 0 , 20 );
+       TH2F* chargeVsWidthMC = new TH2F("chargeVsWidthMC", "chargeVsWidthMC" , 150, 0, 1500, 20, 0 , 20 );
+
+       TH1F* narrowTrackClusterWidthData = new TH1F("narrowTrackClusterWidthData","narrowTrackClusterWidthData", 10, 0, 10);         
+       TH1F* narrowTrackClusterWidthMC = new TH1F("narrowTrackClusterWidthMC","narrowTrackClusterWidthMC", 10, 0, 10);         
+
     cout << "in here 2"  << endl;
        for(uint32_t m = 0; m<subclustercharge.size(); m++)
        {
            chargeForAllWidthsData->Fill(subclustercharge.at(m));
+           chargeVsWidthData->Fill(subclustercharge.at(m), subclusterwidth.at(m));
            
            int factor = subtsosBdotY.at(m) > 0 ? 1 : -1;
+
+           if( abs(tan(subtsoslocaltheta.at(m))*cos(subtsoslocalphi.at(m))) < 0.2*(subtsoslocalpitch.at(m)/subclustersensorThickness.at(m)) )
+           {
+               narrowTrackClusterWidthData->Fill(subclusterwidth.at(m));         
+           }
+
            if(subclusterlayerwheel.at(m) == 3)
            {
                clusterWidthAsFceTanPhiData->Fill(tan(subtsoslocalphi.at(m)), subclusterwidth.at(m));
@@ -456,8 +528,15 @@ int main(int argc, char *argv[]){
        for(uint32_t m = 0; m<subclustercharge2.size(); m++)
        {
            chargeForAllWidthsMC->Fill(subclustercharge2.at(m));
+           chargeVsWidthMC->Fill(subclustercharge2.at(m), subclusterwidth2.at(m));
            
            int factor = subtsosBdotY2.at(m) > 0 ? 1 : -1;
+
+           if( abs(tan(subtsoslocaltheta2.at(m))*cos(subtsoslocalphi2.at(m))) < 0.2*(subtsoslocalpitch2.at(m)/subclustersensorThickness2.at(m)) )
+           {
+               narrowTrackClusterWidthMC->Fill(subclusterwidth2.at(m));         
+           }
+
            if(subclusterlayerwheel2.at(m) == 3)
            {
                clusterWidthAsFceTanPhiMC->Fill(tan(subtsoslocalphi2.at(m)), subclusterwidth2.at(m));
@@ -507,13 +586,86 @@ int main(int argc, char *argv[]){
 
        TH1F* chargePerStripData = new TH1F("chargePerStripiData", "chargePerStripData" , 300, 0, 300 );
        TH1F* chargePerStripMC = new TH1F("chargePerStripMC", "chargePerStripMC" , 300, 0, 300 );
+
+       vector<float> stripChargeVec;
+       vector<float> stripChargeVec2;
+       TH1F* narrowTrackSharing1Data = new TH1F("narrowTrackSharing1Data", "narrowTrackSharing1Data" , 100, 0, 1 );
+       TH1F* narrowTrackSharing1MC = new TH1F("narrowTrackSharing1MC", "narrowTrackSharing1MC" , 100, 0, 1 );
+       TH1F* narrowTrackSharing2Data = new TH1F("narrowTrackSharing2Data", "narrowTrackSharing2Data" , 100, 0, 1 );
+       TH1F* narrowTrackSharing2MC = new TH1F("narrowTrackSharing2MC", "narrowTrackSharing2MC" , 100, 0, 1 );
+
        for(uint32_t m = 0; m<subclusterstripCharge.size(); m++)
        {
            chargePerStripData->Fill(subclusterstripCharge.at(m));
+           
+           if( abs(tan(subclusterstripChargeLocalTrackTheta.at(m))*cos(subclusterstripChargeLocalTrackPhi.at(m))) < 0.2*(subclusterstripChargelocalpitch.at(m)/subclusterstripChargesensorThickness.at(m)) )
+           {
+               cout << "after good track selection" << endl;
+               stripChargeVec.push_back(subclusterstripCharge.at(m));
+               cout << "width " << subclusterstripChargeTotWidth.at(m) << " size of vector " << stripChargeVec.size() << endl;
+               if(subclusterstripChargeTotWidth.at(m) == stripChargeVec.size())
+               {
+                   cout << " to fill " << endl; 
+                   float maxVal = 0;
+                   int indexVal = -1;
+                   for( uint32_t s =0; s<stripChargeVec.size(); s++)
+                   {
+                       if(stripChargeVec.at(s) > maxVal)
+                       {
+                           maxVal = stripChargeVec.at(s);
+                           indexVal = s;
+                       }
+
+                   }
+                   if(indexVal-1>=0)
+                   {
+                       narrowTrackSharing1Data->Fill((float)stripChargeVec.at(indexVal-1)/maxVal);
+                       cout << " filled with " << (float)stripChargeVec.at(indexVal-1)/maxVal << endl;
+                   }
+                   if(indexVal+1<stripChargeVec.size())
+                       narrowTrackSharing1Data->Fill((float)stripChargeVec.at(indexVal+1)/maxVal);
+                   if(indexVal-2>=0)
+                       narrowTrackSharing2Data->Fill((float)stripChargeVec.at(indexVal-2)/maxVal);
+                   if(indexVal+2<stripChargeVec.size())
+                       narrowTrackSharing2Data->Fill((float)stripChargeVec.at(indexVal+2)/maxVal);
+
+                   stripChargeVec.clear();
+               }
+           }
+
        }
        for(uint32_t m = 0; m<subclusterstripCharge2.size(); m++)
        {
            chargePerStripMC->Fill(subclusterstripCharge2.at(m));
+
+           if( abs(tan(subclusterstripChargeLocalTrackTheta2.at(m))*cos(subclusterstripChargeLocalTrackPhi2.at(m))) < 0.2*(subclusterstripChargelocalpitch2.at(m)/subclusterstripChargesensorThickness2.at(m)) )
+           {
+               stripChargeVec2.push_back(subclusterstripCharge2.at(m));
+               if(subclusterstripChargeTotWidth2.at(m) == stripChargeVec2.size())
+               {
+                   float maxVal = 0;
+                   int indexVal = -1;
+                   for( uint32_t s =0; s<stripChargeVec2.size(); s++)
+                   {
+                       if(stripChargeVec2.at(s) > maxVal)
+                       {
+                           maxVal = stripChargeVec2.at(s);
+                           indexVal = s;
+                       }
+
+                   }
+                   if(indexVal-1>=0)
+                       narrowTrackSharing1MC->Fill((float)stripChargeVec2.at(indexVal-1)/maxVal);
+                   if(indexVal+1<stripChargeVec2.size())
+                       narrowTrackSharing1MC->Fill((float)stripChargeVec2.at(indexVal+1)/maxVal);
+                   if(indexVal-2>=0)
+                       narrowTrackSharing2MC->Fill((float)stripChargeVec2.at(indexVal-2)/maxVal);
+                   if(indexVal+2<stripChargeVec2.size())
+                       narrowTrackSharing2MC->Fill((float)stripChargeVec2.at(indexVal+2)/maxVal);
+
+                   stripChargeVec2.clear();
+               }
+           }
        }
 
 
@@ -973,7 +1125,7 @@ int main(int argc, char *argv[]){
        }
        double norm1 = widthTOBl1Data->Integral();
        widthTOBl1Data->Scale(1/norm1);
-       widthTOBl1Data->SetLineColor(kBlue);
+       widthTOBl1Data->SetLineColor(kRed);
        double norm2 = widthTOBl5Data->Integral();
        widthTOBl5Data->Scale(1/norm2);
        widthTOBl5Data->SetLineColor(kRed);
@@ -1079,10 +1231,10 @@ int main(int argc, char *argv[]){
 
        TH1F* chargePerStripForAllWidthsData = new TH1F("chargePerStripForAllWidths", "chargePerStripForAllWidths" , 300, 0, 300 );
        TH1F* chargePerStripForAllWidthsMC = new TH1F("chargePerStripForAllWidthsMC", "chargePerStripForAllWidthsMC" , 300, 0, 300 );
-       TH1F* chargePerStripForWidth1Data = new TH1F("chargePerStripForWidth1Data", "chargePerStripForWidth1Data" , 300, 0, 300 );
-       TH1F* chargePerStripForWidth1MC = new TH1F("chargePerStripForWidth1MC", "chargePerStripForWidth1MC" , 300, 0, 300 );
-       TH1F* chargePerStripForWidth2Data = new TH1F("chargePerStripForWidth2Data", "chargePerStripForWidth2Data" , 300, 0, 300 );
-       TH1F* chargePerStripForWidth2MC = new TH1F("chargePerStripForWidth2MC", "chargePerStripForWidth2MC" , 300, 0, 300 );
+       TH1F* chargePerStripForWidth1Data = new TH1F("chargePerStripForWidth1Data", "chargePerStripForWidth1Data" , 100, 0, 300 );
+       TH1F* chargePerStripForWidth1MC = new TH1F("chargePerStripForWidth1MC", "chargePerStripForWidth1MC" , 100, 0, 300 );
+       TH1F* chargePerStripForWidth2Data = new TH1F("chargePerStripForWidth2Data", "chargePerStripForWidth2Data" , 150, 0, 300 );
+       TH1F* chargePerStripForWidth2MC = new TH1F("chargePerStripForWidth2MC", "chargePerStripForWidth2MC" , 150, 0, 300 );
        TH1F* chargePerStripForWidth3Data = new TH1F("chargePerStripForWidth3Data", "chargePerStripForWidth3Data" , 300, 0, 300 );
        TH1F* chargePerStripForWidth3MC = new TH1F("chargePerStripForWidth3MC", "chargePerStripForWidth3MC" , 300, 0, 300 );
        TH1F* chargePerStripForWidthLargerThan3Data = new TH1F("chargePerStripForWidthLargerThan3Data", "chargePerStripForWidthLargerThan3Data" , 300, 0, 300 );
@@ -1143,6 +1295,18 @@ int main(int argc, char *argv[]){
            }
        }
 
+       TH1F* dummyCTplot = new TH1F("dummyCTplot", "dummyCTplot" , 5, 0, 5 );
+       dummyCTplot->SetBinContent(1,1);
+       dummyCTplot->SetBinContent(2,2);
+       dummyCTplot->SetBinContent(3,3);
+       dummyCTplot->SetBinContent(4,2);
+       dummyCTplot->SetBinContent(5,1);
+       dummyCTplot->SetFillStyle(1001);
+       dummyCTplot->SetFillColor(kGray+2);
+       dummyCTplot->SetTitle("");
+       dummyCTplot->SetMaximum(1.5*(dummyCTplot->GetMaximum()));
+       
+       
 
 //////////////////////filling
        chargeForAllWidthsData->SetMarkerStyle(kFullCircle);
@@ -1238,28 +1402,33 @@ int main(int argc, char *argv[]){
        clusterShape7DataPositive->SetMarkerStyle(kFullCircle);
        clusterShape7DataPositive->SetMarkerColor(kPink);
        clusterShapeDataNegative->SetMarkerStyle(kFullCircle);
-       clusterShapeDataNegative->SetMarkerColor(kBlue+3);
+       clusterShapeDataNegative->SetMarkerColor(kRed+3);
        clusterShapeMT8DataNegative->SetMarkerStyle(kFullCircle);
-       clusterShapeMT8DataNegative->SetMarkerColor(kBlue+3);
+       clusterShapeMT8DataNegative->SetMarkerColor(kRed+3);
        clusterShapeLT7DataNegative->SetMarkerStyle(kFullCircle);
-       clusterShapeLT7DataNegative->SetMarkerColor(kBlue+3);
+       clusterShapeLT7DataNegative->SetMarkerColor(kRed+3);
        clusterShape2DataNegative->SetMarkerStyle(kFullCircle);
-       clusterShape2DataNegative->SetMarkerColor(kBlue+3);
+       clusterShape2DataNegative->SetMarkerColor(kRed+3);
        clusterShape3DataNegative->SetMarkerStyle(kFullCircle);
-       clusterShape3DataNegative->SetMarkerColor(kBlue+3);
+       clusterShape3DataNegative->SetMarkerColor(kRed+3);
        clusterShape5DataNegative->SetMarkerStyle(kFullCircle);
-       clusterShape5DataNegative->SetMarkerColor(kBlue+3);
+       clusterShape5DataNegative->SetMarkerColor(kRed+3);
        clusterShape6DataNegative->SetMarkerStyle(kFullCircle);
-       clusterShape6DataNegative->SetMarkerColor(kBlue+3);
+       clusterShape6DataNegative->SetMarkerColor(kRed+3);
        clusterShape7DataNegative->SetMarkerStyle(kFullCircle);
-       clusterShape7DataNegative->SetMarkerColor(kBlue+3);
+       clusterShape7DataNegative->SetMarkerColor(kRed+3);
        clusterChargeWOSaturationData->SetMarkerStyle(kFullCircle);
        clusterChargeWOSaturationData->SetMarkerColor(kBlack);
        clusterWidthWOSaturationData->SetMarkerStyle(kFullCircle);
        clusterWidthWOSaturationData->SetMarkerColor(kBlack);
        clusterChargePerStripWOSaturationData->SetMarkerStyle(kFullCircle);
        clusterChargePerStripWOSaturationData->SetMarkerColor(kBlack);
-
+       narrowTrackClusterWidthData->SetMarkerStyle(kFullCircle); 
+       narrowTrackClusterWidthData->SetMarkerColor(kBlack); 
+       narrowTrackSharing1Data->SetMarkerStyle(kFullCircle);
+       narrowTrackSharing1Data->SetMarkerColor(kBlack);
+       narrowTrackSharing2Data->SetMarkerStyle(kFullCircle);
+       narrowTrackSharing2Data->SetMarkerColor(kBlack);
 
        chargeForAllWidthsMC->SetTitle("");
        chargeForWidth1Data->SetTitle("");
@@ -1313,6 +1482,9 @@ int main(int argc, char *argv[]){
        clusterChargeWOSaturationData->SetTitle("");
        clusterWidthWOSaturationData->SetTitle("");
        clusterChargePerStripWOSaturationData->SetTitle("");
+       narrowTrackClusterWidthData->SetTitle(""); 
+       narrowTrackSharing1Data->SetTitle("");
+       narrowTrackSharing2Data->SetTitle("");
 
        chargeForAllWidthsMC->GetXaxis()->SetTitle("cluster charge");
        chargeForWidth1Data->GetXaxis()->SetTitle("cluster charge (cluster width=1)");
@@ -1339,9 +1511,9 @@ int main(int argc, char *argv[]){
        clusterWidthAsFceTanPhiData->GetXaxis()->SetTitle("");
        clusterWidthAsFceTanThetaData->GetXaxis()->SetTitle("tan(#Theta)");
        clusterWidthAsFceTanThetaData->GetYaxis()->SetTitle("cluster width");
-       clusterWidthAsFceTanThetaLorData->GetXaxis()->SetTitle("tan(#Theta_Lotentz)");
+       clusterWidthAsFceTanThetaLorData->GetXaxis()->SetTitle("tan(#Theta_Lorentz)");
        clusterWidthAsFceTanThetaLorData->GetYaxis()->SetTitle("cluster width");
-       clusterWidthAsFceTanThetaLorAssymetryData->GetXaxis()->SetTitle("abs(tan(#Theta_Lotentz))");
+       clusterWidthAsFceTanThetaLorAssymetryData->GetXaxis()->SetTitle("abs(tan(#Theta_Lorentz))");
        clusterWidthAsFceTanThetaLorAssymetryData->GetYaxis()->SetTitle("cluster width");
        tanThetaLorForWidth1MC->GetXaxis()->SetTitle("tan(#Theta_Lotentz)");
        clusterStripCahrgeAsFceTanThetaData->GetXaxis()->SetTitle("tan(#Theta)");
@@ -1360,7 +1532,8 @@ int main(int argc, char *argv[]){
        clusterShape3Data->GetYaxis()->SetTitle("charge of strip in cluster");
        clusterShape5Data->GetXaxis()->SetTitle("cluster strip (cluster width=5)");
        clusterShape5Data->GetYaxis()->SetTitle("charge of strip in cluster");
-
+       narrowTrackSharing1Data->GetXaxis()->SetTitle("#eta #pm 1");
+       narrowTrackSharing2Data->GetXaxis()->SetTitle("#eta #pm 2");
 
        chargeForAllWidthsData->SetMaximum(1.5*  (chargeForAllWidthsData->GetMaximum()));
        chargeForWidth1Data->SetMaximum(2* chargeForWidth1Data->GetMaximum()  );
@@ -1391,7 +1564,11 @@ int main(int argc, char *argv[]){
        clusterChargeWOSaturationData->SetMaximum(1.5*  clusterChargeWOSaturationData->GetMaximum());
        clusterWidthWOSaturationData->SetMaximum(1.5*  clusterWidthWOSaturationData->GetMaximum());
        clusterChargePerStripWOSaturationData->SetMaximum(1.5*  clusterChargePerStripWOSaturationData->GetMaximum());
-
+       narrowTrackClusterWidthData->SetMaximum(1.5*  narrowTrackClusterWidthData->GetMaximum());
+       clusterWidthAsFceTanThetaData->SetMaximum(1.5*  clusterWidthAsFceTanThetaData->GetMaximum());
+       clusterWidthAsFceTanThetaLorData->SetMaximum(1.5*  clusterWidthAsFceTanThetaLorData->GetMaximum());
+       narrowTrackSharing1Data->SetMaximum(1.5*  narrowTrackSharing1Data->GetMaximum());
+       narrowTrackSharing2Data->SetMaximum(1.5*  narrowTrackSharing2Data->GetMaximum());
 
        clusterShapeDataPositive->SetMaximum(1.5*  clusterShapeDataPositive->GetMaximum());
        clusterShapeMT8DataPositive->SetMaximum(1.5*  clusterShapeMT8DataPositive->GetMaximum());
@@ -1410,7 +1587,7 @@ int main(int argc, char *argv[]){
        chargePerStripMC->SetLineColor(kRed);
        leadingStripProfileMC->SetLineColor(kRed);
        leadingStripSumMC->SetLineColor(kRed);
-       chargeOnChannelFcePositioniStr60MC->SetLineColor(kBlue);
+       chargeOnChannelFcePositioniStr60MC->SetLineColor(kRed);
        chargeOnChannelFcePositioniStr250MC->SetLineColor(kGreen);
        chargeOnChannelFcePositioniStr270MC->SetLineColor(kRed);
        stripChargeSharingMC->SetLineColor(kRed);
@@ -1460,68 +1637,71 @@ int main(int argc, char *argv[]){
        clusterChargeWOSaturationMC->SetLineColor(kRed);
        clusterWidthWOSaturationMC->SetLineColor(kRed);
        clusterChargePerStripWOSaturationMC->SetLineColor(kRed);
+       narrowTrackClusterWidthMC->SetLineColor(kRed);
+       narrowTrackSharing1Data->SetLineColor(kRed);
+       narrowTrackSharing2Data->SetLineColor(kRed);
 
 
        //can
        TCanvas c0("chargeForAllWidths","chargeForAllWidths");
        chargeForAllWidthsData->DrawNormalized("P");
-       chargeForAllWidthsMC->DrawNormalized("same"); 
+       chargeForAllWidthsMC->DrawNormalized("same hist e"); 
        c0.SaveAs(("output/"+(string)dir+"/"+(string)subDet + "chargeForAllWidths.root").c_str());
        c0.SaveAs(("output/"+(string)dir+"/"+(string)subDet + "chargeForAllWidths.eps").c_str());
 
        TCanvas c("chargeForWidth1","chargeForWidth1");
        chargeForWidth1Data->DrawNormalized("P");
-       chargeForWidth1MC->DrawNormalized("same"); 
+       chargeForWidth1MC->DrawNormalized("same hist e"); 
        c.SaveAs(("output/"+(string)dir+"/" +(string)subDet+"chargeForWidth1.root").c_str());
        c.SaveAs(("output/"+(string)dir+"/" +(string)subDet+"chargeForWidth1.eps").c_str());
 
        TCanvas clor("tanThetaLorForWidth1","tanThetaLorForWidth1");
        tanThetaLorForWidth1Data->DrawNormalized("P");
-       tanThetaLorForWidth1MC->DrawNormalized("same"); 
+       tanThetaLorForWidth1MC->DrawNormalized("same hist e"); 
        clor.SaveAs(("output/"+(string)dir+"/" +(string)subDet+"tanThetaLorForWidth1.root").c_str());
        clor.SaveAs(("output/"+(string)dir+"/" +(string)subDet+"tanThetaLorForWidth1.eps").c_str());
 
        TCanvas cm("chargeForWidth1DataWidth2MC","chargeForWidth1DataWidth2MC");
        chargeForWidth1Data->DrawNormalized("P");
-       chargeForWidth2MC->DrawNormalized("same"); 
+       chargeForWidth2MC->DrawNormalized("same hist e"); 
        cm.SaveAs(("output/"+(string)dir+"/" +(string)subDet+"chargeForWidth1DataWidth2MC.root").c_str());
        cm.SaveAs(("output/"+(string)dir+"/" +(string)subDet+"chargeForWidth1DataWidth2MC.eps").c_str());
 
        TCanvas c2("chargeForWidth2","chargeForWidth2");
        chargeForWidth2Data->DrawNormalized("P");
-       chargeForWidth2MC->DrawNormalized("same"); 
+       chargeForWidth2MC->DrawNormalized("same hist e"); 
        c2.SaveAs(("output/"+(string)dir+"/" +(string)subDet+"chargeForWidth2.root").c_str());
        c2.SaveAs(("output/"+(string)dir+"/" +(string)subDet+"chargeForWidth2.eps").c_str());
 
 
        TCanvas c3("chargeForWidth3","chargeForWidth3");
        chargeForWidth3Data->DrawNormalized("P");
-       chargeForWidth3MC->DrawNormalized("same"); 
+       chargeForWidth3MC->DrawNormalized("same hist e"); 
        c3.SaveAs(("output/"+(string)dir+"/" +(string)subDet+"chargeForWidth3.root").c_str());
        c3.SaveAs(("output/"+(string)dir+"/" +(string)subDet+"chargeForWidth3.eps").c_str());
 
        TCanvas cLargerThan3("chargeForWidthLargerThan3","chargeForWidthLargerThan3");
        chargeForWidthLargerThan3Data->DrawNormalized("P");
-       chargeForWidthLargerThan3MC->DrawNormalized("same"); 
+       chargeForWidthLargerThan3MC->DrawNormalized("same hist e"); 
        cLargerThan3.SaveAs(("output/"+(string)dir+"/" +(string)subDet+ "chargeForWidthLargerThan3.root").c_str());
        cLargerThan3.SaveAs(("output/"+(string)dir+"/" +(string)subDet+ "chargeForWidthLargerThan3.eps").c_str());
 
 
        TCanvas c4("chargePerStrip","chargePerStrip");
        chargePerStripData->DrawNormalized("P");
-       chargePerStripMC->DrawNormalized("same"); 
+       chargePerStripMC->DrawNormalized("same hist e"); 
        c4.SaveAs(("output/"+(string)dir+ "/" +(string)subDet+ "chargePerStrip.root").c_str());
        c4.SaveAs(("output/"+(string)dir+ "/" +(string)subDet+ "chargePerStrip.eps").c_str());
 
        TCanvas c5("leadingStripProfile","leadingStripProfile");
        leadingStripProfileData->Draw("P");
-       leadingStripProfileMC->Draw("same"); 
+       leadingStripProfileMC->Draw("same hist e"); 
        c5.SaveAs(("output/"+(string)dir+"/"+ (string)subDet+ "leadingStripProfile.root").c_str());
        c5.SaveAs(("output/"+(string)dir+"/"+ (string)subDet+ "leadingStripProfile.eps").c_str());
 
        TCanvas c6("leadingStripSum","leadingStripSum");
        leadingStripSumData->Draw("P");
-       leadingStripSumMC->Draw("same"); 
+       leadingStripSumMC->Draw("same hist e"); 
        c6.SaveAs(("output/"+(string)dir+"/"+ (string)subDet+ "leadingStripSum.root").c_str());
        c6.SaveAs(("output/"+(string)dir+"/"+ (string)subDet+ "leadingStripSum.eps").c_str());
 
@@ -1529,108 +1709,108 @@ int main(int argc, char *argv[]){
        widthTOBl5Data->SetTitle(""); 
        widthTOBl5Data->GetXaxis()->SetTitle("data/MC ratio for cluster width"); 
        widthTOBl5Data->Draw(""); 
-       widthTOBl1Data->Draw("same");
-       widthTOBl4Data->Draw("same");
-       widthTOBl6Data->Draw("same");
+       widthTOBl1Data->Draw("same hist e");
+       widthTOBl4Data->Draw("same hist e");
+       widthTOBl6Data->Draw("same hist e");
        c7.SaveAs(("output/"+(string)dir+"/"+ (string)subDet+ "CTtob1to5.root").c_str());
        c7.SaveAs(("output/"+(string)dir+"/"+ (string)subDet+ "CTtob1to5.eps").c_str());
 
        TCanvas c8("chargeOnChannel","chargeOnChannel");
        chargeOnChannelFcePositioniStr60Data->Draw("");
-       chargeOnChannelFcePositioniStr250Data->Draw("same");
-       chargeOnChannelFcePositioniStr270Data->Draw("same");
-       chargeOnChannelFcePositioniStr60MC->Draw("same");
-       chargeOnChannelFcePositioniStr250MC->Draw("same");
-       chargeOnChannelFcePositioniStr270MC->Draw("same");
+       chargeOnChannelFcePositioniStr250Data->Draw("same hist e");
+       chargeOnChannelFcePositioniStr270Data->Draw("same hist e");
+       chargeOnChannelFcePositioniStr60MC->Draw("same hist e");
+       chargeOnChannelFcePositioniStr250MC->Draw("same hist e");
+       chargeOnChannelFcePositioniStr270MC->Draw("same hist e");
        c8.SaveAs(("output/"+(string)dir+"/"+ (string)subDet+ "chargeOnChannelFcePosition.root").c_str());
        c8.SaveAs(("output/"+(string)dir+"/"+ (string)subDet+ "chargeOnChannelFcePosition.eps").c_str());
 
        TCanvas c9("stripChargeSharing","stripChargeSharing");
        stripChargeSharingData->DrawNormalized("P"); 
-       stripChargeSharingMC->DrawNormalized("same");
+       stripChargeSharingMC->DrawNormalized("same hist e");
        c9.SaveAs(("output/"+(string)dir+"/"+ (string)subDet+ "StripChargeSharing.root").c_str());
        c9.SaveAs(("output/"+(string)dir+"/"+ (string)subDet+ "StripChargeSharing.eps").c_str());
 
        TCanvas c9eta("stripChargeSharingEta","stripChargeSharingEta");
        stripChargeSharingEtaData->DrawNormalized("P"); 
-       stripChargeSharingEtaMC->DrawNormalized("same");
+       stripChargeSharingEtaMC->DrawNormalized("same hist e");
        c9eta.SaveAs(("output/"+(string)dir+"/"+ (string)subDet+ "StripChargeSharingEta.root").c_str());
        c9eta.SaveAs(("output/"+(string)dir+"/"+ (string)subDet+ "StripChargeSharingEta.eps").c_str());
 
        TCanvas c9b("stripChargeSharing3","stripChargeSharing3");
        stripChargeSharing3Data->DrawNormalized("P"); 
-       stripChargeSharing3MC->DrawNormalized("same");
+       stripChargeSharing3MC->DrawNormalized("same hist e");
        c9b.SaveAs(("output/"+(string)dir+"/"+ (string)subDet+ "StripChargeSharing3.root").c_str());
        c9b.SaveAs(("output/"+(string)dir+"/"+ (string)subDet+ "StripChargeSharing3.eps").c_str());
 
        TCanvas c10("chargeForLargePt","chargeForLargePt");
        chargeForLargePtData->DrawNormalized("P"); 
-       chargeForLargePtMC->DrawNormalized("same");
+       chargeForLargePtMC->DrawNormalized("same hist e");
        c10.SaveAs(("output/"+(string)dir+"/"+ (string)subDet+ "chargeForLargePt.root").c_str());
        c10.SaveAs(("output/"+(string)dir+"/"+ (string)subDet+ "chargeForLargePt.eps").c_str());
 
        TCanvas c11("chargeForSmallPt","chargeForSmallPt");
        chargeForSmallPtData->DrawNormalized("P"); 
-       chargeForSmallPtMC->DrawNormalized("same");
+       chargeForSmallPtMC->DrawNormalized("same hist e");
        c11.SaveAs(("output/"+(string)dir+"/"+ (string)subDet+ "chargeForSmallPt.root").c_str());
        c11.SaveAs(("output/"+(string)dir+"/"+ (string)subDet+ "chargeForSmallPt.eps").c_str());
 
 
        TCanvas c12("widthForLargePt","widthForLargePt");
        widthForLargePtData->DrawNormalized("P"); 
-       widthForLargePtMC->DrawNormalized("same");
+       widthForLargePtMC->DrawNormalized("same hist e");
        cout << "LARGE PT: data mean " << widthForLargePtData->GetMean() << " data std dev " << widthForLargePtData->GetStdDev() << "mc mean " << widthForLargePtMC->GetMean() <<" mc std dev " << widthForLargePtMC->GetStdDev() << endl; 
        c12.SaveAs(("output/"+(string)dir+"/"+ (string)subDet+ "widthForLargePt.root").c_str());
        c12.SaveAs(("output/"+(string)dir+"/"+ (string)subDet+ "widthForLargePt.eps").c_str());
 
        TCanvas c13("widthForSmallPt","widthForSmallPt");
        widthForSmallPtData->DrawNormalized("P"); 
-       widthForSmallPtMC->DrawNormalized("same");
+       widthForSmallPtMC->DrawNormalized("same hist e");
        cout << "SMALL PT: data mean " << widthForSmallPtData->GetMean() << " data std dev " << widthForSmallPtData->GetStdDev() << "mc mean " << widthForSmallPtMC->GetMean() <<" mc std dev " << widthForSmallPtMC->GetStdDev() << endl; 
        c13.SaveAs(("output/"+(string)dir+"/"+ (string)subDet+ "widthForSmallPt.root").c_str());
        c13.SaveAs(("output/"+(string)dir+"/"+ (string)subDet+ "widthForSmallPt.eps").c_str());
 
        TCanvas c0s("chargePerStripForAllWidths","chargePerStripForAllWidths");
        chargePerStripForAllWidthsData->DrawNormalized("P");
-       chargePerStripForAllWidthsMC->DrawNormalized("same"); 
+       chargePerStripForAllWidthsMC->DrawNormalized("same hist e"); 
        c0s.SaveAs(("output/"+(string)dir+"/"+(string)subDet + "chargePerStripForAllWidths.root").c_str());
        c0s.SaveAs(("output/"+(string)dir+"/"+(string)subDet + "chargePerStripForAllWidths.eps").c_str());
 
        TCanvas cs("chargePerStripForWidth1","chargePerStripForWidth1");
        chargePerStripForWidth1Data->DrawNormalized("P");
-       chargePerStripForWidth1MC->DrawNormalized("same"); 
+       chargePerStripForWidth1MC->DrawNormalized("same hist e"); 
        cs.SaveAs(("output/"+(string)dir+"/" +(string)subDet+"chargePerStripForWidth1.root").c_str());
        cs.SaveAs(("output/"+(string)dir+"/" +(string)subDet+"chargePerStripForWidth1.eps").c_str());
 
 
        TCanvas c2s("chargePerStripForWidth2","chargePerStripForWidth2");
        chargePerStripForWidth2Data->DrawNormalized("P");
-       chargePerStripForWidth2MC->DrawNormalized("same"); 
+       chargePerStripForWidth2MC->DrawNormalized("same hist e"); 
        c2s.SaveAs(("output/"+(string)dir+"/" +(string)subDet+"chargePerStripForWidth2.root").c_str());
        c2s.SaveAs(("output/"+(string)dir+"/" +(string)subDet+"chargePerStripForWidth2.eps").c_str());
 
 
        TCanvas c3s("chargePerStripForWidth3","chargePerStripForWidth3");
        chargePerStripForWidth3Data->DrawNormalized("P");
-       chargePerStripForWidth3MC->DrawNormalized("same"); 
+       chargePerStripForWidth3MC->DrawNormalized("same hist e"); 
        c3s.SaveAs(("output/"+(string)dir+"/" +(string)subDet+"chargePerStripForWidth3.root").c_str());
        c3s.SaveAs(("output/"+(string)dir+"/" +(string)subDet+"chargePerStripForWidth3.eps").c_str());
 
        TCanvas cLargerThan3s("chargePerStripForWidthLargerThan3","chargePerStripForWidthLargerThan3");
        chargePerStripForWidthLargerThan3Data->DrawNormalized("P");
-       chargePerStripForWidthLargerThan3MC->DrawNormalized("same"); 
+       chargePerStripForWidthLargerThan3MC->DrawNormalized("same hist e"); 
        cLargerThan3s.SaveAs(("output/"+(string)dir+"/" +(string)subDet+ "chargePerStripForWidthLargerThan3.root").c_str());
        cLargerThan3s.SaveAs(("output/"+(string)dir+"/" +(string)subDet+ "chargePerStripForWidthLargerThan3.eps").c_str());
        
        TCanvas c10s("chargePerStripForLargePt","chargePerStripForLargePt");
        chargePerStripForLargePtData->DrawNormalized("P"); 
-       chargePerStripForLargePtMC->DrawNormalized("same");
+       chargePerStripForLargePtMC->DrawNormalized("same hist e");
        c10s.SaveAs(("output/"+(string)dir+"/"+ (string)subDet+ "chargePerStripForLargePt.root").c_str());
        c10s.SaveAs(("output/"+(string)dir+"/"+ (string)subDet+ "chargePerStripForLargePt.eps").c_str());
 
        TCanvas c11s("chargePerStripForSmallPt","chargePerStripForSmallPt");
        chargePerStripForSmallPtData->DrawNormalized("P"); 
-       chargePerStripForSmallPtMC->DrawNormalized("same");
+       chargePerStripForSmallPtMC->DrawNormalized("same hist e");
        c11s.SaveAs(("output/"+(string)dir+"/"+ (string)subDet+ "chargePerStripForSmallPt.root").c_str());
        c11s.SaveAs(("output/"+(string)dir+"/"+ (string)subDet+ "chargePerStripForSmallPt.eps").c_str());
 
@@ -1646,7 +1826,7 @@ int main(int argc, char *argv[]){
 
        TCanvas c15("clusterWidthAsFceTanPhi","clusterWidthAsFceTanPhi");
        clusterWidthAsFceTanPhiData->Draw("P"); 
-       clusterWidthAsFceTanPhiMC->Draw("same");
+       clusterWidthAsFceTanPhiMC->Draw("same hist e");
        c15.SaveAs(("output/"+(string)dir+"/"+ (string)subDet+ "clusterWidthAsFceTanPhi.root").c_str());
        c15.SaveAs(("output/"+(string)dir+"/"+ (string)subDet+ "clusterWidthAsFceTanPhi.eps").c_str());
 
@@ -1658,11 +1838,11 @@ int main(int argc, char *argv[]){
 
        pad1.cd();
        clusterWidthAsFceTanThetaData->Draw("P"); 
-       clusterWidthAsFceTanThetaMC->Draw("same");
+       clusterWidthAsFceTanThetaMC->Draw("same hist e");
        pad2.cd();
        TProfile* clusterWidthAsFceTanThetaDiv = (TProfile*) clusterWidthAsFceTanThetaMC->Clone();
        clusterWidthAsFceTanThetaDiv->Divide( clusterWidthAsFceTanThetaData);
-       clusterWidthAsFceTanThetaDiv->SetLineColor(kBlue);
+       clusterWidthAsFceTanThetaDiv->SetLineColor(kRed);
        clusterWidthAsFceTanThetaDiv->SetMaximum(2);
        clusterWidthAsFceTanThetaDiv->SetMinimum(0);
        clusterWidthAsFceTanThetaDiv->Draw("hist");
@@ -1678,11 +1858,11 @@ int main(int argc, char *argv[]){
 
        pad1Lor.cd();
        clusterWidthAsFceTanThetaLorData->Draw("P"); 
-       clusterWidthAsFceTanThetaLorMC->Draw("same");
+       clusterWidthAsFceTanThetaLorMC->Draw("same hist e");
        pad2Lor.cd();
        TProfile* clusterWidthAsFceTanThetaDivLor = (TProfile*) clusterWidthAsFceTanThetaLorMC->Clone();
        clusterWidthAsFceTanThetaDivLor->Divide( clusterWidthAsFceTanThetaLorData);
-       clusterWidthAsFceTanThetaDivLor->SetLineColor(kBlue);
+       clusterWidthAsFceTanThetaDivLor->SetLineColor(kRed);
        clusterWidthAsFceTanThetaDivLor->SetMaximum(2);
        clusterWidthAsFceTanThetaDivLor->SetMinimum(0);
        clusterWidthAsFceTanThetaDivLor->Draw("hist");
@@ -1693,14 +1873,14 @@ int main(int argc, char *argv[]){
 
        TCanvas c14ass("clusterWidthAsFceTanThetaLorAssymetry","clusterWidthAsFceTanLorTheta");
        clusterWidthAsFceTanThetaLorAssymetryData->Draw("P"); 
-       clusterWidthAsFceTanThetaLorAssymetryMC->Draw("same");
+       clusterWidthAsFceTanThetaLorAssymetryMC->Draw("same hist e");
        c14ass.SaveAs(("output/"+(string)dir+"/"+ (string)subDet+ "clusterWidthAsFceTanThetaLorAssymetry.root").c_str());
        c14ass.SaveAs(("output/"+(string)dir+"/"+ (string)subDet+ "clusterWidthAsFceTanThetaLorAssymetr.eps").c_str());
 
 
        TCanvas c16("clusterStripCahrgeAsFceTanPhi","clusterStripCahrgeAsFceTanPhi");
        clusterStripCahrgeAsFceTanPhiData->Draw("P"); 
-       clusterStripCahrgeAsFceTanPhiMC->Draw("same");
+       clusterStripCahrgeAsFceTanPhiMC->Draw("same hist e");
        c16.SaveAs(("output/"+(string)dir+"/"+ (string)subDet+ "clusterStripCahrgeAsFceTanPhi.root").c_str());
        c16.SaveAs(("output/"+(string)dir+"/"+ (string)subDet+ "clusterStripCahrgeAsFceTanPhi.eps").c_str());
 
@@ -1712,11 +1892,11 @@ int main(int argc, char *argv[]){
 
        pad1b.cd();
        clusterStripCahrgeAsFceTanThetaData->Draw("P"); 
-       clusterStripCahrgeAsFceTanThetaMC->Draw("same");
+       clusterStripCahrgeAsFceTanThetaMC->Draw("same hist e");
        pad2b.cd();
        TH1F* clusterStripCahrgeAsFceTanThetaDiv = (TH1F*) clusterStripCahrgeAsFceTanThetaMC->Clone();
        clusterStripCahrgeAsFceTanThetaDiv->Divide(clusterStripCahrgeAsFceTanThetaData);
-       clusterStripCahrgeAsFceTanThetaDiv->SetLineColor(kBlue);
+       clusterStripCahrgeAsFceTanThetaDiv->SetLineColor(kRed);
        clusterStripCahrgeAsFceTanThetaDiv->SetMaximum(2);
        clusterStripCahrgeAsFceTanThetaDiv->SetMinimum(0);
        clusterStripCahrgeAsFceTanThetaDiv->Draw("hist");
@@ -1731,11 +1911,11 @@ int main(int argc, char *argv[]){
 
        pad1bLor.cd();
        clusterStripCahrgeAsFceTanThetaLorData->Draw("P"); 
-       clusterStripCahrgeAsFceTanThetaLorMC->Draw("same");
+       clusterStripCahrgeAsFceTanThetaLorMC->Draw("same hist e");
        pad2bLor.cd();
        TH1F* clusterStripCahrgeAsFceTanThetaDivLor = (TH1F*) clusterStripCahrgeAsFceTanThetaLorMC->Clone();
        clusterStripCahrgeAsFceTanThetaDivLor->Divide(clusterStripCahrgeAsFceTanThetaLorData);
-       clusterStripCahrgeAsFceTanThetaDivLor->SetLineColor(kBlue);
+       clusterStripCahrgeAsFceTanThetaDivLor->SetLineColor(kRed);
        clusterStripCahrgeAsFceTanThetaDivLor->SetMaximum(2);
        clusterStripCahrgeAsFceTanThetaDivLor->SetMinimum(0);
        clusterStripCahrgeAsFceTanThetaDivLor->Draw("hist");
@@ -1744,103 +1924,103 @@ int main(int argc, char *argv[]){
 
        TCanvas c18("clusterShape","clusterShape");
        clusterShapeData->Draw("P"); 
-       clusterShapeMC->Draw("same");
+       clusterShapeMC->Draw("same hist e");
        c18.SaveAs(("output/"+(string)dir+"/"+ (string)subDet+ "clusterShape.root").c_str());
        c18.SaveAs(("output/"+(string)dir+"/"+ (string)subDet+ "clusterShape.eps").c_str());
 
        TCanvas c19("clusterShapeMT8","clusterShapeMT8");
        clusterShapeMT8Data->Draw("P"); 
-       clusterShapeMT8MC->Draw("same");
+       clusterShapeMT8MC->Draw("same hist e");
        c19.SaveAs(("output/"+(string)dir+"/"+ (string)subDet+ "clusterShapeMT8.root").c_str());
        c19.SaveAs(("output/"+(string)dir+"/"+ (string)subDet+ "clusterShapeMT8.eps").c_str());
 
        TCanvas c20("clusterShapeLT7","clusterShapeLT7");
        clusterShapeLT7Data->Draw("P"); 
-       clusterShapeLT7MC->Draw("same");
+       clusterShapeLT7MC->Draw("same hist e");
        c20.SaveAs(("output/"+(string)dir+"/"+ (string)subDet+ "clusterShapeLT7.root").c_str());
        c20.SaveAs(("output/"+(string)dir+"/"+ (string)subDet+ "clusterShapeLT7.eps").c_str());
 
        TCanvas c21("clusterShape2","clusterShape2");
        clusterShape2Data->Draw("P"); 
-       clusterShape2MC->Draw("same");
+       clusterShape2MC->Draw("same hist e");
        c21.SaveAs(("output/"+(string)dir+"/"+ (string)subDet+ "clusterShape2.root").c_str());
        c21.SaveAs(("output/"+(string)dir+"/"+ (string)subDet+ "clusterShape2.eps").c_str());
 
        TCanvas c22("clusterShape3","clusterShape3");
        clusterShape3Data->Draw("P"); 
-       clusterShape3MC->Draw("same");
+       clusterShape3MC->Draw("same hist e");
        c22.SaveAs(("output/"+(string)dir+"/"+ (string)subDet+ "clusterShape3.root").c_str());
        c22.SaveAs(("output/"+(string)dir+"/"+ (string)subDet+ "clusterShape3.eps").c_str());
 
        TCanvas c23("clusterShape5","clusterShape5");
        clusterShape5Data->Draw("P"); 
-       clusterShape5MC->Draw("same");
+       clusterShape5MC->Draw("same hist e");
        c23.SaveAs(("output/"+(string)dir+"/"+ (string)subDet+ "clusterShape5.root").c_str());
        c23.SaveAs(("output/"+(string)dir+"/"+ (string)subDet+ "clusterShape5.eps").c_str());
        
 
        TCanvas c18Positive("clusterShapePositive","clusterShapePositive");
        clusterShapeDataPositive->DrawNormalized("P"); 
-       clusterShapeMCPositive->DrawNormalized("same");
-       clusterShapeDataNegative->DrawNormalized("P same"); 
-       clusterShapeMCNegative->DrawNormalized("same");
+       clusterShapeMCPositive->DrawNormalized("same hist e");
+       clusterShapeDataNegative->DrawNormalized("P same hist e"); 
+       clusterShapeMCNegative->DrawNormalized("same hist e");
        c18Positive.SaveAs(("output/"+(string)dir+"/"+ (string)subDet+ "clusterShapePositive.root").c_str());
        c18Positive.SaveAs(("output/"+(string)dir+"/"+ (string)subDet+ "clusterShapePositive.eps").c_str());
 
        TCanvas c19Positive("clusterShapeMT8Positive","clusterShapeMT8Positive");
        clusterShapeMT8DataPositive->DrawNormalized("P"); 
-       clusterShapeMT8MCPositive->DrawNormalized("same");
-       clusterShapeMT8DataNegative->DrawNormalized("P same"); 
-       clusterShapeMT8MCNegative->DrawNormalized("same");
+       clusterShapeMT8MCPositive->DrawNormalized("same hist e");
+       clusterShapeMT8DataNegative->DrawNormalized("P same hist e"); 
+       clusterShapeMT8MCNegative->DrawNormalized("same hist e");
        c19Positive.SaveAs(("output/"+(string)dir+"/"+ (string)subDet+ "clusterShapeMT8Positive.root").c_str());
        c19Positive.SaveAs(("output/"+(string)dir+"/"+ (string)subDet+ "clusterShapeMT8Positive.eps").c_str());
 
        TCanvas c20Positive("clusterShapeLT7Positive","clusterShapeLT7Positive");
        clusterShapeLT7DataPositive->DrawNormalized("P"); 
-       clusterShapeLT7MCPositive->DrawNormalized("same");
-       clusterShapeLT7DataNegative->DrawNormalized("P same"); 
-       clusterShapeLT7MCNegative->DrawNormalized("same");
+       clusterShapeLT7MCPositive->DrawNormalized("same hist e");
+       clusterShapeLT7DataNegative->DrawNormalized("P same hist e"); 
+       clusterShapeLT7MCNegative->DrawNormalized("same hist e");
        c20Positive.SaveAs(("output/"+(string)dir+"/"+ (string)subDet+ "clusterShapeLT7Positive.root").c_str());
        c20Positive.SaveAs(("output/"+(string)dir+"/"+ (string)subDet+ "clusterShapeLT7Positive.eps").c_str());
 
        TCanvas c21Positive("clusterShape2Positive","clusterShape2Positive");
        clusterShape2DataPositive->DrawNormalized("P"); 
-       clusterShape2MCPositive->DrawNormalized("same");
-       clusterShape2DataNegative->DrawNormalized("P same"); 
-       clusterShape2MCNegative->DrawNormalized("same");
+       clusterShape2MCPositive->DrawNormalized("same hist e");
+       clusterShape2DataNegative->DrawNormalized("P same hist e"); 
+       clusterShape2MCNegative->DrawNormalized("same hist e");
        c21Positive.SaveAs(("output/"+(string)dir+"/"+ (string)subDet+ "clusterShape2Positive.root").c_str());
        c21Positive.SaveAs(("output/"+(string)dir+"/"+ (string)subDet+ "clusterShape2Positive.eps").c_str());
 
        TCanvas c22Positive("clusterShape3Positive","clusterShape3Positive");
        clusterShape3DataPositive->DrawNormalized("P"); 
-       clusterShape3MCPositive->DrawNormalized("same");
-       clusterShape3DataNegative->DrawNormalized("P same"); 
-       clusterShape3MCNegative->DrawNormalized("same");
+       clusterShape3MCPositive->DrawNormalized("same hist e");
+       clusterShape3DataNegative->DrawNormalized("P same hist e"); 
+       clusterShape3MCNegative->DrawNormalized("same hist e");
        c22Positive.SaveAs(("output/"+(string)dir+"/"+ (string)subDet+ "clusterShape3Positive.root").c_str());
        c22Positive.SaveAs(("output/"+(string)dir+"/"+ (string)subDet+ "clusterShape3Positive.eps").c_str());
 
        TCanvas c23Positive("clusterShape5Positive","clusterShape5Positive");
        clusterShape5DataPositive->DrawNormalized("P"); 
-       clusterShape5MCPositive->DrawNormalized("same");
-       clusterShape5DataNegative->DrawNormalized("P same"); 
-       clusterShape5MCNegative->DrawNormalized("same");
+       clusterShape5MCPositive->DrawNormalized("same hist e");
+       clusterShape5DataNegative->DrawNormalized("P same hist e"); 
+       clusterShape5MCNegative->DrawNormalized("same hist e");
        c23Positive.SaveAs(("output/"+(string)dir+"/"+ (string)subDet+ "clusterShape5Positive.root").c_str());
        c23Positive.SaveAs(("output/"+(string)dir+"/"+ (string)subDet+ "clusterShape5Positive.eps").c_str());
        
        TCanvas c24Positive("clusterShape6Positive","clusterShape6Positive");
        clusterShape6DataPositive->DrawNormalized("P"); 
-       clusterShape6MCPositive->DrawNormalized("same");
-       clusterShape6DataNegative->DrawNormalized("P same"); 
-       clusterShape6MCNegative->DrawNormalized("same");
+       clusterShape6MCPositive->DrawNormalized("same hist e");
+       clusterShape6DataNegative->DrawNormalized("P same hist e"); 
+       clusterShape6MCNegative->DrawNormalized("same hist e");
        c24Positive.SaveAs(("output/"+(string)dir+"/"+ (string)subDet+ "clusterShape6Positive.root").c_str());
        c24Positive.SaveAs(("output/"+(string)dir+"/"+ (string)subDet+ "clusterShape6Positive.eps").c_str());
        
 
        TCanvas c25Positive("clusterShape7Positive","clusterShape7Positive");
        clusterShape7DataPositive->DrawNormalized("P"); 
-       clusterShape7MCPositive->DrawNormalized("same");
-       clusterShape7DataNegative->DrawNormalized("P same"); 
-       clusterShape7MCNegative->DrawNormalized("same");
+       clusterShape7MCPositive->DrawNormalized("same hist e");
+       clusterShape7DataNegative->DrawNormalized("P same hist e"); 
+       clusterShape7MCNegative->DrawNormalized("same hist e");
        c25Positive.SaveAs(("output/"+(string)dir+"/"+ (string)subDet+ "clusterShape7Positive.root").c_str());
        c25Positive.SaveAs(("output/"+(string)dir+"/"+ (string)subDet+ "clusterShape7Positive.eps").c_str());
        
@@ -1848,26 +2028,59 @@ int main(int argc, char *argv[]){
 
        TCanvas c30("clusterChargeWOSaturation","clusterChargeWOSaturation");
        clusterChargeWOSaturationData->DrawNormalized("P"); 
-       clusterChargeWOSaturationMC->DrawNormalized("same");
+       clusterChargeWOSaturationMC->DrawNormalized("same hist e");
        c30.SaveAs(("output/"+(string)dir+"/"+ (string)subDet+ "clusterChargeWOSaturation.root").c_str());
        c30.SaveAs(("output/"+(string)dir+"/"+ (string)subDet+ "clusterChargeWOSaturation.eps").c_str());
 
        TCanvas c31("clusterWidthWOSaturation","clusterWidthWOSaturation");
        clusterWidthWOSaturationData->DrawNormalized("P"); 
-       clusterWidthWOSaturationMC->DrawNormalized("same");
+       clusterWidthWOSaturationMC->DrawNormalized("same hist e");
        c31.SaveAs(("output/"+(string)dir+"/"+ (string)subDet+ "clusterWidthWOSaturation.root").c_str());
        c31.SaveAs(("output/"+(string)dir+"/"+ (string)subDet+ "clusterWidthWOSaturation.eps").c_str());
 
        TCanvas c32("clusterChargePerStripWOSaturation","clusterChargePerStripWOSaturation");
        clusterChargePerStripWOSaturationData->DrawNormalized("P"); 
-       clusterChargePerStripWOSaturationMC->DrawNormalized("same");
+       clusterChargePerStripWOSaturationMC->DrawNormalized("same hist e");
        c32.SaveAs(("output/"+(string)dir+"/"+ (string)subDet+ "clusterChargePerStripWOSaturation.root").c_str());
        c32.SaveAs(("output/"+(string)dir+"/"+ (string)subDet+ "clusterChargePerStripWOSaturation.eps").c_str());
+
+       TCanvas c33("chargeVsWidthData","chargeVsWidthData");
+       chargeVsWidthData->Draw("colz"); 
+       c33.SaveAs(("output/"+(string)dir+"/"+ (string)subDet+ "chargeVsWidthData.root").c_str());
+       c33.SaveAs(("output/"+(string)dir+"/"+ (string)subDet+ "chargeVsWidthData.eps").c_str());
+
+       TCanvas c34("chargeVsWidthMC","chargeVsWidthMC");
+       chargeVsWidthMC->Draw("colz"); 
+       c34.SaveAs(("output/"+(string)dir+"/"+ (string)subDet+ "chargeVsWidthMC.root").c_str());
+       c34.SaveAs(("output/"+(string)dir+"/"+ (string)subDet+ "chargeVsWidthMC.eps").c_str());
+
+       TCanvas c36("narrowTrackClusterWidth","narrowTrackClusterWidth");
+       narrowTrackClusterWidthData->DrawNormalized(""); 
+       narrowTrackClusterWidthMC->DrawNormalized(" same hist e"); 
+       c36.SaveAs(("output/"+(string)dir+"/"+ (string)subDet+ "narrowTrackClusterWidth.root").c_str());
+       c36.SaveAs(("output/"+(string)dir+"/"+ (string)subDet+ "narrowTrackClusterWidth.eps").c_str());
+
+       TCanvas c37("narrowTrackSharing1","narrowTrackSharing1");
+       narrowTrackSharing1Data->DrawNormalized(""); 
+       narrowTrackSharing1MC->DrawNormalized(" same hist e"); 
+       c37.SaveAs(("output/"+(string)dir+"/"+ (string)subDet+ "narrowTrackSharing1.root").c_str());
+       c37.SaveAs(("output/"+(string)dir+"/"+ (string)subDet+ "narrowTrackSharing1.eps").c_str());
+
+       TCanvas c38("narrowTrackSharing2","narrowTrackSharing2");
+       narrowTrackSharing2Data->DrawNormalized(""); 
+       narrowTrackSharing2MC->DrawNormalized(" same hist e"); 
+       c38.SaveAs(("output/"+(string)dir+"/"+ (string)subDet+ "narrowTrackSharing2.root").c_str());
+       c38.SaveAs(("output/"+(string)dir+"/"+ (string)subDet+ "narrowTrackSharing2.eps").c_str());
+
 
       /////////////////////////////////////////////////////
 
 
 
+       TCanvas c35("dummyCTplot","dummyCTplot");
+       dummyCTplot->Draw("hist"); 
+       c35.SaveAs(("output/"+(string)dir+"/"+ (string)subDet+ "dummyCTplot.root").c_str());
+       c35.SaveAs(("output/"+(string)dir+"/"+ (string)subDet+ "dummyCTplot.eps").c_str());
 
     //cout << "in here 7"  << endl;
 

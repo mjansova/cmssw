@@ -63,6 +63,7 @@ simSiStripDigiSimLink = cms.EDProducer("DigiSimLinkProducer",
                                TrackerConfigurationFromDB = cms.bool(False),
                                ZeroSuppression            = cms.bool(True),
                                LorentzAngle               = cms.string(''),
+                               LorentzAngleValue          = cms.double(0),
                                Gain                       = cms.string(''),
                                #-----SiStripDigitizerAlgorithm
                                NoiseSigmaThreshold        = cms.double(2.0),

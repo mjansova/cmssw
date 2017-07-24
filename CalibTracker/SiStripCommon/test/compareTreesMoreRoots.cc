@@ -34,11 +34,19 @@
 
 
 //TOB tuned more stats
- //./compareTreesMoreRoots 3 test_shallowTrackAndClusterFullInfoNoPU2016_newData.root test_shallowTrackAndClusterFullInfo.rootCT_defstep3.root test_shallowTrackAndClusterFullInfo.rootCT3_0.805step3.root TOB yes test
+ //./compareTreesMoreRoots 3 test_shallowTrackAndClusterFullInfoNoPU2016_newData.root test_shallowTrackAndClusterFullInfo.rootCT_defstep3.root test_shallowTrackAndClusterFullInfo.rootCT3_0.805step3.root TOB yes TOBdataDefMCfromScratchTunedMC
 
 //TOBCRUZET tuned
 //
- //./compareTreesMoreRoots 3 test_shallowTrackClusterUP17CosmicsData0T.root test_shallowTrackClusterUP17CosmicsMC0T.root test_shallowTrackClusterUP17CosmicsMC0TCT0.805.root TOB yes CRUZETdataMCTOBtuned > logsMean/CRUZETdataMCTOBtunedTOB
+ //./compareTreesMoreRoots 3 test_shallowTrackClusterUP17CosmicsData0T.root test_shallowTrackClusterUP17CosmicsMC0T.root test_shallowTrackAndClusterFullInfo.rootCTcruzet_0.805step3.root TOB yes CRUZETdataMCTOBtuned > logsMean/CRUZETdataMCTOBtunedTOB
+
+//TOBCRAFT tuned
+//
+ //./compareTreesMoreRoots 3 test_shallowTrackCluster2017CRAFTCosmicsRun298647.root test_shallowTrackAndClusterCRAFT_CRAFTMCdefFromDAS.root test_shallowTrackAndClusterFullInfo.rootCTcruzet_0.805step3.root TOB yes CRAFTTdataMCTOBtuned > logsMean/CRAFTdataMCTOBtunedTOB
+
+//gain option1
+ //./compareTreesMoreRoots 3 test_shallowTrackAndClusterNarrowInfoNoPU2016_data.root test_shallowTrackAndClusterNarrowInfo.rootCT_defstep3.root test_shallowTrackAndClusterNarrowInfo.rootgainOption1step3.root TOB yes noPUdataGainOption1 > logsMean/noPUdataGainOption1TOB
+
 
 //@MJ@ TODO get rid of layer 5 cut!!!!!!
 //
@@ -308,15 +316,15 @@ gROOT->ForceStyle();
     //cout << "in here 1.3"  << endl;
        float end = varTot.at(h).at(size1) > varTotT2.at(0).at(h).at(size2) ? varTot.at(h).at(size1) : varTotT2.at(0).at(h).at(size2);
     //cout << "in here 1.4"  << endl;
-       //hists.at(h) = new TH1F(observables.at(h).c_str(), observables.at(h).c_str(), 1000, start, end );
-       hists.at(h) = new TH1F(observables.at(h).c_str(), observables.at(h).c_str(), 100, 0, 1000 );
+       hists.at(h) = new TH1F(observables.at(h).c_str(), observables.at(h).c_str(), 1000, start, end );
+       //hists.at(h) = new TH1F(observables.at(h).c_str(), observables.at(h).c_str(), 10, 0, 10 );
     //cout << "in here 1.5"  << endl;
        
        for(uint32_t t=0;t<t2.size();t++)
        {
            histsT2.at(t).resize(varTotT2.at(t).size());
-           //histsT2.at(t).at(h) = new TH1F((observables.at(h)+"T2").c_str(), (observables.at(h)+"T2").c_str(), 1000, start, end );
-           histsT2.at(t).at(h) = new TH1F((observables.at(h)+"T2").c_str(), (observables.at(h)+"T2").c_str(), 100, 0, 1000 );
+           histsT2.at(t).at(h) = new TH1F((observables.at(h)+"T2").c_str(), (observables.at(h)+"T2").c_str(), 1000, start, end );
+           //histsT2.at(t).at(h) = new TH1F((observables.at(h)+"T2").c_str(), (observables.at(h)+"T2").c_str(), 10, 0, 10 );
        }
 
     cout << "in here 2"  << endl;
@@ -395,8 +403,8 @@ gROOT->ForceStyle();
        cout << "hist " << h << " drawn" << endl; 
 
        c.Update();
-       //c.SaveAs(("output/"+(string)dir+"/"+observables.at(h) + (string)subDet + ".root").c_str());
-       c.SaveAs(("output/"+(string)dir+"/"+observables.at(h) + (string)subDet + ".eps").c_str());
+       c.SaveAs(("output/"+(string)dir+"/"+observables.at(h) + (string)subDet + ".root").c_str());
+       //c.SaveAs(("output/"+(string)dir+"/"+observables.at(h) + (string)subDet + ".eps").c_str());
        //delete histD; //do i need that actually?!
    }
 
