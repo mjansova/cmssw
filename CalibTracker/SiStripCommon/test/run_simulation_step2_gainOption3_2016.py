@@ -12,6 +12,18 @@ process.GlobalTag.toGet = cms.VPSet(
   cms.PSet(record = cms.string("SiStripApvGain2Rcd"),
            tag = cms.string("myTag"),
            connect = cms.string("sqlite_file:/opt/sbg/data/data6/cms/mjansova/CMSSW_9_2_0/src/CalibTracker/SiStripCommon/test/dbConditions/G2_run284078.db")
+          ),
+  cms.PSet(record = cms.string("SiStripNoisesRcd"),
+           tag = cms.string("myTag"),
+           connect = cms.string("sqlite_file:/opt/sbg/data/data6/cms/mjansova/CMSSW_9_2_0/src/CalibTracker/SiStripCommon/test/dbConditions/Noise_run284078.db")
+          ),
+  cms.PSet(record = cms.string("SiStripBadChannelRcd"),
+           tag = cms.string("myTag"),
+           connect = cms.string("sqlite_file:/opt/sbg/data/data6/cms/mjansova/CMSSW_9_2_0/src/CalibTracker/SiStripCommon/test/dbConditions/BadChannel_run284078.db")
+          ),
+  cms.PSet(record = cms.string("SiStripBadFiberRcd"),
+           tag = cms.string("myTag"),
+           connect = cms.string("sqlite_file:/opt/sbg/data/data6/cms/mjansova/CMSSW_9_2_0/src/CalibTracker/SiStripCommon/test/dbConditions/BadFiber_run284078.db")
           )
 )
 

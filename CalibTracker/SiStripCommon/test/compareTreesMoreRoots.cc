@@ -44,8 +44,8 @@
 //
  //./compareTreesMoreRoots 3 test_shallowTrackCluster2017CRAFTCosmicsRun298647.root test_shallowTrackAndClusterCRAFT_CRAFTMCdefFromDAS.root test_shallowTrackAndClusterFullInfo.rootCTcruzet_0.805step3.root TOB yes CRAFTTdataMCTOBtuned > logsMean/CRAFTdataMCTOBtunedTOB
 
-//gain option1
- //./compareTreesMoreRoots 3 test_shallowTrackAndClusterNarrowInfoNoPU2016_data.root test_shallowTrackAndClusterNarrowInfo.rootCT_defstep3.root test_shallowTrackAndClusterNarrowInfo.rootgainOption1step3.root TOB yes noPUdataGainOption1 > logsMean/noPUdataGainOption1TOB
+//gain options/
+ //./compareTreesMoreRoots 5 test_shallowTrackAndClusterNarrowInfoNoPU2016_data.root test_shallowTrackAndClusterNarrowInfo.rootCT_defstep3.root test_shallowTrackAndClusterNarrowInfo.rootgainOption1step3.root test_shallowTrackAndClusterNarrowInfo.rootgainOption2step3.root test_shallowTrackAndClusterNarrowInfo.rootgainOption3step3.root  TOB yes noPUdataGainOptions > logsMean/noPUdataGainOptionsTOB
 
 
 //@MJ@ TODO get rid of layer 5 cut!!!!!!
@@ -368,7 +368,7 @@ gROOT->ForceStyle();
        for(uint32_t t=0;t<t2.size();t++)
        {
            histsT2.at(t).at(h)->SetLineColor(2+(2*t));
-           cout << "hist nr " << t << " color " << 2+t << endl;
+           cout << "hist nr " << t << " color " << 2+(2*t) << endl;
            if(norm == "yes")
            {
                histsT2.at(t).at(h)->DrawNormalized("same hist e", n);

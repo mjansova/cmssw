@@ -6,6 +6,10 @@ process.GlobalTag.toGet = cms.VPSet(
            tag = cms.string("myTag"),
            connect = cms.string("sqlite_file:/opt/sbg/data/data6/cms/mjansova/CMSSW_9_2_0/src/CalibTracker/SiStripCommon/test/dbConditions/G1_run284078.db")
           ),
+  cms.PSet(record = cms.string("SiStripApvGainRcd"),
+           tag = cms.string("myTag"),
+           connect = cms.string("sqlite_file:/opt/sbg/data/data6/cms/mjansova/CMSSW_9_2_0/src/CalibTracker/SiStripCommon/test/dbConditions/G1_run284078.db")
+          ),
   cms.PSet(record = cms.string("SiStripApvGain2Rcd"),
            tag = cms.string("myTag"),
            connect = cms.string("sqlite_file:/opt/sbg/data/data6/cms/mjansova/CMSSW_9_2_0/src/CalibTracker/SiStripCommon/test/dbConditions/G2_run284078.db")

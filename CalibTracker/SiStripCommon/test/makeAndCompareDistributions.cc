@@ -29,7 +29,9 @@
 //./makeAndCompareDistributions test_shallowTrackAndClusterNarrowInfoCRUZETdata.root test_shallowTrackAndClusterNarrowInfoCRUZET.rootCTcruzet_0.805step3.root  TOB 0 5 yes distributionsCRUZETDataToTunedCTTOB05
 //-rw-r--r--  1 mjansova cms   23758358 20 juil. 14:17 test_shallowTrackAndClusterNarrowInfoCRUZET.rootCTcruzet_defstep3.root
 
-//CRUZET narrow not tuned
+//coll vs CRUZET data narrow
+//./makeAndCompareDistributions test_shallowTrackAndClusterNarrowInfoNoPU2016_data.root  test_shallowTrackAndClusterNarrowInfoCRUZETdata.root TOB 0 5 yes CollToCRUZETData 
+
 #include <fstream>
 #include <iostream>
 #include <vector>
@@ -1638,8 +1640,8 @@ int main(int argc, char *argv[]){
        clusterWidthWOSaturationMC->SetLineColor(kRed);
        clusterChargePerStripWOSaturationMC->SetLineColor(kRed);
        narrowTrackClusterWidthMC->SetLineColor(kRed);
-       narrowTrackSharing1Data->SetLineColor(kRed);
-       narrowTrackSharing2Data->SetLineColor(kRed);
+       narrowTrackSharing1MC->SetLineColor(kRed);
+       narrowTrackSharing2MC->SetLineColor(kRed);
 
 
        //can
