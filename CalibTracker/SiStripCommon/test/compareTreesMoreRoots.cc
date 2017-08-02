@@ -47,6 +47,9 @@
 //gain options/
  //./compareTreesMoreRoots 5 test_shallowTrackAndClusterNarrowInfoNoPU2016_data.root test_shallowTrackAndClusterNarrowInfo.rootCT_defstep3.root test_shallowTrackAndClusterNarrowInfo.rootgainOption1step3.root test_shallowTrackAndClusterNarrowInfo.rootgainOption2step3.root test_shallowTrackAndClusterNarrowInfo.rootgainOption3step3.root  TOB yes noPUdataGainOptions > logsMean/noPUdataGainOptionsTOB
 
+//TOB tuned more stats
+ //./compareTreesMoreRoots 6 test_shallowTrackAndClusterFullInfoNoPU2016_newData.root test_shallowTrackAndClusterFullInfo.rootCT_defstep3.root test_shallowTrackAndClusterFullInfo.rootCT3_0.805step3.root test_shallowTrackAndClusterNarrowInfo.rootgainOption1Tuned0.805step3.root test_shallowTrackAndClusterNarrowInfo.rootgainOption2Tuned0.805step3.root  test_shallowTrackAndClusterNarrowInfo.rootgainOption3Tuned0.805step3.root TOB yes TOBdataDefMCfromScratchTunedGainOptionsMC
+
 
 //@MJ@ TODO get rid of layer 5 cut!!!!!!
 //
