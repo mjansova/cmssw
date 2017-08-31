@@ -47,10 +47,26 @@
 //gain options/
  //./compareTreesMoreRoots 5 test_shallowTrackAndClusterNarrowInfoNoPU2016_data.root test_shallowTrackAndClusterNarrowInfo.rootCT_defstep3.root test_shallowTrackAndClusterNarrowInfo.rootgainOption1step3.root test_shallowTrackAndClusterNarrowInfo.rootgainOption2step3.root test_shallowTrackAndClusterNarrowInfo.rootgainOption3step3.root  TOB yes noPUdataGainOptions > logsMean/noPUdataGainOptionsTOB
 
-//TOB tuned more stats
+//TOB tuned more stats - DO NOT USE
  //./compareTreesMoreRoots 6 test_shallowTrackAndClusterFullInfoNoPU2016_newData.root test_shallowTrackAndClusterFullInfo.rootCT_defstep3.root test_shallowTrackAndClusterFullInfo.rootCT3_0.805step3.root test_shallowTrackAndClusterNarrowInfo.rootgainOption1Tuned0.805step3.root test_shallowTrackAndClusterNarrowInfo.rootgainOption2Tuned0.805step3.root  test_shallowTrackAndClusterNarrowInfo.rootgainOption3Tuned0.805step3.root TOB yes TOBdataDefMCfromScratchTunedGainOptionsMC
 
+ //./compareTreesMoreRoots 5 test_shallowTrackAndClusterFullInfoNoPU2016_newData.root test_shallowTrackAndClusterFullInfo.rootCT3_0.805step3.root test_shallowTrackAndClusterNarrowInfo.rootgainOption1Tuned0.805step3.root test_shallowTrackAndClusterNarrowInfo.rootgainOption2Tuned0.805step3.root  test_shallowTrackAndClusterNarrowInfo.rootgainOption3Tuned0.805step3.root TOB yes TOBdataDefMCfromScratchTunedGainOptionsMC > logsMean/noPUdataGainOptionsTOBtuned
 
+//check the reco NOISE
+ //./compareTreesMoreRoots 3 test_shallowTrackAndClusterNarrowInfoNoPU2016_data.root test_shallowTrackAndClusterNarrowInfo.rootgainOptionNoiseTest2step3.root test_shallowTrackAndClusterNarrowInfo.rootgainOptionNoiseTest23step3.root  TOB yes noPUdataGainOptionsCheckRECO > logsMean/noPUdataGainOptionsTOBcheckRECO
+//
+
+// etoADC
+ //./compareTreesMoreRoots 6 test_shallowTrackAndClusterNarrowInfoNoPU2016_data.root test_shallowTrackAndClusterNarrowInfo.rootCT_defstep3.root test_shallowTrackAndClusterNarrowInfo.rootelectronPerAdc_min20_198.0step3.root test_shallowTrackAndClusterNarrowInfo.rootelectronPerAdc_min10_222.0step3.root test_shallowTrackAndClusterNarrowInfo.rootelectronPerAdc_pl10_272.0step3.root test_shallowTrackAndClusterNarrowInfo.rootelectronPerAdc_pl20_296step3.root  TOB yes noPUdataElectronPerADC > logsMean/noPUdataElectronPerADCTOB
+ 
+//CRUZET option3
+//./compareTreesMoreRoots 3 test_shallowTrackAndClusterNarrowInfoCRUZETdataMoreStatsRunGT.root test_shallowTrackAndClusterNarrowInfoCRUZET.rootCTcruzet_0.805step3.root test_shallowTrackAndClusterNarrowInfoCRUZET.rootgainOption3CTcruzet_0.805step3.root TOB yes distributionsCRUZETDataToTunedCTTOB05Option3
+//
+//no PU data/MC with noises
+ //./compareTreesMoreRoots 2  test_shallowTrackAndClusterSeedInfoNoPU2016_data.root test_shallowTrackAndClusterSeedInfoNoPU2016_MC.root  TOB yes noPUdataNoises > logsMean/noPUdataNoisesTOB
+
+//
+//
 //@MJ@ TODO get rid of layer 5 cut!!!!!!
 //
 
@@ -241,7 +257,7 @@ gROOT->ForceStyle();
 
                if(var.at(posSdId)->at(k) == sdId)
                {
-                   if(var.at(posSdIdLayer)->at(k)<5) //@MJ@ TODO temporaray solution!!!!
+                   if(var.at(posSdIdLayer)->at(k)>0 && var.at(posSdIdLayer)->at(k)<5) //@MJ@ TODO temporaray solution!!!!
                        varTot.at(j).push_back(var.at(j)->at(k));
                }
    //cout << "in here d" << endl;
@@ -251,7 +267,6 @@ gROOT->ForceStyle();
    }
 
    //fill variables from tree 2
-   //for (Int_t e=0; e<58; e++) //test_shallowTrackClusterRunHMedPU.root  test_shallowTrackCluster900MC.root
    for (Int_t e=0; e<nentriesT2; e++) 
    {
        for(uint32_t t=0;t<t2.size();t++)
@@ -270,7 +285,7 @@ gROOT->ForceStyle();
 
 		       if(varT2.at(t).at(posSdId)->at(k) == sdId)
 		       {
-                           if(varT2.at(t).at(posSdIdLayer)->at(k)<5) //@MJ@ TODO temporaray solution!!!!
+                           if(varT2.at(t).at(posSdIdLayer)->at(k)>0 && varT2.at(t).at(posSdIdLayer)->at(k)<5) //@MJ@ TODO temporaray solution!!!!
 			       varTotT2.at(t).at(j).push_back(varT2.at(t).at(j)->at(k));
 		       }
 	   //cout << "in here f" << endl;
@@ -320,14 +335,14 @@ gROOT->ForceStyle();
        float end = varTot.at(h).at(size1) > varTotT2.at(0).at(h).at(size2) ? varTot.at(h).at(size1) : varTotT2.at(0).at(h).at(size2);
     //cout << "in here 1.4"  << endl;
        hists.at(h) = new TH1F(observables.at(h).c_str(), observables.at(h).c_str(), 1000, start, end );
-       //hists.at(h) = new TH1F(observables.at(h).c_str(), observables.at(h).c_str(), 10, 0, 10 );
+       //hists.at(h) = new TH1F(observables.at(h).c_str(), observables.at(h).c_str(), 50, 5, 10 );
     //cout << "in here 1.5"  << endl;
        
        for(uint32_t t=0;t<t2.size();t++)
        {
            histsT2.at(t).resize(varTotT2.at(t).size());
            histsT2.at(t).at(h) = new TH1F((observables.at(h)+"T2").c_str(), (observables.at(h)+"T2").c_str(), 1000, start, end );
-           //histsT2.at(t).at(h) = new TH1F((observables.at(h)+"T2").c_str(), (observables.at(h)+"T2").c_str(), 10, 0, 10 );
+           //histsT2.at(t).at(h) = new TH1F((observables.at(h)+"T2").c_str(), (observables.at(h)+"T2").c_str(), 50, 5, 10 );
        }
 
     cout << "in here 2"  << endl;
@@ -360,7 +375,7 @@ gROOT->ForceStyle();
        hists.at(h)->GetXaxis()->SetTitle(observables.at(h).c_str());
        hists.at(h)->GetYaxis()->SetTitle("entries");
        float maxm = hists.at(h)->GetMaximum();
-       hists.at(h)->SetMaximum(1.5*maxm);
+       hists.at(h)->SetMaximum(3*maxm);
        hists.at(h)->SetTitle("");
        //hists.at(h)->Draw("*H");
        hists.at(h)->Draw("P");

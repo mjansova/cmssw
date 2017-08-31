@@ -1,0 +1,4 @@
+cmsRun run_simulation_step2_CrossTalk_2017CRUZET_Option3.py gainOption3CTcruzet_0.805 0.805 0.0775 0.02
+cmsRun run_simulation_step3_2017CosCRUZETOption3.py  gainOption3CTcruzet_0.805
+cmsRun trackCluster_testCosmicsCRUZET.py  gainOption3CTcruzet_0.805step3.root
+

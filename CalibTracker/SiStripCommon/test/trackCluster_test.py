@@ -2,18 +2,18 @@ from CalibTracker.SiStripCommon.shallowTree_test_template import *
 process.TFileService.fileName = 'bla.root'
 import sys
 
-#process.source.fileNames = cms.untracked.vstring('file:output/step3_RAW2DIGI_L1Reco_RECO_19.root') #test_shallowTrackAndClusterFullInfo2016run284078.root.root
-process.source.fileNames = cms.untracked.vstring('root://cms-xrd-global.cern.ch//store/relval/CMSSW_9_0_0/RelValMinBias_13/GEN-SIM-RECO/90X_mcRun2_asymptotic_v5-v1/00000/9A94CC7A-4B0F-E711-8AC9-0CC47A4D7616.root') #relval MC 90, 16500 ev #test_shallowTrackClusterNoPUMCrun2_mcTAG.root
+process.source.fileNames = cms.untracked.vstring('file:output/step3_RAW2DIGI_L1Reco_RECO_19.root') #test_shallowTrackAndClusterFullInfo2016run284078.root.root
+#process.source.fileNames = cms.untracked.vstring('root://cms-xrd-global.cern.ch//store/relval/CMSSW_9_0_0/RelValMinBias_13/GEN-SIM-RECO/90X_mcRun2_asymptotic_v5-v1/00000/9A94CC7A-4B0F-E711-8AC9-0CC47A4D7616.root') #relval MC 90, 16500 ev #test_shallowTrackClusterNoPUMCrun2_mcTAG.root
 
 inputStr = sys.argv[2]
 found = inputStr.find("root")
 
 if found > 0:
     process.source.fileNames = cms.untracked.vstring("file:"+inputStr) 
-    process.TFileService.fileName = 'test_shallowTrackAndClusterNarrowInfo.root' + inputStr
+    process.TFileService.fileName = 'test_shallowTrackAndClusterSeedInfo.root' + inputStr
     print(input)
 else:
-    process.TFileService.fileName = 'test_shallowTrackAndClusterNarrowInfoNoPU2016_data.root'
+    process.TFileService.fileName = 'test_shallowTrackAndClusterSeedInfoNoPU2016_data.root'
 
 #process.source.fileNames = cms.untracked.vstring('root://cms-xrd-global.cern.ch//store/relval/CMSSW_9_0_0/RelValMinBias_13/GEN-SIM-RECO/90X_upgrade2017_realistic_v20_resub-v1/00000/7E9D0F0A-CC10-E711-BDBD-0CC47A7C354A.root') #test_shallowTrackClusterNoPUMCupgrade2017.root
 

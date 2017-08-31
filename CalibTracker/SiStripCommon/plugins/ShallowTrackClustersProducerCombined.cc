@@ -34,7 +34,7 @@
 using namespace std;
 
 uint32_t ev2=0;
-uint32_t ntracks2 =0;
+unsigned int ntracks2 =0;
 
   ofstream myfile2;
 
@@ -116,6 +116,7 @@ ShallowTrackClustersProducerCombined::ShallowTrackClustersProducerCombined(const
   produces <std::vector<unsigned> >    ( Prefix + "seedindex"    );
   produces <std::vector<unsigned> >    ( Prefix + "seedcharge"   );
   produces <std::vector<float> >       ( Prefix + "seednoise"    );
+  produces <std::vector<float> >       ( Prefix + "seednoisepure"    );
   produces <std::vector<float> >       ( Prefix + "seedgain"     );
   produces <std::vector<unsigned> >    ( Prefix + "qualityisbad" );
 
@@ -163,6 +164,7 @@ ShallowTrackClustersProducerCombined::ShallowTrackClustersProducerCombined(const
   produces <std::vector<float> >        ( "PU"       );
   produces <std::vector<unsigned int> > ( "bx"       );
 
+  produces <unsigned int>               ( "nroftracks"       );
 
   //
 }
@@ -241,6 +243,7 @@ produce(edm::Event& iEvent, const edm::EventSetup& iSetup) {
   auto       seedindex     = std::make_unique<std::vector<unsigned>>();
   auto       seedcharge    = std::make_unique<std::vector<unsigned>>();
   auto       seednoise     = std::make_unique<std::vector<float>>();
+  auto       seednoisepure     = std::make_unique<std::vector<float>>();
   auto       seedgain      = std::make_unique<std::vector<float>>();
   auto       qualityisbad  = std::make_unique<std::vector<unsigned>>();
 
@@ -287,6 +290,7 @@ produce(edm::Event& iEvent, const edm::EventSetup& iSetup) {
 
   auto       PU      = std::make_unique<std::vector<float>>();
   auto bx            = std::make_unique<std::vector<unsigned int>>();
+  auto nroftracks            = std::make_unique<unsigned int>();
 
   edm::ESHandle<TrackerGeometry> theTrackerGeometry;         iSetup.get<TrackerDigiGeometryRecord>().get( theTrackerGeometry );  
   edm::ESHandle<MagneticField> magfield;		     iSetup.get<IdealMagneticFieldRecord>().get(magfield);
@@ -341,7 +345,8 @@ produce(edm::Event& iEvent, const edm::EventSetup& iSetup) {
  
   //if(PU_>lowBound && PU_<highBound)
   //{
-      ntracks2++;
+      //*nroftracks = *nroftracks+1;
+      (*nroftracks)++;
   //}
   //myfile2 << "n tracks " << ntracks << std::endl;
   //myfile2.close();
@@ -415,6 +420,7 @@ produce(edm::Event& iEvent, const edm::EventSetup& iSetup) {
 		      seedindex->push_back(    info.maxIndex()                                         );
 		      seedcharge->push_back(   info.maxCharge()                                        );
 		      seednoise->push_back(    info.stripNoisesRescaledByGain().at(info.maxIndex())   );
+		      seednoisepure->push_back(     info.stripNoises().at(info.maxIndex())                  );
 		      seedgain->push_back(     info.stripGains().at(info.maxIndex())                  );
 		      qualityisbad->push_back( info.IsAnythingBad()                                    );
 	 
@@ -587,6 +593,7 @@ produce(edm::Event& iEvent, const edm::EventSetup& iSetup) {
   iEvent.put(std::move(seedindex),   Prefix + "seedindex"    );
   iEvent.put(std::move(seedcharge),  Prefix + "seedcharge"   );
   iEvent.put(std::move(seednoise),   Prefix + "seednoise"    );
+  iEvent.put(std::move(seednoisepure),   Prefix + "seednoisepure"    );
   iEvent.put(std::move(seedgain),    Prefix + "seedgain"     );
   iEvent.put(std::move(qualityisbad),Prefix + "qualityisbad" );
 
@@ -632,6 +639,7 @@ produce(edm::Event& iEvent, const edm::EventSetup& iSetup) {
   iEvent.put(std::move(stripChargeBdotY),   Prefix + "stripChargeBdotY"    );
   iEvent.put(std::move(PU),       "PU"        );
   iEvent.put(std::move(bx),       "bx"        );
+  iEvent.put(std::move(nroftracks),       "nroftracks"        );
 
 }
 

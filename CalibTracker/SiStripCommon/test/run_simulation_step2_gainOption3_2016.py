@@ -1,4 +1,4 @@
-from CalibTracker.SiStripCommon.step2_DIGI_L1_DIGI2RAW_HLT_2016 import * #good name
+from CalibTracker.SiStripCommon.step2_DIGI_L1_DIGI2RAW_HLT_2016 import * 
 
 process.GlobalTag.toGet = cms.VPSet(
   cms.PSet(record = cms.string("SiStripApvGainSimRcd"),

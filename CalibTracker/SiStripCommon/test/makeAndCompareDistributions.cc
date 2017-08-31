@@ -27,11 +27,23 @@
 
 //CRUZET narrow tuned
 //./makeAndCompareDistributions test_shallowTrackAndClusterNarrowInfoCRUZETdata.root test_shallowTrackAndClusterNarrowInfoCRUZET.rootCTcruzet_0.805step3.root  TOB 0 5 yes distributionsCRUZETDataToTunedCTTOB05
+//./makeAndCompareDistributions test_shallowTrackAndClusterNarrowInfoCRUZETdataMoreStatsRunGT.root test_shallowTrackAndClusterNarrowInfoCRUZET.rootCTcruzet_0.805step3.root  TOB 0 5 yes distributionsCRUZETDataToTunedCTTOB05
+
+//./makeAndCompareDistributions test_shallowTrackAndClusterNarrowInfoCRUZETdataMoreStatsRunGT.root test_shallowTrackAndClusterNarrowInfoCRUZET.rootCTcruzet_0.805step3.root  TOB 0 5 yes distributionsCRUZETDataToTunedCTTOB05DataGT
+//
+//CRUZET tuned and option 3
+//./makeAndCompareDistributions test_shallowTrackAndClusterNarrowInfoCRUZETdataMoreStatsRunGT.root test_shallowTrackAndClusterNarrowInfoCRUZET.rootgainOption3CTcruzet_0.805step3.root TOB 0 5 yes distributionsCRUZETDataToTunedCTTOB05Option3
+//
+//CRUZET narrow not tuned
+//./makeAndCompareDistributions test_shallowTrackAndClusterNarrowInfoCRUZETdataMoreStats.root test_shallowTrackAndClusterNarrowInfoCRUZET.rootCTcruzet_defstep3.root  TOB 0 5 yes distributionsCRUZETDataToDefMCTOB05
 //-rw-r--r--  1 mjansova cms   23758358 20 juil. 14:17 test_shallowTrackAndClusterNarrowInfoCRUZET.rootCTcruzet_defstep3.root
 
 //coll vs CRUZET data narrow
 //./makeAndCompareDistributions test_shallowTrackAndClusterNarrowInfoNoPU2016_data.root  test_shallowTrackAndClusterNarrowInfoCRUZETdata.root TOB 0 5 yes CollToCRUZETData 
 
+//Chandi test
+//./makeAndCompareDistributions test_shallowTrackAndClusterNarrowInfoNoPU2016_data.root  test_shallowTrackAndClusterNarrowInfo.rootCT_defstep3.root TOB 0 5 yes chandiTest 
+//
 #include <fstream>
 #include <iostream>
 #include <vector>
@@ -73,8 +85,8 @@ using namespace std;
 
 int main(int argc, char *argv[]){
 
- //gStyle->SetOptStat(0);
- //gROOT->ForceStyle();
+ gStyle->SetOptStat(0);
+ gROOT->ForceStyle();
  TH1::SetDefaultSumw2();
     if(argc != 8)
         throw std::runtime_error("Bad number of arguments!");
@@ -89,7 +101,7 @@ int main(int argc, char *argv[]){
 
     int layerCutDown = slayerCutDown.Atoi();
     int layerCutUp = slayerCutUp.Atoi();
-
+    float narrowness = 0.5;
 
     uint16_t sdId = 0;
 
@@ -472,7 +484,7 @@ int main(int argc, char *argv[]){
            
            int factor = subtsosBdotY.at(m) > 0 ? 1 : -1;
 
-           if( abs(tan(subtsoslocaltheta.at(m))*cos(subtsoslocalphi.at(m))) < 0.2*(subtsoslocalpitch.at(m)/subclustersensorThickness.at(m)) )
+           if( abs(tan(subtsoslocaltheta.at(m))*cos(subtsoslocalphi.at(m))) < narrowness*(subtsoslocalpitch.at(m)/subclustersensorThickness.at(m)) )
            {
                narrowTrackClusterWidthData->Fill(subclusterwidth.at(m));         
            }
@@ -534,7 +546,7 @@ int main(int argc, char *argv[]){
            
            int factor = subtsosBdotY2.at(m) > 0 ? 1 : -1;
 
-           if( abs(tan(subtsoslocaltheta2.at(m))*cos(subtsoslocalphi2.at(m))) < 0.2*(subtsoslocalpitch2.at(m)/subclustersensorThickness2.at(m)) )
+           if( abs(tan(subtsoslocaltheta2.at(m))*cos(subtsoslocalphi2.at(m))) < narrowness*(subtsoslocalpitch2.at(m)/subclustersensorThickness2.at(m)) )
            {
                narrowTrackClusterWidthMC->Fill(subclusterwidth2.at(m));         
            }
@@ -600,7 +612,7 @@ int main(int argc, char *argv[]){
        {
            chargePerStripData->Fill(subclusterstripCharge.at(m));
            
-           if( abs(tan(subclusterstripChargeLocalTrackTheta.at(m))*cos(subclusterstripChargeLocalTrackPhi.at(m))) < 0.2*(subclusterstripChargelocalpitch.at(m)/subclusterstripChargesensorThickness.at(m)) )
+           if( abs(tan(subclusterstripChargeLocalTrackTheta.at(m))*cos(subclusterstripChargeLocalTrackPhi.at(m))) < narrowness*(subclusterstripChargelocalpitch.at(m)/subclusterstripChargesensorThickness.at(m)) )
            {
                cout << "after good track selection" << endl;
                stripChargeVec.push_back(subclusterstripCharge.at(m));
@@ -640,7 +652,7 @@ int main(int argc, char *argv[]){
        {
            chargePerStripMC->Fill(subclusterstripCharge2.at(m));
 
-           if( abs(tan(subclusterstripChargeLocalTrackTheta2.at(m))*cos(subclusterstripChargeLocalTrackPhi2.at(m))) < 0.2*(subclusterstripChargelocalpitch2.at(m)/subclusterstripChargesensorThickness2.at(m)) )
+           if( abs(tan(subclusterstripChargeLocalTrackTheta2.at(m))*cos(subclusterstripChargeLocalTrackPhi2.at(m))) < narrowness*(subclusterstripChargelocalpitch2.at(m)/subclusterstripChargesensorThickness2.at(m)) )
            {
                stripChargeVec2.push_back(subclusterstripCharge2.at(m));
                if(subclusterstripChargeTotWidth2.at(m) == stripChargeVec2.size())
@@ -717,7 +729,8 @@ int main(int argc, char *argv[]){
        TProfile* clusterShape3MC = new TProfile("clusterShape3MC", "clusterShape3MC", 40, -20, 20, 0, 300);
        TProfile* clusterShape5MC = new TProfile("clusterShape5MC", "clusterShape5MC", 40, -20, 20, 0, 300);
 
-       TProfile* clusterShapeDataPositive = new TProfile("clusterShapeDataPositive", "clusterShapeDataPositive", 40, 0, 20, 0, 300, "S");
+       TProfile* clusterShapeDataPositive = new TProfile("clusterShapeDataPositive", "clusterShapeDataPositive", 40, 0, 40, 0, 300, "S");
+       TProfile* clusterShapeDataPositiveChandi = new TProfile("clusterShapeDataPositiveChandi", "clusterShapeDataPositiveChandi", 40, 0, 40, 0, 300);//missing "S"
        TProfile* clusterShapeMT8DataPositive = new TProfile("clusterShapeMT8DataPositive", "clusterShapeMT8DataPositive", 40, 0, 40, 0, 300, "S");
        TProfile* clusterShapeLT7DataPositive = new TProfile("clusterShapeML7DataPositive", "clusterShapeLT7DataPositive", 40, 0, 40, 0, 300, "S");
        TProfile* clusterShape2DataPositive = new TProfile("clusterShape2DataPositive", "clusterShape2DataPositive", 40, 0, 40, 0, 300, "S");
@@ -726,7 +739,8 @@ int main(int argc, char *argv[]){
        TProfile* clusterShape6DataPositive = new TProfile("clusterShape6DataPositive", "clusterShape6DataPositive", 40, 0, 40, 0, 300, "S");
        TProfile* clusterShape7DataPositive = new TProfile("clusterShape7DataPositive", "clusterShape7DataPositive", 40, 0, 40, 0, 300, "S");
 
-       TProfile* clusterShapeMCPositive = new TProfile("clusterShapeMCPositive", "clusterShapeMCPositive", 40, -20, 20, 0, 300, "S");
+       TProfile* clusterShapeMCPositive = new TProfile("clusterShapeMCPositive", "clusterShapeMCPositive", 40, 0, 40, 0, 300, "S");
+       TProfile* clusterShapeMCPositiveChandi = new TProfile("clusterShapeMCPositiveChandi", "clusterShapeMCPositiveChandi", 40, 0, 40, 0, 300);
        TProfile* clusterShapeMT8MCPositive = new TProfile("clusterShapeMT8MCPositive", "clusterShapeMT8MCPositive", 40, 0, 40, 0, 300, "S");
        TProfile* clusterShapeLT7MCPositive = new TProfile("clusterShapeLT7MCPositive", "clusterShapeLT7MCPositive", 40, 0, 40, 0, 300, "S");
        TProfile* clusterShape2MCPositive = new TProfile("clusterShape2MCPositive", "clusterShape2MCPositive", 40, 0, 40, 0, 300, "S");
@@ -736,6 +750,8 @@ int main(int argc, char *argv[]){
        TProfile* clusterShape7MCPositive = new TProfile("clusterShape7MCPositive", "clusterShape7MCPositive", 40, 0, 40, 0, 300, "S");
 
        TProfile* clusterShapeDataNegative = new TProfile("clusterShapeDataNegative", "clusterShapeDataNegative", 40, 0, 40, 0, 300, "S");
+       TProfile* clusterShapeDataNegativeChandi = new TProfile("clusterShapeDataNegativeChandi", "clusterShapeDataNegativeChandi", 40, 0, 40, 0, 300, "S");
+       TProfile* clusterShapeDataNegativeChandiCorr = new TProfile("clusterShapeDataNegativeChandiCorr", "clusterShapeDataNegativeChandiCorr", 40, 0, 40, 0, 300, "S");
        TProfile* clusterShapeMT8DataNegative = new TProfile("clusterShapeMT8DataNegative", "clusterShapeMT8DataNegative", 40, 0, 40, 0, 300, "S");
        TProfile* clusterShapeLT7DataNegative = new TProfile("clusterShapeML7DataNegative", "clusterShapeLT7DataNegative", 40, 0, 40, 0, 300, "S");
        TProfile* clusterShape2DataNegative = new TProfile("clusterShape2DataNegative", "clusterShape2DataNegative", 40, 0, 40, 0, 300, "S");
@@ -745,6 +761,8 @@ int main(int argc, char *argv[]){
        TProfile* clusterShape7DataNegative = new TProfile("clusterShape7DataNegative", "clusterShape7DataNegative", 40, 0, 40, 0, 300, "S");
 
        TProfile* clusterShapeMCNegative = new TProfile("clusterShapeMCNegative", "clusterShapeMCNegative", 40, 0, 40, 0, 300, "S");
+       TProfile* clusterShapeMCNegativeChandi = new TProfile("clusterShapeMCNegativeChandi", "clusterShapeMCNegativeChandi", 40, 0, 40, 0, 300, "S");
+       TProfile* clusterShapeMCNegativeChandiCorr = new TProfile("clusterShapeMCNegativeChandiCorr", "clusterShapeMCNegativeChandiCorr", 40, 0, 40, 0, 300, "S");
        TProfile* clusterShapeMT8MCNegative = new TProfile("clusterShapeMT8MCNegative", "clusterShapeMT8MCNegative", 40, 0, 40, 0, 300, "S");
        TProfile* clusterShapeLT7MCNegative = new TProfile("clusterShapeLT7MCNegative", "clusterShapeLT7MCNegative", 40, 0, 40, 0, 300, "S");
        TProfile* clusterShape2MCNegative = new TProfile("clusterShape2MCNegative", "clusterShape2MCNegative", 40, 0, 40, 0, 300, "S");
@@ -825,7 +843,15 @@ int main(int argc, char *argv[]){
                                clusterShapeDataPositive->Fill( ch+1 ,clusterVector.at(ch) );
                            if( subclusterstripChargeLocalTrackPhi.at(m)< 0)
                                clusterShapeDataNegative->Fill( ch+1 ,clusterVector.at(ch) );
-
+                           if(lClusWidth>3)
+                           {
+                           if(subclusterstripChargeLocalTrackTheta.at(m)> TMath::Pi()*(3.0/4.0) && subclusterstripChargeLocalTrackTheta.at(m)< TMath::Pi())
+                               clusterShapeDataNegativeChandi->Fill( ch+1 ,clusterVector.at(ch) );
+                           if(subclusterstripChargeLocalTrackTheta.at(m)> TMath::Pi()/2 && subclusterstripChargeLocalTrackTheta.at(m)< TMath::Pi()*(3.0/4.0))
+                               clusterShapeDataNegativeChandiCorr->Fill( ch+1 ,clusterVector.at(ch) );
+                           if(subclusterstripChargeLocalTrackTheta.at(m)> TMath::Pi()/4 && subclusterstripChargeLocalTrackTheta.at(m)< TMath::Pi()/2)
+                               clusterShapeDataPositiveChandi->Fill( ch+1 ,clusterVector.at(ch) );
+                           }
                            if(lClusWidth>8)
                            {
                                clusterShapeMT8Data->Fill( positionValue ,clusterVector.at(ch) );
@@ -994,6 +1020,15 @@ int main(int argc, char *argv[]){
                            if( subclusterstripChargeLocalTrackPhi2.at(m)< 0)
                                clusterShapeMCNegative->Fill( ch+1 ,clusterVector2.at(ch) );
 
+                           if(lClusWidth2>3)
+                           {
+                           if(subclusterstripChargeLocalTrackTheta2.at(m)> TMath::Pi()*(3.0/4.0) && subclusterstripChargeLocalTrackTheta2.at(m)< TMath::Pi())
+                               clusterShapeMCNegativeChandi->Fill( ch+1 ,clusterVector2.at(ch) );
+                           if(subclusterstripChargeLocalTrackTheta2.at(m)> TMath::Pi()/2 && subclusterstripChargeLocalTrackTheta2.at(m)< TMath::Pi()*(3.0/4.0))
+                               clusterShapeMCNegativeChandiCorr->Fill( ch+1 ,clusterVector2.at(ch) );
+                           if(subclusterstripChargeLocalTrackTheta2.at(m)> TMath::Pi()/4 && subclusterstripChargeLocalTrackTheta2.at(m)< TMath::Pi()/2)
+                               clusterShapeMCPositiveChandi->Fill( ch+1 ,clusterVector2.at(ch) );
+                           }
                            if(lClusWidth2>8)
                            {
                                clusterShapeMT8MC->Fill( positionValue ,clusterVector2.at(ch) );
@@ -1419,6 +1454,12 @@ int main(int argc, char *argv[]){
        clusterShape6DataNegative->SetMarkerColor(kRed+3);
        clusterShape7DataNegative->SetMarkerStyle(kFullCircle);
        clusterShape7DataNegative->SetMarkerColor(kRed+3);
+       clusterShapeDataNegativeChandi->SetMarkerStyle(kFullCircle);
+       clusterShapeDataNegativeChandi->SetMarkerColor(kRed+3);
+       clusterShapeDataNegativeChandiCorr->SetMarkerStyle(kFullCircle);
+       clusterShapeDataNegativeChandiCorr->SetMarkerColor(kRed+3);
+       clusterShapeDataPositiveChandi->SetMarkerStyle(kFullCircle);
+       clusterShapeDataPositiveChandi->SetMarkerColor(kRed+3);
        clusterChargeWOSaturationData->SetMarkerStyle(kFullCircle);
        clusterChargeWOSaturationData->SetMarkerColor(kBlack);
        clusterWidthWOSaturationData->SetMarkerStyle(kFullCircle);
@@ -1476,6 +1517,9 @@ int main(int argc, char *argv[]){
        clusterShape6DataPositive->SetTitle("");
        clusterShape7DataPositive->SetTitle("");
        clusterShapeDataNegative->SetTitle("");
+       clusterShapeDataNegativeChandi->SetTitle("");
+       clusterShapeDataNegativeChandiCorr->SetTitle("");
+       clusterShapeDataPositiveChandi->SetTitle("");
        clusterShapeMT8DataNegative->SetTitle("");
        clusterShapeLT7DataNegative->SetTitle("");
        clusterShape2DataNegative->SetTitle("");
@@ -1569,7 +1613,7 @@ int main(int argc, char *argv[]){
        narrowTrackClusterWidthData->SetMaximum(1.5*  narrowTrackClusterWidthData->GetMaximum());
        clusterWidthAsFceTanThetaData->SetMaximum(1.5*  clusterWidthAsFceTanThetaData->GetMaximum());
        clusterWidthAsFceTanThetaLorData->SetMaximum(1.5*  clusterWidthAsFceTanThetaLorData->GetMaximum());
-       narrowTrackSharing1Data->SetMaximum(1.5*  narrowTrackSharing1Data->GetMaximum());
+       narrowTrackSharing1Data->SetMaximum(2.0*  narrowTrackSharing1Data->GetMaximum());
        narrowTrackSharing2Data->SetMaximum(1.5*  narrowTrackSharing2Data->GetMaximum());
 
        clusterShapeDataPositive->SetMaximum(1.5*  clusterShapeDataPositive->GetMaximum());
@@ -1621,6 +1665,9 @@ int main(int argc, char *argv[]){
        clusterShape3MC->SetLineColor(kRed);
        clusterShape5MC->SetLineColor(kRed);
        clusterShapeMCPositive->SetLineColor(kRed);
+       clusterShapeMCPositiveChandi->SetLineColor(kRed);
+       clusterShapeMCNegativeChandi->SetLineColor(kRed);
+       clusterShapeMCNegativeChandiCorr->SetLineColor(kRed);
        clusterShapeMT8MCPositive->SetLineColor(kRed);
        clusterShapeLT7MCPositive->SetLineColor(kRed);
        clusterShape2MCPositive->SetLineColor(kRed);
@@ -2074,7 +2121,23 @@ int main(int argc, char *argv[]){
        c38.SaveAs(("output/"+(string)dir+"/"+ (string)subDet+ "narrowTrackSharing2.root").c_str());
        c38.SaveAs(("output/"+(string)dir+"/"+ (string)subDet+ "narrowTrackSharing2.eps").c_str());
 
+       TCanvas c39Positive("clusterShapeChandiPositive","clusterShapeChandiPositive");
+       clusterShapeDataPositiveChandi->DrawNormalized("P"); 
+       clusterShapeMCPositiveChandi->DrawNormalized("same hist e");
+       c39Positive.SaveAs(("output/"+(string)dir+"/"+ (string)subDet+ "clusterShapePositiveChandi.root").c_str());
+       c39Positive.SaveAs(("output/"+(string)dir+"/"+ (string)subDet+ "clusterShapePositiveChandi.eps").c_str());
 
+       TCanvas c39Negative("clusterShapeChandiNegaive","clusterShapeChandiNegative");
+       clusterShapeDataNegativeChandi->DrawNormalized("P"); 
+       clusterShapeMCNegativeChandi->DrawNormalized("same hist e");
+       c39Negative.SaveAs(("output/"+(string)dir+"/"+ (string)subDet+ "clusterShapeNegativeChandi.root").c_str());
+       c39Negative.SaveAs(("output/"+(string)dir+"/"+ (string)subDet+ "clusterShapeNegativeChandi.eps").c_str());
+
+       TCanvas c39NegativeCorr("clusterShapeChandiNegaiveCorr","clusterShapeChandiNegativeCorr");
+       clusterShapeDataNegativeChandiCorr->DrawNormalized("P"); 
+       clusterShapeMCNegativeChandiCorr->DrawNormalized("same hist e");
+       c39NegativeCorr.SaveAs(("output/"+(string)dir+"/"+ (string)subDet+ "clusterShapeNegativeChandiCorr.root").c_str());
+       c39NegativeCorr.SaveAs(("output/"+(string)dir+"/"+ (string)subDet+ "clusterShapeNegativeChandiCorr.eps").c_str());
       /////////////////////////////////////////////////////
 
 
