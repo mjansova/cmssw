@@ -1,4 +1,4 @@
-#include "CalibTracker/SiStripCommon/interface/ShallowTrackClustersProducerCombined.h"
+#include "CalibTracker/SiStripCommon/interface/ShallowTrackClustersProducerCombinedVR.h"
 
 #include "CalibTracker/SiStripCommon/interface/ShallowTools.h"
 
@@ -33,17 +33,21 @@
 
 using namespace std;
 
-uint32_t ev2=0;
-unsigned int ntracks2 =0;
 
-  ofstream myfile2;
+  //ofstream myfile2;
 
-ShallowTrackClustersProducerCombined::ShallowTrackClustersProducerCombined(const edm::ParameterSet& iConfig)
+ShallowTrackClustersProducerCombinedVR::ShallowTrackClustersProducerCombinedVR(const edm::ParameterSet& iConfig)
   :  tracks_token_(consumes<edm::View<reco::Track> >(iConfig.getParameter<edm::InputTag>("Tracks"))),
      association_token_(consumes<TrajTrackAssociationCollection>(iConfig.getParameter<edm::InputTag>("Tracks"))),
      clusters_token_( consumes< edmNew::DetSetVector<SiStripCluster> >( iConfig.getParameter<edm::InputTag>("Clusters") ) ),
      theVertexToken_(consumes<std::vector<reco::Vertex> >          (iConfig.getParameter<edm::InputTag>("vertices"))),
      theDigisToken_    (consumes<edm::DetSetVector<SiStripProcessedRawDigi> > (edm::InputTag("siStripProcessedRawDigis", ""))),
+     //theRawDigisToken_    (consumes<edm::DetSetVector<SiStripRawDigi> > (edm::InputTag("siStripDigis", "VirginRaw"))),
+     //theRawDigisToken_    (consumes<edm::DetSetVector<SiStripRawDigi> > (edm::InputTag("siStripZeroSuppression", "VirginRaw"))),
+     theRawDigisToken_    (consumes<edm::DetSetVector<SiStripRawDigi> > (edm::InputTag("siStripZeroSuppression", "PEDSUBADCVirginRaw"))),
+     theCMNToken_    (consumes<edm::DetSetVector<SiStripProcessedRawDigi> > (edm::InputTag("siStripZeroSuppression", "APVCMVirginRaw"))),
+     srcZSdigi_    (consumes<edm::DetSetVector<SiStripDigi> > (edm::InputTag("siStripZeroSuppression", "VirginRaw"))),
+     //srcZSdigi_    (consumes<edm::DetSetVector<SiStripDigi> > (edm::InputTag("siStripDigis", "ZeroSuppressed"))), //"siStripDigis"              "ZeroSuppressed"
      //theTriggerToken_    (consumes<edm::TriggerResults > (edm::InputTag("TriggerResults","","HLT"))),
      Suffix       ( iConfig.getParameter<std::string>("Suffix")    ),
      Prefix       ( iConfig.getParameter<std::string>("Prefix") ),
@@ -53,6 +57,8 @@ ShallowTrackClustersProducerCombined::ShallowTrackClustersProducerCombined(const
      //highBound       ( iConfig.getParameter<int32_t>("highBound") ),
      //filename       ( iConfig.getParameter<std::string>("filename") )
 {
+
+  cout << "constructor fine " << endl;
   produces<std::vector<int> > ( Suffix + "clusterIdx"    ); //link: on trk cluster --> general cluster info 
   produces<std::vector<int> > ( Suffix + "onTrkClusterIdx" ); //link: general cluster info --> on track cluster
 	produces <std::vector<int> > ( Suffix + "onTrkClustersBegin"  ); //link: track --> onTrkInfo (range)
@@ -161,6 +167,13 @@ ShallowTrackClustersProducerCombined::ShallowTrackClustersProducerCombined(const
   produces <std::vector<float> >         ( Prefix + "stripChargelocalpitch"        );
   produces <std::vector<float> >         ( Prefix + "stripChargesensorThickness"        );
   produces <std::vector<float> >         ( Prefix + "stripChargeBdotY"        );
+  produces <std::vector<float> >         ( "CTstripCharge"        );
+  produces <std::vector<float> >         ( "CTstripChargeLocalTrackPhi"        );
+  produces <std::vector<float> >         ( "CTstripChargeLocalTrackTheta"        );
+  produces <std::vector<float> >         ( "CTstripChargeSubdetid"        );
+  produces <std::vector<float> >         ( "CTstripChargeLayerwheel"        );
+  produces <std::vector<float> >         ( "CTstripChargelocalpitch"        );
+  produces <std::vector<float> >         ( "CTstripChargesensorThickness"        );
 
   produces <std::vector<float> >        ( "PU"       );
   produces <std::vector<unsigned int> > ( "bx"       );
@@ -177,7 +190,7 @@ ShallowTrackClustersProducerCombined::ShallowTrackClustersProducerCombined(const
   //
 }
 
-void ShallowTrackClustersProducerCombined::
+void ShallowTrackClustersProducerCombinedVR::
 produce(edm::Event& iEvent, const edm::EventSetup& iSetup) {
   shallow::CLUSTERMAP clustermap = shallow::make_cluster_map(iEvent, clusters_token_);
   edm::Handle<edm::View<reco::Track> > tracks;	             iEvent.getByToken(tracks_token_, tracks);	  
@@ -295,6 +308,13 @@ produce(edm::Event& iEvent, const edm::EventSetup& iSetup) {
   auto       stripChargelocalpitch    = std::make_unique<std::vector<float>>();
   auto       stripChargesensorThickness    = std::make_unique<std::vector<float>>();
   auto       stripChargeBdotY   = std::make_unique<std::vector<float>>();
+  auto       CTstripCharge   = std::make_unique<std::vector<float>>();
+  auto       CTstripChargeLocalTrackPhi   = std::make_unique<std::vector<float>>();
+  auto       CTstripChargeLocalTrackTheta   = std::make_unique<std::vector<float>>();
+  auto       CTstripChargeSubdetid   = std::make_unique<std::vector<float>>();
+  auto       CTstripChargeLayerwheel   = std::make_unique<std::vector<float>>();
+  auto       CTstripChargelocalpitch   = std::make_unique<std::vector<float>>();
+  auto       CTstripChargesensorThickness   = std::make_unique<std::vector<float>>();
 
   auto       PU      = std::make_unique<std::vector<float>>();
   auto bx            = std::make_unique<std::vector<unsigned int>>();
@@ -316,6 +336,9 @@ produce(edm::Event& iEvent, const edm::EventSetup& iSetup) {
     edm::Handle<edm::DetSetVector<SiStripProcessedRawDigi> > rawProcessedDigis;
     iEvent.getByToken(theDigisToken_,rawProcessedDigis);
 
+   edm::Handle< edm::DetSetVector<SiStripRawDigi> > moduleRawDigi;
+   iEvent.getByToken(theRawDigisToken_,moduleRawDigi);
+
 
   edm::Handle<std::vector<reco::Vertex> > vtx;
   iEvent.getByToken(theVertexToken_, vtx); 
@@ -323,6 +346,12 @@ produce(edm::Event& iEvent, const edm::EventSetup& iSetup) {
   edm::ESHandle<TrackerTopology> tTopoHandle;
   iSetup.get<TrackerTopologyRcd>().get(tTopoHandle);
   const TrackerTopology* const tTopo = tTopoHandle.product();
+
+  edm::Handle<edm::DetSetVector<SiStripProcessedRawDigi> > moduleCM;
+  iEvent.getByToken(theCMNToken_,moduleCM);
+
+  edm::Handle< edm::DetSetVector<SiStripDigi> > moduleZSdigi;
+  iEvent.getByToken(srcZSdigi_,moduleZSdigi);
 
 
 /*  const edm::TriggerNames& trigNames = iEvent.triggerNames(*trigResults);
@@ -339,6 +368,7 @@ produce(edm::Event& iEvent, const edm::EventSetup& iSetup) {
   std::map<size_t, std::vector<size_t> > mapping; //cluster idx --> on trk cluster idx (multiple)
 
 
+
   //myfile2.open(filename);
   float PU_=0;
   PU_=vtx->size();
@@ -351,6 +381,7 @@ produce(edm::Event& iEvent, const edm::EventSetup& iSetup) {
  // }
   //myfile2 << "n events " << ev << std::endl;
 
+  //TFileDirectory sdRawDigis_= fs_->mkdir("ShallowTrackClustersCombinedVR");
 
   *nroftracks = 0;
   for( TrajTrackAssociationCollection::const_iterator association = associations->begin(); 
@@ -398,8 +429,8 @@ produce(edm::Event& iEvent, const edm::EventSetup& iSetup) {
 	
 				unsigned i = cluster->second;
 
-
-                                uint32_t id = hit->geographicalId();
+                                uint32_t id = hit->geographicalId();//@MJ@ detID here!!
+				DetId modId(id);
                                 const moduleVars moduleV(id, tTopo);
                                 std::cout << "before cluster info "  << std::endl;
                                 const SiStripClusterInfo info(*cluster_ptr, iSetup, id);
@@ -422,6 +453,74 @@ produce(edm::Event& iEvent, const edm::EventSetup& iSetup) {
 					mapping.insert( std::make_pair(i, single) );
 				}
 
+                                //@MJ@ TODO raw digis code
+                                /*cout << "in here 1" << endl;
+                                edm::DetSetVector<SiStripRawDigi>::const_iterator itRawDigis2 = moduleRawDigi->find(modId);
+                                for (; itRawDigis2 != moduleRawDigi->end(); ++itRawDigis2) 
+                                {
+                                    cout << "available detId: " << itRawDigis2->id << endl;
+                                }*/
+      
+                                //cout << "detsetvector rawdigis size " <<  moduleRawDigi->size() << endl ; 
+                                h1Cluster_ = new TH1F(("Cluster" + std::to_string(id)).c_str() , ("Cluster" + std::to_string(id)).c_str(), 900, 0, 900); //MJ@ TODO + eventnr@
+                                h1ClusterDiff_ = new TH1F(("ClusterDiff" + std::to_string(id)).c_str() , ("ClusterDiff" + std::to_string(id)).c_str(), 900, 0, 900); //MJ@ TODO + eventnr@
+                                h1CTCluster_ = new TH1F(("CTCluster" + std::to_string(id)).c_str() , ("CTCluster" + std::to_string(id)).c_str(), 910, -10, 900); //MJ@ TODO + eventnr@
+                                std::vector<float> vRawDigis;
+                                std::vector<float> vCMN;
+                                edm::DetSetVector<SiStripRawDigi>::const_iterator itRawDigis = moduleRawDigi->find(modId);
+                                edm::DetSetVector<SiStripProcessedRawDigi>::const_iterator itCMNDigis = moduleCM->find(modId);
+                                edm::DetSetVector<SiStripDigi>::const_iterator itZSdigis = moduleZSdigi->find(modId);
+                                cout << "in here 2" << endl;
+                                if(itRawDigis != moduleRawDigi->end())
+                                {
+                                cout << "in here 3" << endl;
+                                    h1RawDigis_ = new TH1F(("rawdigis" + std::to_string(id)).c_str() , ("rawdigis" + std::to_string(id)).c_str(), 900, 0, 900); //MJ@ TODO + eventnr@
+                                    h1CMN_ = new TH1F(("CMN" + std::to_string(id)).c_str() , ("CMN" + std::to_string(id)).c_str(), 900, 0, 900); //MJ@ TODO + eventnr@
+                                    h1Processed_ = new TH1F(("Processed" + std::to_string(id)).c_str() , ("Processed" + std::to_string(id)).c_str(), 900, 0, 900); //MJ@ TODO + eventnr@
+                                    h1ZSdigis_ = new TH1F(("ZS" + std::to_string(id)).c_str() , ("ZS" + std::to_string(id)).c_str(), 900, 0, 900); //MJ@ TODO + eventnr@
+                                    edm::DetSet<SiStripRawDigi>::const_iterator itRaw = itRawDigis->begin();
+                                    edm::DetSet<SiStripProcessedRawDigi>::const_iterator itCMN = itCMNDigis->begin();
+                                    uint32_t rawstrip=0;
+                                cout << "in here 4" << endl;
+                                    for(;itRaw != itRawDigis->end(); ++itRaw, ++rawstrip)
+                                    {
+                                cout << "in here 5" << endl;
+                                        h1RawDigis_->Fill(rawstrip,itRaw->adc());
+                                        vRawDigis.push_back(itRaw->adc());
+                                        if(rawstrip!=0 && rawstrip%128==0)
+                                            itCMN++;
+                                        if(itCMN != itCMNDigis->end())
+                                        { 
+                                            h1CMN_->Fill(rawstrip,itCMN->adc());
+                                            vCMN.push_back(itCMN->adc());
+                                            h1Processed_->Fill(rawstrip,itRaw->adc()-itCMN->adc());
+                                        }
+                                    }
+                                        for( edm::DetSet<SiStripDigi>::const_iterator ZSdigis = itZSdigis->begin(); ZSdigis != itZSdigis->end(); ++ZSdigis) {
+                                             h1ZSdigis_->SetBinContent(ZSdigis->strip()+1, ZSdigis->adc());
+                                        }
+
+                                    h1RawDigis_->SetXTitle("strip#");
+                                    h1RawDigis_->SetYTitle("ADC");
+                                    h1RawDigis_->SetMaximum(1024.);
+                                    h1RawDigis_->SetMinimum(-300.);
+                                    h1RawDigis_->SetLineWidth(2);
+                                    h1RawDigis_->Write();
+                                    h1CMN_->SetXTitle("strip#");
+                                    h1CMN_->SetYTitle("ADC");
+                                    h1CMN_->SetMaximum(1024.);
+                                    h1CMN_->SetMinimum(-300.);
+                                    h1CMN_->SetLineWidth(2);
+                                    h1CMN_->Write();
+                                    h1Processed_->Write();
+                                    h1ZSdigis_->Write();
+                                }
+                                else
+                                {
+                                    cout << "no digis found for given module!!!" << endl;
+                                }
+
+                                cout << "in here done" << endl;
 				const StripGeomDetUnit* theStripDet = dynamic_cast<const StripGeomDetUnit*>( theTrackerGeometry->idToDet( hit->geographicalId() ) );
 				LocalVector drift = shallow::drift( theStripDet, *magfield, *SiStripLorentzAngle);
 				
@@ -432,7 +531,7 @@ produce(edm::Event& iEvent, const edm::EventSetup& iSetup) {
       (number->at(0))++;
       (number->at(moduleV.subdetid))++;
                      
-                      float langle = (SiStripLorentzAngle.isValid()) ? SiStripLorentzAngle->getLorentzAngle(id) : 0.;;
+                      float langle = (SiStripLorentzAngle.isValid()) ? SiStripLorentzAngle->getLorentzAngle(id) : 0.;
                       lorentzAngle->push_back(langle);
                       width->push_back(        cluster_ptr->amplitudes().size()                              );
 		      barystrip->push_back(    cluster_ptr->barycenter()                                     );
@@ -478,6 +577,7 @@ produce(edm::Event& iEvent, const edm::EventSetup& iSetup) {
 
 
       uint32_t strips=0;
+      std::map<float,int> chargeStrip;
       for( auto itAmpl = cluster_ptr->amplitudes().begin(); itAmpl != cluster_ptr->amplitudes().end(); ++itAmpl){
           stripCharge->push_back(*itAmpl);//@MJ@ 
           stripChargeTotCharge->push_back(info.charge());
@@ -496,9 +596,47 @@ produce(edm::Event& iEvent, const edm::EventSetup& iSetup) {
           stripChargelocalpitch->push_back(  (theStripDet->specificTopology()).localPitch(theStripDet->toLocal(tsos.globalPosition())) ); 
           stripChargesensorThickness->push_back(             theStripDet->specificSurface().bounds().thickness() );
 	  stripChargeBdotY->push_back(       (theStripDet->surface()).toLocal( magfield->inTesla(theStripDet->surface().position())).y() );
+          h1Cluster_->Fill(info.firstStrip()+strips,*itAmpl);
+          float adcVal = h1Processed_->GetBinContent(info.firstStrip()+strips+2);
+          h1ClusterDiff_->Fill(info.firstStrip()+strips,adcVal-(*itAmpl));
+
+          chargeStrip.insert(make_pair(*itAmpl,info.firstStrip() +strips)) ;
+
           ++strips; 
       }
+      h1Cluster_->Write();
+      h1ClusterDiff_->Write();
 
+      int baryStrip = chargeStrip.rbegin()->second;
+      cout << "barystrip  position" << baryStrip << "value " << chargeStrip.rbegin()->first << endl;
+
+      for(int32_t x=-2; x<3; x++)
+      {
+          if( baryStrip+x < 0 || (int)baryStrip+x > (int) (vRawDigis.size()-1) )
+          {
+              CTstripCharge->push_back(-333);
+              h1CTCluster_->Fill(baryStrip+x, -333 );
+          }
+          else
+          {
+              CTstripCharge->push_back(vRawDigis.at(baryStrip+x) - vCMN.at(baryStrip+x));
+              h1CTCluster_->Fill(baryStrip+x, vRawDigis.at(baryStrip+x) - vCMN.at(baryStrip+x) );
+              cout << "strip nr  " << baryStrip+x << " value " << vRawDigis.at(baryStrip+x) - vCMN.at(baryStrip+x) << endl;
+          }
+              CTstripChargeLocalTrackPhi->push_back(  (theStripDet->toLocal(tsos.globalDirection())).phi());
+              CTstripChargeLocalTrackTheta->push_back(  (theStripDet->toLocal(tsos.globalDirection())).theta());
+              CTstripChargeSubdetid->push_back(moduleV.subdetid);
+              CTstripChargeLayerwheel->push_back(moduleV.layerwheel);
+              CTstripChargelocalpitch->push_back(  (theStripDet->specificTopology()).localPitch(theStripDet->toLocal(tsos.globalPosition())) ); 
+              CTstripChargesensorThickness->push_back(             theStripDet->specificSurface().bounds().thickness() );
+
+      } 
+      h1CTCluster_->Write();
+
+
+      chargeStrip.clear();
+      vCMN.clear();
+      vRawDigis.clear();
 
 				trackmulti->push_back(  nassociations );
 				trackindex->push_back(  trk_idx );
@@ -662,6 +800,13 @@ produce(edm::Event& iEvent, const edm::EventSetup& iSetup) {
   iEvent.put(std::move(stripChargelocalpitch),   Prefix + "stripChargelocalpitch"    );
   iEvent.put(std::move(stripChargesensorThickness),   Prefix + "stripChargesensorThickness"    );
   iEvent.put(std::move(stripChargeBdotY),   Prefix + "stripChargeBdotY"    );
+  iEvent.put(std::move(CTstripCharge),       "CTstripCharge"        );
+  iEvent.put(std::move(CTstripChargeLocalTrackPhi),       "CTstripChargeLocalTrackPhi"        );
+  iEvent.put(std::move(CTstripChargeLocalTrackTheta),       "CTstripChargeLocalTrackTheta"        );
+  iEvent.put(std::move(CTstripChargeSubdetid),       "CTstripChargeSubdetid"        );
+  iEvent.put(std::move(CTstripChargeLayerwheel),       "CTstripChargeLayerwheel"        );
+  iEvent.put(std::move(CTstripChargelocalpitch),       "CTstripChargelocalpitch"        );
+  iEvent.put(std::move(CTstripChargesensorThickness),       "CTstripChargesensorThickness"        );
   iEvent.put(std::move(PU),       "PU"        );
   iEvent.put(std::move(bx),       "bx"        );
   iEvent.put(std::move(nroftracks),       "nroftracks"        );
@@ -673,9 +818,14 @@ produce(edm::Event& iEvent, const edm::EventSetup& iSetup) {
   iEvent.put(std::move(passHLTL1SingleMuOpenDTv2), "passHLTL1SingleMuOpenDTv2" );
   iEvent.put(std::move(passHLTL1SingleMuOpenv2), "passHLTL1SingleMuOpenv2" );
 */
+
+    //sdRawDigis_.cd();
+    
+    //delete h1RawDigis_;
+    //h1RawDigis_ = NULL;
 }
 
-bool ShallowTrackClustersProducerCombined::trackFilter(const reco::Track* trk)
+bool ShallowTrackClustersProducerCombinedVR::trackFilter(const reco::Track* trk)
 {
   if (trk->pt() < 0.8) return false;
   if (trk->p()  < 2.0) return false;
@@ -686,7 +836,7 @@ bool ShallowTrackClustersProducerCombined::trackFilter(const reco::Track* trk)
 }
 
 
-ShallowTrackClustersProducerCombined::NearDigis::
+ShallowTrackClustersProducerCombinedVR::NearDigis::
 NearDigis(const SiStripClusterInfo& info) {
   max =  info.maxCharge();
   left =           info.maxIndex()    > uint16_t(0)                ? info.stripCharges()[info.maxIndex()-1]      : 0 ;
@@ -697,7 +847,7 @@ NearDigis(const SiStripClusterInfo& info) {
   last =  info.stripCharges()[info.width()-1];
 }
 
-ShallowTrackClustersProducerCombined::NearDigis::
+ShallowTrackClustersProducerCombinedVR::NearDigis::
 NearDigis(const SiStripClusterInfo& info, const edm::DetSetVector<SiStripProcessedRawDigi>& rawProcessedDigis) {
   edm::DetSetVector<SiStripProcessedRawDigi>::const_iterator digiframe = rawProcessedDigis.find(info.detId());
   if( digiframe != rawProcessedDigis.end()) {
@@ -713,7 +863,7 @@ NearDigis(const SiStripClusterInfo& info, const edm::DetSetVector<SiStripProcess
   }
 }
 
-ShallowTrackClustersProducerCombined::moduleVars::
+ShallowTrackClustersProducerCombinedVR::moduleVars::
 moduleVars(uint32_t detid, const TrackerTopology* tTopo) {
   SiStripDetId subdet(detid);
   subdetid = subdet.subDetector();

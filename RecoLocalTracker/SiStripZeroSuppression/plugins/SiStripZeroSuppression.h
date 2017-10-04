@@ -42,6 +42,7 @@ class SiStripZeroSuppression : public edm::stream::EDProducer<>
   std::vector<edm::DetSet<SiStripRawDigi> > output_base_raw; 
   std::vector< edm::DetSet<SiStripProcessedRawDigi> > output_apvcm; 
   std::vector< edm::DetSet<SiStripProcessedRawDigi> > output_baseline;
+  std::vector< edm::DetSet<SiStripRawDigi> > output_pedsubadc;
   std::vector< edm::DetSet<SiStripDigi> > output_baseline_points;
   std::auto_ptr<SiStripRawProcessingAlgorithms> algorithms;
   typedef edm::EDGetTokenT< edm::DetSetVector<SiStripRawDigi> > token_t;

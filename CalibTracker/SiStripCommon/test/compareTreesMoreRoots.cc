@@ -64,10 +64,23 @@
 //
 //no PU data/MC with noises
  //./compareTreesMoreRoots 2  test_shallowTrackAndClusterSeedInfoNoPU2016_data.root test_shallowTrackAndClusterSeedInfoNoPU2016_MC.root  TOB yes noPUdataNoises > logsMean/noPUdataNoisesTOB
+ //./compareTreesMoreRoots 2  test_shallowTrackAndClusterSeedInfoNoPU2016_dataTest.root test_shallowTrackAndClusterSeedInfo.rootgainOptionNoiseTestFullstep3.root  TOB yes noPUdataNoises > logsMean/noPUdataNoisesTOB
 
+
+//Options corrected
 //
+ //./compareTreesMoreRoots 3 test_shallowTrackAndClusterSeedInfoNoPU2016_dataTest.root test_shallowTrackAndClusterSeedInfo.rootCT_defstep3.root test_shallowTrackAndClusterSeedInfo.rootgainOption3step3.root  TOB yes noPUdataGainOptions > logsMean/noPUdataGainOptionsTOB
 //
-//@MJ@ TODO get rid of layer 5 cut!!!!!!
+ //./compareTreesMoreRoots 3 test_shallowTrackAndClusterSeedInfoNoPU2016_dataTest.root test_shallowTrackAndClusterSeedInfo.rootCT3_0.805step3.root test_shallowTrackAndClusterSeedInfo.rootgainOption3Tuned0.805step3.root  TOB yes TOBdataDefMCfromScratchTunedGainOptionsMC > logsMean/noPUdataGainOptionsTOBtuned
+
+
+//e to ADC
+ //./compareTreesMoreRoots 6 test_shallowTrackAndClusterSeedInfoNoPU2016_dataTest.root  test_shallowTrackAndClusterSeedInfo.rootelectronPerAdc_min20_198.0step3.root test_shallowTrackAndClusterSeedInfo.rootelectronPerAdc_min10_222.0step3.root test_shallowTrackAndClusterSeedInfo.rootelectronPerAdc_pl10_272.0step3.root test_shallowTrackAndClusterSeedInfo.rootelectronPerAdc_pl20_296.0step3.root test_shallowTrackAndClusterSeedInfo.rootelectronPerAdc_def_247.0step3.root TOB yes noPUdataElectronPerADC > logsMean/noPUdataElectronPerADCTOB
+
+//e to ADC tuned
+ //./compareTreesMoreRoots 6 test_shallowTrackAndClusterSeedInfoNoPU2016_dataTest.root test_shallowTrackAndClusterSeedInfo.rootgainOption3ePerADC198Tuned0.805step3.root test_shallowTrackAndClusterSeedInfo.rootgainOption3ePerADC222Tuned0.805step3.root test_shallowTrackAndClusterSeedInfo.rootgainOption3ePerADC272Tuned0.805step3.root test_shallowTrackAndClusterSeedInfo.rootgainOption3ePerADC296Tuned0.805step3.root test_shallowTrackAndClusterSeedInfo.rootgainOption3ePerADC247Tuned0.805step3.root TOB yes noPUdataElectronPerADCtuned > logsMean/noPUdataElectronPerADCTOBtuned
+
+ //@MJ@ TODO get rid of layer 5 cut!!!!!!
 //
 
 #include <fstream>
@@ -183,8 +196,21 @@ gROOT->ForceStyle();
     vector<string> observables;
     for(int i = 0; i < branchList->GetEntries(); ++i) 
     { 
-            observables.push_back(branchList->At(i)->GetName());
+       if((string) branchList->At(i)->GetName() == "nrofevents")
+          continue;
+       if((string) branchList->At(i)->GetName() == "nroftracks")
+          continue;
+
+       observables.push_back(branchList->At(i)->GetName());
             //cout << branchList->At(i)->GetName() << endl; 
+    }
+
+    for(uint32_t b=0; b<observables.size(); b++)
+    for(std::vector<string>::iterator it = observables.begin() ; it != observables.end(); ++it)
+    {
+       cout << "observables to be read: " << *it << endl;
+       if(*it == "nrofevents" || *it == "nroftracks")
+           observables.erase(it);
     }
 
    if(observables.size() == 0)
@@ -335,14 +361,14 @@ gROOT->ForceStyle();
        float end = varTot.at(h).at(size1) > varTotT2.at(0).at(h).at(size2) ? varTot.at(h).at(size1) : varTotT2.at(0).at(h).at(size2);
     //cout << "in here 1.4"  << endl;
        hists.at(h) = new TH1F(observables.at(h).c_str(), observables.at(h).c_str(), 1000, start, end );
-       //hists.at(h) = new TH1F(observables.at(h).c_str(), observables.at(h).c_str(), 50, 5, 10 );
+       //hists.at(h) = new TH1F(observables.at(h).c_str(), observables.at(h).c_str(), 100, 5, 10 );
     //cout << "in here 1.5"  << endl;
        
        for(uint32_t t=0;t<t2.size();t++)
        {
            histsT2.at(t).resize(varTotT2.at(t).size());
            histsT2.at(t).at(h) = new TH1F((observables.at(h)+"T2").c_str(), (observables.at(h)+"T2").c_str(), 1000, start, end );
-           //histsT2.at(t).at(h) = new TH1F((observables.at(h)+"T2").c_str(), (observables.at(h)+"T2").c_str(), 50, 5, 10 );
+           //histsT2.at(t).at(h) = new TH1F((observables.at(h)+"T2").c_str(), (observables.at(h)+"T2").c_str(), 100, 5, 10 );
        }
 
     cout << "in here 2"  << endl;
@@ -385,7 +411,8 @@ gROOT->ForceStyle();
        //double n = 80654/5948; 
        for(uint32_t t=0;t<t2.size();t++)
        {
-           histsT2.at(t).at(h)->SetLineColor(2+(2*t));
+           //histsT2.at(t).at(h)->SetLineColor(2+(2*t));
+           histsT2.at(t).at(h)->SetLineColor(2+(t));
            cout << "hist nr " << t << " color " << 2+(2*t) << endl;
            if(norm == "yes")
            {
@@ -409,7 +436,8 @@ gROOT->ForceStyle();
            n2.at(t) = histsT2.at(t).at(h)->GetEntries();
            histD.at(t)->Scale(n/n2.at(t));
            histD.at(t)->Divide(hists.at(h));
-           histD.at(t)->SetLineColor(2+(2*t));
+           //histD.at(t)->SetLineColor(2+(2*t));
+           histD.at(t)->SetLineColor(2+(t));
            histD.at(t)->SetMaximum(2);
            histD.at(t)->SetMinimum(0);
            histD.at(t)->SetTitle("");

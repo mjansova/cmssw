@@ -6,28 +6,47 @@ process.source.fileNames = cms.untracked.vstring('file:output/step3_RAW2DIGI_L1R
 #process.source.fileNames = cms.untracked.vstring('root://cms-xrd-global.cern.ch//store/relval/CMSSW_9_0_0/RelValMinBias_13/GEN-SIM-RECO/90X_mcRun2_asymptotic_v5-v1/00000/9A94CC7A-4B0F-E711-8AC9-0CC47A4D7616.root') #relval MC 90, 16500 ev #test_shallowTrackClusterNoPUMCrun2_mcTAG.root
 
 inputStr = sys.argv[2]
+update = sys.argv[3]
 found = inputStr.find("root")
 
 if found > 0:
     process.source.fileNames = cms.untracked.vstring("file:"+inputStr) 
-    process.TFileService.fileName = 'test_shallowTrackAndClusterSeedInfo.root' + inputStr
     print(input)
+    process.TFileService.fileName = 'test_shallowTrackAndClusterSeedInfo.root' + inputStr
 else:
-    process.TFileService.fileName = 'test_shallowTrackAndClusterSeedInfoNoPU2016_data.root'
-
-#process.source.fileNames = cms.untracked.vstring('root://cms-xrd-global.cern.ch//store/relval/CMSSW_9_0_0/RelValMinBias_13/GEN-SIM-RECO/90X_upgrade2017_realistic_v20_resub-v1/00000/7E9D0F0A-CC10-E711-BDBD-0CC47A7C354A.root') #test_shallowTrackClusterNoPUMCupgrade2017.root
+    process.TFileService.fileName = 'test_shallowTrackAndClusterSeedInfoNoPU2016_dataTest.root'
 
 
-#fileNames = cms.untracked.vstring('root://cms-xrd-global.cern.ch//store/relval/CMSSW_9_0_0/ZeroBias/RECO/90X_dataRun2_PromptLike_v6_RelVal_zb2016H-v1/00000/1A2F6458-5F20-E711-884E-0025905A608C.root') #run H, 900, 1800 #test_shallowTrackClusterPUData.root 
 
-#fileNames = cms.untracked.vstring('root://cms-xrd-global.cern.ch//store/relval/CMSSW_9_0_0/RelValNuGun/GEN-SIM-RECO/PU25ns_90X_upgrade2017_realistic_v20_resub-v1/00000/16689437-7C14-E711-A30F-0025905A60CE.root') #test_shallowTrackClusterPUMCupgrade2017.root
+if update == "update":
+    print("updating database conditions")
+    process.GlobalTag.toGet = cms.VPSet(
+      cms.PSet(record = cms.string("SiStripApvGainSimRcd"),
+               tag = cms.string("myTag"),
+               connect = cms.string("sqlite_file:/opt/sbg/data/data6/cms/mjansova/CMSSW_9_2_0/src/CalibTracker/SiStripCommon/test/dbConditions/G1_run284078.db")
+               ),
+       cms.PSet(record = cms.string("SiStripApvGainRcd"),
+               tag = cms.string("myTag"),
+               connect = cms.string("sqlite_file:/opt/sbg/data/data6/cms/mjansova/CMSSW_9_2_0/src/CalibTracker/SiStripCommon/test/dbConditions/G1_run284078.db")
+               ),
+       cms.PSet(record = cms.string("SiStripApvGain2Rcd"),
+               tag = cms.string("myTag"),
+               connect = cms.string("sqlite_file:/opt/sbg/data/data6/cms/mjansova/CMSSW_9_2_0/src/CalibTracker/SiStripCommon/test/dbConditions/G2_run284078.db")
+               ),
+       cms.PSet(record = cms.string("SiStripNoisesRcd"),
+               tag = cms.string("myTag"),
+               connect = cms.string("sqlite_file:/opt/sbg/data/data6/cms/mjansova/CMSSW_9_2_0/src/CalibTracker/SiStripCommon/test/dbConditions/Noise_run284078.db")
+               ),
+       cms.PSet(record = cms.string("SiStripBadChannelRcd"),
+               tag = cms.string("myTag"),
+               connect = cms.string("sqlite_file:/opt/sbg/data/data6/cms/mjansova/CMSSW_9_2_0/src/CalibTracker/SiStripCommon/test/dbConditions/BadChannel_run284078.db")
+               ),
+       cms.PSet(record = cms.string("SiStripBadFiberRcd"),
+               tag = cms.string("myTag"),
+               connect = cms.string("sqlite_file:/opt/sbg/data/data6/cms/mjansova/CMSSW_9_2_0/src/CalibTracker/SiStripCommon/test/dbConditions/BadFiber_run284078.db")
+               )
+    )
 
-#fileNames = cms.untracked.vstring('root://cms-xrd-global.cern.ch//store/relval/CMSSW_9_0_0/RelValNuGun_UP15/GEN-SIM-RECO/PU25ns_90X_mcRun2_asymptotic_v5-v1/00000/8EA7CE2A-2810-E711-A617-0CC47A4C8E1E.root') #900 PU MCs 2000 ev test_shallowTrackClusterPUMCrun2_mc.root
-
-
-#fileNames = cms.untracked.vstring('root://cms-xrd-global.cern.ch//store/relval/CMSSW_9_0_0/RelValMinBias_13/GEN-SIM-RECO/90X_upgrade2017_realistic_v20_resub-v1/00000/7E9D0F0A-CC10-E711-BDBD-0CC47A7C354A.root') #test_shallowTrackClusterNoPUMCupgrade2017.root
-
-#fileNames = cms.untracked.vstring('root://cms-xrd-global.cern.ch//store/relval/CMSSW_9_0_0/RelValMinBias_13/GEN-SIM-RECO/90X_mcRun2_asymptotic_v5-v1/00000/9A94CC7A-4B0F-E711-8AC9-0CC47A4D7616.root') #relval MC 90, 16500 ev #test_shallowTrackClusterNoPUMCrun2_mcTAG.root
 
 
 process.maxEvents = cms.untracked.PSet(

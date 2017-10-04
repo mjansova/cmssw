@@ -56,6 +56,29 @@ int16_t SiStripRawProcessingAlgorithms::SuppressVirginRawData(const edm::DetSet<
 }
   
 
+int16_t SiStripRawProcessingAlgorithms::SubtractPedestalVirginRawData(const uint32_t& id, const uint16_t& firstAPV, std::vector<int16_t>& processedRawDigis , edm::DetSet<SiStripRawDigi>& suppressedDigis ){
+      
+      subtractorPed->subtract( id, firstAPV*128,processedRawDigis);
+      std::vector<int16_t>::const_iterator itprocessedrawDigis = processedRawDigis.begin();
+      for(;itprocessedrawDigis != processedRawDigis.end(); ++itprocessedrawDigis )
+      {
+          SiStripRawDigi d(*itprocessedrawDigis);
+          //std::cout << "ped sub digi is " << *itprocessedrawDigis << std::endl;
+          suppressedDigis.push_back(d);
+      }
+      return 1;
+}
+
+int16_t SiStripRawProcessingAlgorithms::SubtractPedestalVirginRawData(const edm::DetSet<SiStripRawDigi>& rawDigis, edm::DetSet<SiStripRawDigi>& suppressedDigis){
+   
+   std::vector<int16_t> RawDigis;
+   RawDigis.clear();
+   edm::DetSet<SiStripRawDigi>::const_iterator itrawDigis = rawDigis.begin();
+   for(; itrawDigis != rawDigis.end(); ++itrawDigis) RawDigis.push_back(itrawDigis->adc());
+   return this->SubtractPedestalVirginRawData(rawDigis.id, 0,RawDigis , suppressedDigis);
+}
+  
+
 
 
 int16_t SiStripRawProcessingAlgorithms::SuppressProcessedRawData(const uint32_t& id, const uint16_t& firstAPV, std::vector<int16_t>& processedRawDigis , edm::DetSet<SiStripDigi>& suppressedDigis ){
