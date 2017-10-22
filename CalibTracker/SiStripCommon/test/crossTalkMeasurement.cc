@@ -1,4 +1,6 @@
-//./crossTalkMeasurement test_shallowTrackCRUZET_2017VRdigis.root crossTalkMeasurement
+//./crossTalkMeasurement test_shallowTrackCRUZET_2017VRdigis.root crossTalkMeasurement //small stats
+//./crossTalkMeasurement test_shallowTrackCRUZET_2017VRNewClusteringTimingTestFULL.root crossTalkMeasurement
+//./crossTalkMeasurement test_shallowTrackCRUZET_2017VRNewClusteringTimingTest.root crossTalkMeasurement
 
 #include <fstream>
 #include <iostream>
@@ -79,8 +81,8 @@ int main(int argc, char *argv[]){
        vector<float>* CTstripCharge = 0;
        vector<float>* CTstripChargeLayerwheel = 0;
        //vector<float>* CTstripChargeStripNr = 0;
-       //vector<float>* CTstripChargeTotWidth = 0;
-       //vector<float>* CTstripChargeTotCharge = 0;
+       vector<float>* CTstripChargeTotWidth = 0;
+       vector<float>* CTstripChargeTotCharge = 0;
        vector<float>* CTstripChargeLocalTrackPhi = 0;
        //vector<float>* CTstripChargeGlobalTrackPhi = 0;
        vector<float>* CTstripChargeLocalTrackTheta = 0;
@@ -91,16 +93,23 @@ int main(int argc, char *argv[]){
        //vector<float>* CTstripChargetrackPt = 0;
        vector<float>* CTstripChargelocalpitch = 0;
        vector<float>* CTstripChargesensorThickness = 0;
+       vector<float>* CTCmbtimeVtx = 0;
+       vector<float>* CTCmbtimeVtxr = 0;
+       vector<float>* CTCmbtimeVtxErr = 0;
+       vector<float>* CTCmbtimeVtxrErr = 0;
+       vector<float>* CTMuontrackDirection = 0;
        //vector<float>* CTstripChargeBdotY = 0;
        //unsigned int  nroftracks;
        //unsigned int  nrofevents;
+       vector<float>* tsosrhglobalphi = 0;
+       vector<uint32_t>* clusterdetid = 0;
 
        vector<float> subCTstripChargeSubdetid;
        vector<float> subCTstripCharge;
        vector<float> subCTstripChargeLayerwheel;
        //vector<float> subCTstripChargeStripNr;
-       //vector<float> subCTstripChargeTotWidth;
-       //vector<float> subCTstripChargeTotCharge;
+       vector<float> subCTstripChargeTotWidth;
+       vector<float> subCTstripChargeTotCharge;
        vector<float> subCTstripChargeLocalTrackPhi;
        //vector<float> subCTstripChargeGlobalTrackPhi;
        vector<float> subCTstripChargeLocalTrackTheta;
@@ -111,17 +120,26 @@ int main(int argc, char *argv[]){
        //vector<float> subCTstripChargetrackPt;
        vector<float> subCTstripChargelocalpitch;
        vector<float> subCTstripChargesensorThickness;
+       vector<float> subCTCmbtimeVtx;
+       vector<float> subCTCmbtimeVtxr;
+       vector<float> subCTCmbtimeVtxErr;
+       vector<float> subCTCmbtimeVtxrErr;
+       vector<float> subCTMuontrackDirection;
        //vector<float> subCTstripChargeBdotY;
        //vector<unsigned int>  subnroftracks;
        //vector<unsigned int>  subnrofevents;
+       vector<float> subtsosrhglobalphi;
+       vector<uint32_t> subclusterdetid;
 
+       float bx;
+       vector<float> bxPerStrip;
 
        t1->SetBranchAddress("CTstripChargeSubdetid",  &CTstripChargeSubdetid );
        t1->SetBranchAddress("CTstripCharge",  &CTstripCharge );
        t1->SetBranchAddress("CTstripChargeLayerwheel",  &CTstripChargeLayerwheel );
        //t1->SetBranchAddress("CTstripChargeStripNr",  &CTstripChargeStripNr );
-       //t1->SetBranchAddress("CTstripChargeTotWidth",  &CTstripChargeTotWidth );
-       //t1->SetBranchAddress("CTstripChargeTotCharge",  &CTstripChargeTotCharge );
+       t1->SetBranchAddress("CTstripChargeTotWidth",  &CTstripChargeTotWidth );
+       t1->SetBranchAddress("CTstripChargeTotCharge",  &CTstripChargeTotCharge );
        t1->SetBranchAddress("CTstripChargeLocalTrackPhi",  &CTstripChargeLocalTrackPhi );
        //t1->SetBranchAddress("CTstripChargeGlobalTrackPhi",  &CTstripChargeGlobalTrackPhi );
        t1->SetBranchAddress("CTstripChargeLocalTrackTheta",  &CTstripChargeLocalTrackTheta );
@@ -132,14 +150,22 @@ int main(int argc, char *argv[]){
        //t1->SetBranchAddress("CTstripChargetrackPt",  &CTstripChargetrackPt );
        t1->SetBranchAddress("CTstripChargelocalpitch",  &CTstripChargelocalpitch );
        t1->SetBranchAddress("CTstripChargesensorThickness",  &CTstripChargesensorThickness );
+       t1->SetBranchAddress("CTCmbtimeVtx",  &CTCmbtimeVtx );
+       t1->SetBranchAddress("CTCmbtimeVtxr",  &CTCmbtimeVtxr );
+       t1->SetBranchAddress("CTCmbtimeVtxErr",  &CTCmbtimeVtxErr );
+       t1->SetBranchAddress("CTCmbtimeVtxrErr",  &CTCmbtimeVtxrErr );
+       t1->SetBranchAddress("CTMuontrackDirection",  &CTMuontrackDirection );
        //t1->SetBranchAddress("CTstripChargeBdotY",  &CTstripChargeBdotY );
        //t1->SetBranchAddress("nroftracks",  &nroftracks );
        //t1->SetBranchAddress("nrofevents",  &nrofevents );
-
+       t1->SetBranchAddress("tsosrhglobalphi",  &tsosrhglobalphi );
+       t1->SetBranchAddress("clusterdetid",  &clusterdetid );
+       //t1->SetBranchAddress("bx",  &bx );
    //data always first
     
 
    uint32_t evCount=0;
+   vector<uint32_t> eventCount;
    
    //cout << "in here a" << endl;
    Int_t nentries = (Int_t)t1->GetEntries();
@@ -165,8 +191,8 @@ int main(int argc, char *argv[]){
                        subCTstripCharge.push_back(CTstripCharge->at(k));
                        subCTstripChargeLayerwheel.push_back(CTstripChargeLayerwheel->at(k));
                        //subCTstripChargeStripNr.push_back(CTstripChargeStripNr->at(k));
-                       //subCTstripChargeTotWidth.push_back(CTstripChargeTotWidth->at(k));
-                       //subCTstripChargeTotCharge.push_back(CTstripChargeTotCharge->at(k));
+                       subCTstripChargeTotWidth.push_back(CTstripChargeTotWidth->at(k));
+                       subCTstripChargeTotCharge.push_back(CTstripChargeTotCharge->at(k));
                        subCTstripChargeLocalTrackPhi.push_back(CTstripChargeLocalTrackPhi->at(k));
                        //subCTstripChargeGlobalTrackPhi.push_back(CTstripChargeGlobalTrackPhi->at(k));
                        subCTstripChargeLocalTrackTheta.push_back(CTstripChargeLocalTrackTheta->at(k));
@@ -177,11 +203,22 @@ int main(int argc, char *argv[]){
                        //subCTstripChargetrackPt.push_back(CTstripChargetrackPt->at(k));
                        subCTstripChargelocalpitch.push_back(CTstripChargelocalpitch->at(k));
                        subCTstripChargesensorThickness.push_back(CTstripChargesensorThickness->at(k));
+                       subCTCmbtimeVtx.push_back(CTCmbtimeVtx->at(k));
+                       subCTCmbtimeVtxr.push_back(CTCmbtimeVtxr->at(k));
+                       subCTCmbtimeVtxErr.push_back(CTCmbtimeVtxErr->at(k));
+                       subCTCmbtimeVtxrErr.push_back(CTCmbtimeVtxrErr->at(k));
+                       subCTMuontrackDirection.push_back(CTMuontrackDirection->at(k));
                        //subCTstripChargeBdotY.push_back(CTstripChargeBdotY->at(k));
+                       //bxPerStrip.push_back(bx);
+                       eventCount.push_back(e);
                    }
                }
            }
-
+           for(uint32_t j=0; j<tsosrhglobalphi->size() ;j++)//@MJ@ TODO just temporaray
+           {
+               subtsosrhglobalphi.push_back(tsosrhglobalphi->at(j));
+               subclusterdetid.push_back(clusterdetid->at(j));
+           }
    }
 
 
@@ -189,13 +226,84 @@ int main(int argc, char *argv[]){
        //F
        vector<TH1F*> narrowTrackSharing1Data;
        vector<TH1F*> narrowTrackSharing2Data;
+
+       vector<TH1F*> timingErrorTop;
+       vector<TH1F*> timingErrorTopInOut;
+       vector<TCanvas*> timingErrorTopCan;
+       vector<TCanvas*> timingErrorTopInOutCan;
+
+       vector<TProfile*> widthTopInOut;
+       vector<TProfile*> widthBottomInOut;
+       vector<TProfile*> widthTopOutIn;
+       vector<TProfile*> widthBottomOutIn;
+
+       vector<TProfile*> chargeTopInOut;
+       vector<TProfile*> chargeBottomInOut;
+       vector<TProfile*> chargeTopOutIn;
+       vector<TProfile*> chargeBottomOutIn;
+
        vector<TCanvas*> narrowTrackSharing1DataCan;
        vector<TCanvas*> narrowTrackSharing2DataCan;
+
+       vector<TCanvas*> widthTopInOutCan;
+       vector<TCanvas*> widthBottomInOutCan;
+       vector<TCanvas*> widthTopOutInCan;
+       vector<TCanvas*> widthBottomOutInCan;
+
+       vector<TCanvas*> chargeTopInOutCan;
+       vector<TCanvas*> chargeBottomInOutCan;
+       vector<TCanvas*> chargeTopOutInCan;
+       vector<TCanvas*> chargeBottomOutInCan;
+
+
+       vector<TProfile*> widthTopInOutOnly;
+       vector<TProfile*> widthBottomInOutOnly;
+       vector<TProfile*> chargeTopInOutOnly;
+       vector<TProfile*> chargeBottomInOutOnly;
+       vector<TCanvas*> widthTopInOutOnlyCan;
+       vector<TCanvas*> widthBottomInOutOnlyCan;
+       vector<TCanvas*> chargeTopInOutOnlyCan;
+       vector<TCanvas*> chargeBottomInOutOnlyCan;
 
        narrowTrackSharing1Data.resize(20, NULL);
        narrowTrackSharing2Data.resize(20, NULL);
        narrowTrackSharing1DataCan.resize(20, NULL);
        narrowTrackSharing2DataCan.resize(20, NULL);
+
+       widthTopInOut.resize(20, NULL);
+       widthBottomInOut.resize(20, NULL);
+       widthTopInOutOnly.resize(20, NULL);
+       widthBottomInOutOnly.resize(20, NULL);
+       widthTopOutIn.resize(20, NULL);
+       widthBottomOutIn.resize(20, NULL);
+
+       chargeTopInOut.resize(20, NULL);
+       chargeBottomInOut.resize(20, NULL);
+       chargeTopInOutOnly.resize(20, NULL);
+       chargeBottomInOutOnly.resize(20, NULL);
+       chargeTopOutIn.resize(20, NULL);
+       chargeBottomOutIn.resize(20, NULL);
+
+       widthTopInOutCan.resize(20, NULL);
+       widthBottomInOutCan.resize(20, NULL);
+       widthTopInOutOnlyCan.resize(20, NULL);
+       widthBottomInOutOnlyCan.resize(20, NULL);
+       widthTopOutInCan.resize(20, NULL);
+       widthBottomOutInCan.resize(20, NULL);
+
+       chargeTopInOutCan.resize(20, NULL);
+       chargeBottomInOutCan.resize(20, NULL);
+       chargeTopInOutOnlyCan.resize(20, NULL);
+       chargeBottomInOutOnlyCan.resize(20, NULL);
+       chargeTopOutInCan.resize(20, NULL);
+       chargeBottomOutInCan.resize(20, NULL);
+
+
+       timingErrorTop.resize(20, NULL);
+       timingErrorTopInOut.resize(20, NULL);
+       timingErrorTopCan.resize(20, NULL);
+       timingErrorTopInOutCan.resize(20, NULL);
+
 
        uint8_t TIDoffset = 3;
        uint8_t TECoffset = 6;
@@ -240,13 +348,13 @@ int main(int argc, char *argv[]){
                }
                if(subCTstripChargeSubdetid.at(clusterStart) == 4 ) //TID
                {
-                       cout << "TID filling bin " << TIDoffset + subCTstripChargeLayerwheel.at(clusterStart) << endl;
+                       //cout << "TID filling bin " << TIDoffset + subCTstripChargeLayerwheel.at(clusterStart) << endl;
                        partPos = TIDoffset + subCTstripChargeLayerwheel.at(clusterStart);
                        parName = "TID"+to_string(partPos);
                }
                if(subCTstripChargeSubdetid.at(clusterStart) == 6 ) //TEC
                {
-                       cout << "TEC filling bin " << TECoffset + subCTstripChargeLayerwheel.at(clusterStart) << " for layer " << subCTstripChargeLayerwheel.at(clusterStart) << endl;
+                       //cout << "TEC filling bin " << TECoffset + subCTstripChargeLayerwheel.at(clusterStart) << " for layer " << subCTstripChargeLayerwheel.at(clusterStart) << endl;
                        partPos = TECoffset + subCTstripChargeLayerwheel.at(clusterStart);
                        parName = "TEC"+to_string(partPos);
                }
@@ -277,6 +385,94 @@ int main(int argc, char *argv[]){
                if(subCTstripCharge.at(clusterStart+4) != -333)
                    narrowTrackSharing2Data.at(partPos)->Fill( (float) subCTstripCharge.at(clusterStart+4)/subCTstripCharge.at(clusterStart+2));
 
+
+                   if(widthTopInOut.at(partPos) == NULL)
+                   {
+		       widthTopInOut.at(partPos) =  new TProfile(("widthTopInOut"+ parName).c_str(), ("widthTopInOut"+ parName).c_str() , 200, -100, 100, 0, 10 ) ;
+		       widthBottomInOut.at(partPos) = new TProfile(("widthBottomInOut"+ parName).c_str(), ("widthBottomInOut"+ parName).c_str() , 200, -100, 100, 0, 10 ) ;
+		       widthTopInOutOnly.at(partPos) =  new TProfile(("widthTopInOutOnly"+ parName).c_str(), ("widthTopInOutOnly"+ parName).c_str() , 200, -100, 100, 0, 10 ) ;
+		       widthBottomInOutOnly.at(partPos) = new TProfile(("widthBottomInOutOnly"+ parName).c_str(), ("widthBottomInOutOnly"+ parName).c_str() , 200, -100, 100, 0, 10 ) ;
+		       widthTopOutIn.at(partPos) =  new TProfile(("widthTopOutIn"+ parName).c_str(), ("widthTopOutIn"+ parName).c_str() , 200, -100, 100, 0, 10 ) ;
+		       widthBottomOutIn.at(partPos) =  new TProfile(("widthBottomOutIn"+ parName).c_str(), ("widthBottomOutIn"+ parName).c_str() , 200, -100, 100, 0, 10 ) ;
+
+		       chargeTopInOut.at(partPos) =  new TProfile(("chargeTopInOut"+ parName).c_str(), ("chargeTopInOut"+ parName).c_str() , 200, -100, 100, 0, 1000 ) ;
+		       chargeBottomInOut.at(partPos) =  new TProfile(("chargeBottomInOut"+ parName).c_str(), ("chargeBottomInOut"+ parName).c_str() , 200, -100, 100, 0, 1000 ) ;
+		       chargeTopInOutOnly.at(partPos) =  new TProfile(("chargeTopInOutOnly"+ parName).c_str(), ("chargeTopInOutOnly"+ parName).c_str() , 200, -100, 100, 0, 1000 ) ;
+		       chargeBottomInOutOnly.at(partPos) =  new TProfile(("chargeBottomInOutOnly"+ parName).c_str(), ("chargeBottomInOutOnly"+ parName).c_str() , 200, -100, 100, 0, 1000 ) ;
+		       chargeTopOutIn.at(partPos)=  new TProfile(("chargeTopOutIn"+ parName).c_str(), ("chargeTopOutIn"+ parName).c_str() , 200, -100, 100, 0, 1000 ) ;
+		       chargeBottomOutIn.at(partPos) =  new TProfile(("chargeBottomOutIn"+ parName).c_str(), ("chargeBottomOutIn"+ parName).c_str() , 200, -100, 100, 0, 1000 ) ;
+
+		       widthTopInOutCan.at(partPos) =   new TCanvas( ("widthTopInOut"+ parName).c_str(), ("widthTopInOut"+ parName).c_str()) ;
+		       widthBottomInOutCan.at(partPos) = new TCanvas( ("widthBottomInOut"+ parName).c_str(), ("widthBottomInOut"+ parName).c_str()) ;
+		       widthTopInOutOnlyCan.at(partPos) =   new TCanvas( ("widthTopInOutOnly"+ parName).c_str(), ("widthTopInOutOnly"+ parName).c_str()) ;
+		       widthBottomInOutOnlyCan.at(partPos) = new TCanvas( ("widthBottomInOutOnly"+ parName).c_str(), ("widthBottomInOutOnly"+ parName).c_str()) ;
+		       widthTopOutInCan.at(partPos) =   new TCanvas( ("widthTopOutIn"+ parName).c_str(), ("widthTopOutIn"+ parName).c_str()) ;
+		       widthBottomOutInCan.at(partPos) =   new TCanvas( ("widthBottomOutIn"+ parName).c_str(), ("widthBottomOutIn"+ parName).c_str()) ;
+
+		       chargeTopInOutCan.at(partPos) =   new TCanvas( ("chargeTopInOut"+ parName).c_str(), ("chargeTopInOut"+ parName).c_str()) ;
+		       chargeBottomInOutCan.at(partPos) =  new TCanvas( ("chargeBottomInOut"+ parName).c_str(), ("chargeBottomInOut"+ parName).c_str()) ;
+		       chargeTopInOutOnlyCan.at(partPos) =   new TCanvas( ("chargeTopInOutOnly"+ parName).c_str(), ("chargeTopInOutOnly"+ parName).c_str()) ;
+		       chargeBottomInOutOnlyCan.at(partPos) =  new TCanvas( ("chargeBottomInOutOnly"+ parName).c_str(), ("chargeBottomInOutOnly"+ parName).c_str()) ;
+		       chargeTopOutInCan.at(partPos)=   new TCanvas( ("chargeTopOutIn"+ parName).c_str(), ("chargeTopOutIn"+ parName).c_str()) ;
+		       chargeBottomOutInCan.at(partPos) = new TCanvas( ("chargeBottomOutIn"+ parName).c_str(), ("chargeBottomOutIn"+ parName).c_str()) ;
+
+                       timingErrorTop.at(partPos) = new TH1F( ("timingErrorTop"+ parName).c_str() , ("timingErrorTop"+parName).c_str() , 100, 0, 20 );
+                       timingErrorTopInOut.at(partPos)  = new TH1F( ("timingErrorTopInOut"+ parName).c_str() , ("timingErrorTopInOut"+parName).c_str() , 100, 0, 20 );
+                       timingErrorTopCan.at(partPos) = new TCanvas( ("timingErrorTop"+ parName).c_str() , ("timingErrorTop"+parName).c_str() ) ;
+                       timingErrorTopInOutCan.at(partPos) = new TCanvas( ("timingErrorTopInOut"+ parName).c_str() , ("timingErrorTopInOut"+parName).c_str()  ) ;
+
+
+                   }
+
+                   if(true) //if(subclusterlayerwheel.at(m) == 3)
+                   {
+                       cout << "partition name " << parName << " event count " << eventCount.at(clusterStart) << "layer " << subCTstripChargeLayerwheel.at(clusterStart) << " detid " << subclusterdetid.at(m) << endl;
+                       if(subtsosrhglobalphi.at(m)>0) //top
+                       {
+                           widthTopInOutOnly.at(partPos)->Fill(subCTCmbtimeVtx.at(clusterStart), subCTstripChargeTotWidth.at(clusterStart));
+                           chargeTopInOutOnly.at(partPos)->Fill(subCTCmbtimeVtx.at(clusterStart), subCTstripChargeTotCharge.at(clusterStart));
+                           if(subCTMuontrackDirection.at(clusterStart) > 0)
+                           {
+                               cout << "top In Out "  << endl;
+                               widthTopInOut.at(partPos)->Fill(subCTCmbtimeVtx.at(clusterStart), subCTstripChargeTotWidth.at(clusterStart));
+                               chargeTopInOut.at(partPos)->Fill(subCTCmbtimeVtx.at(clusterStart), subCTstripChargeTotCharge.at(clusterStart));
+                           }
+                           else if(subCTMuontrackDirection.at(clusterStart) < 0)
+                           {
+                               cout << "top Out In "  << endl;
+                               widthTopOutIn.at(partPos)->Fill(subCTCmbtimeVtxr.at(clusterStart), subCTstripChargeTotWidth.at(clusterStart));
+                               chargeTopOutIn.at(partPos)->Fill(subCTCmbtimeVtxr.at(clusterStart), subCTstripChargeTotCharge.at(clusterStart));
+                               timingErrorTop.at(partPos)->Fill(subCTCmbtimeVtxrErr.at(clusterStart));
+                               timingErrorTopInOut.at(partPos)->Fill(subCTCmbtimeVtxErr.at(clusterStart));
+                           }
+                           else
+                               cout << "direction undefined" << endl;
+                       }
+                       else if(subtsosrhglobalphi.at(m)<0)
+                       {
+                           widthBottomInOutOnly.at(partPos)->Fill(subCTCmbtimeVtx.at(clusterStart), subCTstripChargeTotWidth.at(clusterStart));
+                           chargeBottomInOutOnly.at(partPos)->Fill(subCTCmbtimeVtx.at(clusterStart), subCTstripChargeTotCharge.at(clusterStart));
+                           if(subCTMuontrackDirection.at(clusterStart) > 0)
+                           {
+                               cout << "bottom In Out "  << endl;
+                               widthBottomInOut.at(partPos)->Fill(subCTCmbtimeVtx.at(clusterStart), subCTstripChargeTotWidth.at(clusterStart));
+                               chargeBottomInOut.at(partPos)->Fill(subCTCmbtimeVtx.at(clusterStart), subCTstripChargeTotCharge.at(clusterStart));
+                           }
+                           else if(subCTMuontrackDirection.at(clusterStart) < 0)
+                           {
+                               cout << "bottom Out In "  << endl;
+                               widthBottomOutIn.at(partPos)->Fill(subCTCmbtimeVtxr.at(clusterStart), subCTstripChargeTotWidth.at(clusterStart));
+                               chargeBottomOutIn.at(partPos)->Fill(subCTCmbtimeVtxr.at(clusterStart), subCTstripChargeTotCharge.at(clusterStart));
+                           }
+                           else
+                               cout << "direction undefined" << endl;
+
+                       }
+                       else
+                       {
+                           cout << "weird" << endl;
+                       }
+                   }
                }
            }
 
@@ -330,6 +526,77 @@ int main(int argc, char *argv[]){
        narrowTrackSharing2DataCan.at(c)->SaveAs(("output/"+(string)dir+"/"+ narrowTrackSharing2Data.at(c)->GetName()+ ".eps").c_str());
        //c37.SaveAs(("output/"+(string)dir+"/"+  "narrowTrackSharing1.eps").c_str());
        //
+       //
+       
+       
+       widthTopInOutCan.at(c)->cd();
+       widthTopInOut.at(c)->Draw("");
+       widthTopInOutCan.at(c)->SaveAs(("output/"+(string)dir+"/"+ widthTopInOut.at(c)->GetName()+ ".eps").c_str());
+       widthTopInOutCan.at(c)->SaveAs(("output/"+(string)dir+"/"+ widthTopInOut.at(c)->GetName()+ ".root").c_str());
+
+       widthTopInOutOnlyCan.at(c)->cd();
+       widthTopInOutOnly.at(c)->Draw("");
+       widthTopInOutOnlyCan.at(c)->SaveAs(("output/"+(string)dir+"/"+ widthTopInOutOnly.at(c)->GetName()+ ".eps").c_str());
+       widthTopInOutOnlyCan.at(c)->SaveAs(("output/"+(string)dir+"/"+ widthTopInOutOnly.at(c)->GetName()+ ".root").c_str());
+
+       widthTopOutInCan.at(c)->cd();
+       widthTopOutIn.at(c)->Draw("");
+       widthTopOutInCan.at(c)->SaveAs(("output/"+(string)dir+"/"+ widthTopOutIn.at(c)->GetName()+ ".eps").c_str());
+       widthTopOutInCan.at(c)->SaveAs(("output/"+(string)dir+"/"+ widthTopOutIn.at(c)->GetName()+ ".root").c_str());
+
+       widthBottomInOutCan.at(c)->cd();
+       widthBottomInOut.at(c)->Draw("");
+       widthBottomInOutCan.at(c)->SaveAs(("output/"+(string)dir+"/"+ widthBottomInOut.at(c)->GetName()+ ".eps").c_str());
+       widthBottomInOutCan.at(c)->SaveAs(("output/"+(string)dir+"/"+ widthBottomInOut.at(c)->GetName()+ ".root").c_str());
+
+       widthBottomInOutOnlyCan.at(c)->cd();
+       widthBottomInOutOnly.at(c)->Draw("");
+       widthBottomInOutOnlyCan.at(c)->SaveAs(("output/"+(string)dir+"/"+ widthBottomInOutOnly.at(c)->GetName()+ ".eps").c_str());
+       widthBottomInOutOnlyCan.at(c)->SaveAs(("output/"+(string)dir+"/"+ widthBottomInOutOnly.at(c)->GetName()+ ".root").c_str());
+
+       widthBottomOutInCan.at(c)->cd();
+       widthBottomOutIn.at(c)->Draw("");
+       widthBottomOutInCan.at(c)->SaveAs(("output/"+(string)dir+"/"+ widthBottomOutIn.at(c)->GetName()+ ".eps").c_str());
+       widthBottomOutInCan.at(c)->SaveAs(("output/"+(string)dir+"/"+ widthBottomOutIn.at(c)->GetName()+ ".root").c_str());
+
+       chargeTopInOutCan.at(c)->cd();
+       chargeTopInOut.at(c)->Draw("");
+       chargeTopInOutCan.at(c)->SaveAs(("output/"+(string)dir+"/"+ chargeTopInOut.at(c)->GetName()+ ".eps").c_str());
+       chargeTopInOutCan.at(c)->SaveAs(("output/"+(string)dir+"/"+ chargeTopInOut.at(c)->GetName()+ ".root").c_str());
+
+       chargeTopInOutOnlyCan.at(c)->cd();
+       chargeTopInOutOnly.at(c)->Draw("");
+       chargeTopInOutOnlyCan.at(c)->SaveAs(("output/"+(string)dir+"/"+ chargeTopInOutOnly.at(c)->GetName()+ ".eps").c_str());
+       chargeTopInOutOnlyCan.at(c)->SaveAs(("output/"+(string)dir+"/"+ chargeTopInOutOnly.at(c)->GetName()+ ".root").c_str());
+
+       chargeTopOutInCan.at(c)->cd();
+       chargeTopOutIn.at(c)->Draw("");
+       chargeTopOutInCan.at(c)->SaveAs(("output/"+(string)dir+"/"+ chargeTopOutIn.at(c)->GetName()+ ".eps").c_str());
+       chargeTopOutInCan.at(c)->SaveAs(("output/"+(string)dir+"/"+ chargeTopOutIn.at(c)->GetName()+ ".root").c_str());
+
+       chargeBottomInOutCan.at(c)->cd();
+       chargeBottomInOut.at(c)->Draw("");
+       chargeBottomInOutCan.at(c)->SaveAs(("output/"+(string)dir+"/"+ chargeBottomInOut.at(c)->GetName()+ ".eps").c_str());
+       chargeBottomInOutCan.at(c)->SaveAs(("output/"+(string)dir+"/"+ chargeBottomInOut.at(c)->GetName()+ ".root").c_str());
+
+       chargeBottomInOutOnlyCan.at(c)->cd();
+       chargeBottomInOutOnly.at(c)->Draw("");
+       chargeBottomInOutOnlyCan.at(c)->SaveAs(("output/"+(string)dir+"/"+ chargeBottomInOutOnly.at(c)->GetName()+ ".eps").c_str());
+       chargeBottomInOutOnlyCan.at(c)->SaveAs(("output/"+(string)dir+"/"+ chargeBottomInOutOnly.at(c)->GetName()+ ".root").c_str());
+
+       chargeBottomOutInCan.at(c)->cd();
+       chargeBottomOutIn.at(c)->Draw("");
+       chargeBottomOutInCan.at(c)->SaveAs(("output/"+(string)dir+"/"+ chargeBottomOutIn.at(c)->GetName()+ ".eps").c_str());
+       chargeBottomOutInCan.at(c)->SaveAs(("output/"+(string)dir+"/"+ chargeBottomOutIn.at(c)->GetName()+ ".root").c_str());
+
+
+       timingErrorTopCan.at(c)->cd();
+       timingErrorTop.at(c)->DrawNormalized(""); 
+       timingErrorTopInOut.at(c)->SetLineColor(kRed); 
+       timingErrorTopInOut.at(c)->DrawNormalized("same hist"); 
+       timingErrorTopCan.at(c)->SaveAs(("output/"+(string)dir+"/"+ timingErrorTop.at(c)->GetName()+ ".root").c_str());
+       timingErrorTopCan.at(c)->SaveAs(("output/"+(string)dir+"/"+ timingErrorTop.at(c)->GetName()+ ".eps").c_str());
+
        }
 
 

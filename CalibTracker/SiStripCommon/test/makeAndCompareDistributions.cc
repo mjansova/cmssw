@@ -44,6 +44,10 @@
 //Chandi test
 //./makeAndCompareDistributions test_shallowTrackAndClusterNarrowInfoNoPU2016_data.root  test_shallowTrackAndClusterNarrowInfo.rootCT_defstep3.root TOB 0 5 yes chandiTest 
 //
+//cluster width phi dependence
+//./makeAndCompareDistributions test_shallowTrackCRUZET_2017VRmodulePos.root test_shallowTrackCRUZET_2017VRmodulePos.root TOB 0 5 yes CRUZETPhiDep 
+//./makeAndCompareDistributions test_shallowTrackCRUZET_2017VRNewClusteringTimingTestMuonInfo.root test_shallowTrackCRUZET_2017VRNewClusteringTimingTestMuonInfo.root TOB 0 5 yes CRUZETPhiDep 
+//
 #include <fstream>
 #include <iostream>
 #include <vector>
@@ -188,6 +192,10 @@ int main(int argc, char *argv[]){
        vector<float>* clusterstripChargesensorThickness2  = 0;
        vector<float>* clusterstripChargeBdotY = 0;
        vector<float>* clusterstripChargeBdotY2  = 0;
+       vector<float>* tsosrhglobalphi = 0;
+       vector<float>* tsosrhglobalphi2 = 0;
+       vector<float>* CTCmbtimeVtxr = 0;
+       vector<float>* CTCmbtimeVtxr2 = 0;
 
        vector<float> subpartition;
        vector<float> subpartition2;
@@ -243,6 +251,10 @@ int main(int argc, char *argv[]){
        vector<float> subclusterstripChargesensorThickness2;
        vector<float> subclusterstripChargeBdotY;
        vector<float> subclusterstripChargeBdotY2;
+       vector<float> subtsosrhglobalphi;
+       vector<float> subtsosrhglobalphi2;
+       vector<float> subCTCmbtimeVtxr;
+       vector<float> subCTCmbtimeVtxr2;
 
 
        t1->SetBranchAddress("clustersubdetid",  &partition );
@@ -273,6 +285,8 @@ int main(int argc, char *argv[]){
        t1->SetBranchAddress("clusterstripChargelocalpitch",  &clusterstripChargelocalpitch );
        t1->SetBranchAddress("clusterstripChargesensorThickness",  &clusterstripChargesensorThickness );
        t1->SetBranchAddress("clusterstripChargeBdotY",  &clusterstripChargeBdotY );
+       t1->SetBranchAddress("tsosrhglobalphi",  &tsosrhglobalphi );
+       t1->SetBranchAddress("CTCmbtimeVtxr",  &CTCmbtimeVtxr );
 
        t2->SetBranchAddress("clustersubdetid",  &partition2 );
        t2->SetBranchAddress("clustercharge",  &clustercharge2 );
@@ -302,6 +316,8 @@ int main(int argc, char *argv[]){
        t2->SetBranchAddress("clusterstripChargelocalpitch",  &clusterstripChargelocalpitch2 );
        t2->SetBranchAddress("clusterstripChargesensorThickness",  &clusterstripChargesensorThickness2 );
        t2->SetBranchAddress("clusterstripChargeBdotY",  &clusterstripChargeBdotY2 );
+       t2->SetBranchAddress("tsosrhglobalphi",  &tsosrhglobalphi2 );
+       t2->SetBranchAddress("CTCmbtimeVtxr",  &CTCmbtimeVtxr2 );
 
    //data always first
     
@@ -337,6 +353,8 @@ int main(int argc, char *argv[]){
                        subtsoslocalpitch.push_back(tsoslocalpitch->at(k));
                        subclustersensorThickness.push_back(clustersensorThickness->at(k));
                        subtsosBdotY.push_back(tsosBdotY->at(k));
+                       subtsosrhglobalphi.push_back(tsosrhglobalphi->at(k));
+                       subCTCmbtimeVtxr.push_back(CTCmbtimeVtxr->at(k));
                    }
                }
            }
@@ -397,6 +415,8 @@ int main(int argc, char *argv[]){
                        subtsoslocalpitch2.push_back(tsoslocalpitch2->at(k));
                        subclustersensorThickness2.push_back(clustersensorThickness2->at(k));
                        subtsosBdotY2.push_back(tsosBdotY2->at(k));
+                       subtsosrhglobalphi2.push_back(tsosrhglobalphi2->at(k));
+                       subCTCmbtimeVtxr2.push_back(CTCmbtimeVtxr2->at(k));
                    }
                }
            }
@@ -476,17 +496,44 @@ int main(int argc, char *argv[]){
        TH1F* narrowTrackClusterWidthData = new TH1F("narrowTrackClusterWidthData","narrowTrackClusterWidthData", 10, 0, 10);         
        TH1F* narrowTrackClusterWidthMC = new TH1F("narrowTrackClusterWidthMC","narrowTrackClusterWidthMC", 10, 0, 10);         
 
+       
+       TH1F* clusterWidthForTopModules = new TH1F("clusterWidthForTopModules","clusterWidthForTopModules", 10, 0, 10);         
+       TH1F* clusterWidthForBottomModules = new TH1F("clusterWidthForBottomModules","clusterWidthForBottomModules", 10, 0, 10);         
+       TH1F* nrclusterWidthForTopModules = new TH1F("nrclusterWidthForTopModules","nrclusterWidthForTopModules", 4, 0, 4);         
+       TH1F* nrclusterWidthForBottomModules = new TH1F("nrclusterWidthForBottomModules","nrclusterWidthForBottomModules", 4, 0, 4);         
+       TH1F* chargeclusterWidthForTopModules = new TH1F("chargeclusterWidthForTopModules","chargeclusterWidthForTopModules", 50, 0, 500);         
+       TH1F* chargeclusterWidthForBottomModules = new TH1F("chargeclusterWidthForBottomModules","chargeclusterWidthForBottomModules", 50, 0, 500);         
+       
+       TProfile* clusterWidthAsFceOfTimingTop = new TProfile("clusterWidthAsFceOfTimingTop", "clusterWidthAsFceOfTimingTop" , 200, -100, 100, 0, 10 );
+       TProfile* clusterWidthAsFceOfTimingBottom = new TProfile("clusterWidthAsFceOfTimingBottom", "clusterWidthAsFceOfTimingBottom" , 200, -100, 100, 0, 10 );
+       TProfile* clusterChargeAsFceOfTimingTop = new TProfile("clusterChargeAsFceOfTimingTop", "clusterChargeAsFceOfTimingTop" , 200, -100, 100, 0, 1000 );
+       TProfile* clusterChargeAsFceOfTimingBottom = new TProfile("clusterChargeAsFceOfTimingBottom", "clusterChargeAsFceOfTimingBottom" , 200, -100, 100, 0, 1000 );
+
     cout << "in here 2"  << endl;
        for(uint32_t m = 0; m<subclustercharge.size(); m++)
        {
            chargeForAllWidthsData->Fill(subclustercharge.at(m));
            chargeVsWidthData->Fill(subclustercharge.at(m), subclusterwidth.at(m));
            
+
+ 
            int factor = subtsosBdotY.at(m) > 0 ? 1 : -1;
 
            if( abs(tan(subtsoslocaltheta.at(m))*cos(subtsoslocalphi.at(m))) < narrowness*(subtsoslocalpitch.at(m)/subclustersensorThickness.at(m)) )
            {
                narrowTrackClusterWidthData->Fill(subclusterwidth.at(m));         
+               if(subtsosrhglobalphi.at(m)>0)
+               {
+                   clusterWidthForTopModules->Fill(subclusterwidth.at(m));
+                   chargeclusterWidthForTopModules->Fill(subclustercharge.at(m));
+                   nrclusterWidthForTopModules->Fill(1);
+                   if(subclusterlayerwheel.at(m) == 3)
+                   {
+                       clusterWidthAsFceOfTimingTop->Fill( subCTCmbtimeVtxr.at(m),subclusterwidth.at(m));
+                       clusterChargeAsFceOfTimingTop->Fill(subCTCmbtimeVtxr.at(m) ,subclustercharge.at(m));
+                  }
+
+               }
            }
 
            if(subclusterlayerwheel.at(m) == 3)
@@ -549,6 +596,17 @@ int main(int argc, char *argv[]){
            if( abs(tan(subtsoslocaltheta2.at(m))*cos(subtsoslocalphi2.at(m))) < narrowness*(subtsoslocalpitch2.at(m)/subclustersensorThickness2.at(m)) )
            {
                narrowTrackClusterWidthMC->Fill(subclusterwidth2.at(m));         
+               if(subtsosrhglobalphi2.at(m)<0)
+               {
+                   clusterWidthForBottomModules->Fill(subclusterwidth2.at(m));
+                   chargeclusterWidthForBottomModules->Fill(subclustercharge2.at(m));
+                   nrclusterWidthForBottomModules->Fill(2);
+                   if(subclusterlayerwheel2.at(m) == 3)
+                   {
+                       clusterWidthAsFceOfTimingBottom->Fill( subCTCmbtimeVtxr2.at(m),subclusterwidth2.at(m));
+                       clusterChargeAsFceOfTimingBottom->Fill(subCTCmbtimeVtxr2.at(m) ,subclustercharge2.at(m));
+                  }
+               }
            }
 
            if(subclusterlayerwheel2.at(m) == 3)
@@ -1474,6 +1532,16 @@ int main(int argc, char *argv[]){
        narrowTrackSharing2Data->SetMarkerColor(kBlack);
 
        chargeForAllWidthsMC->SetTitle("");
+       clusterWidthForBottomModules->SetTitle("");
+       clusterWidthForTopModules->SetTitle("");
+       nrclusterWidthForBottomModules->SetTitle("");
+       nrclusterWidthForTopModules->SetTitle("");
+       chargeclusterWidthForBottomModules->SetTitle("");
+       chargeclusterWidthForTopModules->SetTitle("");
+       clusterWidthAsFceOfTimingTop->SetTitle("");
+       clusterChargeAsFceOfTimingTop->SetTitle("");
+       clusterWidthAsFceOfTimingBottom->SetTitle("");
+       clusterChargeAsFceOfTimingBottom->SetTitle("");
        chargeForWidth1Data->SetTitle("");
        chargeForWidth2Data->SetTitle("");
        chargeForWidth3Data->SetTitle("");
@@ -1533,6 +1601,12 @@ int main(int argc, char *argv[]){
        narrowTrackSharing2Data->SetTitle("");
 
        chargeForAllWidthsMC->GetXaxis()->SetTitle("cluster charge");
+       clusterWidthForTopModules->GetXaxis()->SetTitle("cluster width");
+       chargeclusterWidthForTopModules->GetXaxis()->SetTitle("cluster charge");
+       clusterWidthAsFceOfTimingTop->GetXaxis()->SetTitle("cluster width");
+       clusterChargeAsFceOfTimingTop->GetXaxis()->SetTitle("cluster charge");
+       clusterWidthAsFceOfTimingBottom->GetXaxis()->SetTitle("cluster width");
+       clusterChargeAsFceOfTimingBottom->GetXaxis()->SetTitle("cluster charge");
        chargeForWidth1Data->GetXaxis()->SetTitle("cluster charge (cluster width=1)");
        chargeForWidth2Data->GetXaxis()->SetTitle("cluster charge (cluster width=2)");
        chargeForWidth3Data->GetXaxis()->SetTitle("cluster charge (cluster width=3)");
@@ -1582,6 +1656,7 @@ int main(int argc, char *argv[]){
        narrowTrackSharing2Data->GetXaxis()->SetTitle("#eta #pm 2");
 
        chargeForAllWidthsData->SetMaximum(1.5*  (chargeForAllWidthsData->GetMaximum()));
+       clusterWidthForTopModules->SetMaximum(1.5* (clusterWidthForTopModules->GetMaximum()));
        chargeForWidth1Data->SetMaximum(2* chargeForWidth1Data->GetMaximum()  );
        tanThetaLorForWidth1Data->SetMaximum(2* tanThetaLorForWidth1Data->GetMaximum()  );
        chargeForWidth2Data->SetMaximum(1.5* chargeForWidth2Data->GetMaximum() );
@@ -1626,6 +1701,12 @@ int main(int argc, char *argv[]){
        clusterShape7DataPositive->SetMaximum(1.5*  clusterShape7DataPositive->GetMaximum());
 
        chargeForAllWidthsMC->SetLineColor(kRed);
+       clusterWidthForTopModules->SetLineColor(kBlue);
+       clusterWidthForBottomModules->SetLineColor(kRed);
+       nrclusterWidthForTopModules->SetLineColor(kBlue);
+       nrclusterWidthForBottomModules->SetLineColor(kRed);
+       chargeclusterWidthForTopModules->SetLineColor(kBlue);
+       chargeclusterWidthForBottomModules->SetLineColor(kRed);
        chargeForWidth1MC->SetLineColor(kRed);
        chargeForWidth2MC->SetLineColor(kRed);
        chargeForWidth3MC->SetLineColor(kRed);
@@ -2138,6 +2219,47 @@ int main(int argc, char *argv[]){
        clusterShapeMCNegativeChandiCorr->DrawNormalized("same hist e");
        c39NegativeCorr.SaveAs(("output/"+(string)dir+"/"+ (string)subDet+ "clusterShapeNegativeChandiCorr.root").c_str());
        c39NegativeCorr.SaveAs(("output/"+(string)dir+"/"+ (string)subDet+ "clusterShapeNegativeChandiCorr.eps").c_str());
+
+
+       TCanvas c40("clusterWidthForTopBotModules","clusterWidthForTopBotModules");
+       clusterWidthForTopModules->DrawNormalized("hist e");
+       clusterWidthForBottomModules->DrawNormalized("same hist e");
+       c40.SaveAs(("output/"+(string)dir+"/"+ (string)subDet+ "clusterWidthForTopBotModules.root").c_str());
+       c40.SaveAs(("output/"+(string)dir+"/"+ (string)subDet+ "clusterWidthForTopBotModules.eps").c_str());
+
+       TCanvas c41("nrclusterWidthForTopBotModules","nrclusterWidthForTopBotModules");
+       nrclusterWidthForTopModules->Draw("hist");
+       nrclusterWidthForBottomModules->Draw("same hist");
+       c41.SaveAs(("output/"+(string)dir+"/"+ (string)subDet+ "nrclusterWidthForTopBotModules.root").c_str());
+       c41.SaveAs(("output/"+(string)dir+"/"+ (string)subDet+ "nrclusterWidthForTopBotModules.eps").c_str());
+
+       TCanvas c42("chargeclusterWidthForTopBotModules","chargeclusterWidthForTopBotModules");
+       chargeclusterWidthForTopModules->DrawNormalized("hist e");
+       chargeclusterWidthForBottomModules->DrawNormalized("same hist e");
+       c42.SaveAs(("output/"+(string)dir+"/"+ (string)subDet+ "chargeclusterWidthForTopBotModules.root").c_str());
+       c42.SaveAs(("output/"+(string)dir+"/"+ (string)subDet+ "chargeclusterWidthForTopBotModules.eps").c_str());
+
+       TCanvas c43("clusterWidthAsFceOfTimingTop","clusterWidthAsFceOfTimingTop");
+       clusterWidthAsFceOfTimingTop->Draw();
+       c43.SaveAs(("output/"+(string)dir+"/"+ (string)subDet+ "clusterWidthAsFceOfTimingTop.root").c_str());
+       c43.SaveAs(("output/"+(string)dir+"/"+ (string)subDet+ "clusterWidthAsFceOfTimingTop.eps").c_str());
+
+       TCanvas c44("clusterChargeAsFceOfTimingTop","clusterChargeAsFceOfTimingTop");
+       clusterChargeAsFceOfTimingTop->Draw();
+       c44.SaveAs(("output/"+(string)dir+"/"+ (string)subDet+ "clusterChargeAsFceOfTimingTop.root").c_str());
+       c44.SaveAs(("output/"+(string)dir+"/"+ (string)subDet+ "clusterChargeAsFceOfTimingTop.eps").c_str());
+
+       TCanvas c43b("clusterWidthAsFceOfTimingBottom","clusterWidthAsFceOfTimingBottom");
+       clusterWidthAsFceOfTimingBottom->Draw();
+       c43b.SaveAs(("output/"+(string)dir+"/"+ (string)subDet+ "clusterWidthAsFceOfTimingBottom.root").c_str());
+       c43b.SaveAs(("output/"+(string)dir+"/"+ (string)subDet+ "clusterWidthAsFceOfTimingBottom.eps").c_str());
+
+       TCanvas c44b("clusterChargeAsFceOfTimingBottom","clusterChargeAsFceOfTimingBottom");
+       clusterChargeAsFceOfTimingBottom->Draw();
+       c44b.SaveAs(("output/"+(string)dir+"/"+ (string)subDet+ "clusterChargeAsFceOfTimingBottom.root").c_str());
+       c44b.SaveAs(("output/"+(string)dir+"/"+ (string)subDet+ "clusterChargeAsFceOfTimingBottom.eps").c_str());
+
+
       /////////////////////////////////////////////////////
 
 

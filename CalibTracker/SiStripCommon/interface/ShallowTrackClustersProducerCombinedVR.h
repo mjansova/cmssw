@@ -2,6 +2,23 @@
 #define SHALLOW_TRACKCLUSTERS_PRODUCER_COMBINED_VR
 
 #include "FWCore/Framework/interface/EDProducer.h"
+
+#include "SimDataFormats/Track/interface/SimTrack.h"
+#include "SimDataFormats/Track/interface/SimTrackContainer.h"
+#include "DataFormats/TrackReco/interface/Track.h"
+#include "DataFormats/TrackReco/interface/TrackFwd.h"
+#include "DataFormats/TrackReco/interface/TrackExtraFwd.h"
+#include "DataFormats/TrackReco/interface/TrackToTrackMap.h"
+#include "DataFormats/MuonReco/interface/MuonTimeExtra.h"
+#include "DataFormats/MuonReco/interface/MuonTimeExtraMap.h"
+
+#include "TrackingTools/TransientTrack/interface/TransientTrack.h"
+#include "DataFormats/DTRecHit/interface/DTRecSegment4DCollection.h"
+#include "DataFormats/DTRecHit/interface/DTRecHitCollection.h"
+#include "DataFormats/CSCRecHit/interface/CSCSegmentCollection.h"
+#include "DataFormats/MuonReco/interface/Muon.h"
+#include "DataFormats/MuonReco/interface/MuonFwd.h"
+
 #include "FWCore/Framework/interface/Frameworkfwd.h"
 #include "FWCore/Utilities/interface/InputTag.h"
 #include "DataFormats/Common/interface/DetSetVectorNew.h"
@@ -15,6 +32,7 @@
 #include "MagneticField/Records/interface/IdealMagneticFieldRecord.h"
 #include "DataFormats/Common/interface/TriggerResults.h"
 
+#include "Geometry/DTGeometry/interface/DTGeometry.h"
 #include "DataFormats/SiStripCluster/interface/SiStripCluster.h"
 #include "DataFormats/SiStripDigi/interface/SiStripRawDigi.h"
 
@@ -43,6 +61,8 @@ class SiStripClusterInfo;
 class SiStripProcessedRawDigi;
 class TrackerTopology;
 class SiStripLorentzAngle;
+class MuonServiceProxy;
+class DTGeometry;
 
 class ShallowTrackClustersProducerCombinedVR : public edm::EDProducer {
 public:
@@ -52,6 +72,10 @@ private:
   const edm::EDGetTokenT<TrajTrackAssociationCollection> association_token_;
   const edm::EDGetTokenT< edmNew::DetSetVector<SiStripCluster> > clusters_token_;
   edm::EDGetTokenT<std::vector<reco::Vertex> >          theVertexToken_;
+  edm::EDGetTokenT<reco::MuonTimeExtraMap> CombinedTimeTokens_;
+  edm::EDGetTokenT<reco::MuonTimeExtraMap> DtTimeTokens_;
+  edm::EDGetTokenT<reco::MuonTimeExtraMap> CscTimeTokens_;
+  edm::EDGetTokenT<std::vector<reco::Muon> > MuonTokens_;
   edm::EDGetTokenT<edm::DetSetVector<SiStripProcessedRawDigi> > theDigisToken_;
   edm::EDGetTokenT<edm::DetSetVector<SiStripRawDigi> > theRawDigisToken_;
   edm::EDGetTokenT<edm::DetSetVector<SiStripProcessedRawDigi> >  theCMNToken_;
@@ -65,6 +89,11 @@ private:
   edm::ESHandle<SiStripLorentzAngle> lorentzAngleHandle;
   const std::string lorentzAngleName;
   bool isData;
+
+  edm::Handle<std::vector<reco::Muon> > MuCollection;
+  edm::Handle<reco::MuonTimeExtraMap> timeMap1;
+  edm::Handle<reco::MuonTimeExtraMap> timeMap2;
+  edm::Handle<reco::MuonTimeExtraMap> timeMap3;
 
   edm::Service<TFileService> fs_;
   TH1F* h1RawDigis_ = NULL;

@@ -360,15 +360,15 @@ gROOT->ForceStyle();
     //cout << "in here 1.3"  << endl;
        float end = varTot.at(h).at(size1) > varTotT2.at(0).at(h).at(size2) ? varTot.at(h).at(size1) : varTotT2.at(0).at(h).at(size2);
     //cout << "in here 1.4"  << endl;
-       hists.at(h) = new TH1F(observables.at(h).c_str(), observables.at(h).c_str(), 1000, start, end );
-       //hists.at(h) = new TH1F(observables.at(h).c_str(), observables.at(h).c_str(), 100, 5, 10 );
+      // hists.at(h) = new TH1F(observables.at(h).c_str(), observables.at(h).c_str(), 1000, start, end );
+       hists.at(h) = new TH1F(observables.at(h).c_str(), observables.at(h).c_str(), 10, 0, 10 );
     //cout << "in here 1.5"  << endl;
        
        for(uint32_t t=0;t<t2.size();t++)
        {
            histsT2.at(t).resize(varTotT2.at(t).size());
-           histsT2.at(t).at(h) = new TH1F((observables.at(h)+"T2").c_str(), (observables.at(h)+"T2").c_str(), 1000, start, end );
-           //histsT2.at(t).at(h) = new TH1F((observables.at(h)+"T2").c_str(), (observables.at(h)+"T2").c_str(), 100, 5, 10 );
+           //histsT2.at(t).at(h) = new TH1F((observables.at(h)+"T2").c_str(), (observables.at(h)+"T2").c_str(), 1000, start, end );
+           histsT2.at(t).at(h) = new TH1F((observables.at(h)+"T2").c_str(), (observables.at(h)+"T2").c_str(), 10, 0, 10 );
        }
 
     cout << "in here 2"  << endl;
@@ -401,7 +401,7 @@ gROOT->ForceStyle();
        hists.at(h)->GetXaxis()->SetTitle(observables.at(h).c_str());
        hists.at(h)->GetYaxis()->SetTitle("entries");
        float maxm = hists.at(h)->GetMaximum();
-       hists.at(h)->SetMaximum(3*maxm);
+       hists.at(h)->SetMaximum(1.5*maxm);
        hists.at(h)->SetTitle("");
        //hists.at(h)->Draw("*H");
        hists.at(h)->Draw("P");
@@ -449,8 +449,8 @@ gROOT->ForceStyle();
        cout << "hist " << h << " drawn" << endl; 
 
        c.Update();
-       c.SaveAs(("output/"+(string)dir+"/"+observables.at(h) + (string)subDet + ".root").c_str());
-       //c.SaveAs(("output/"+(string)dir+"/"+observables.at(h) + (string)subDet + ".eps").c_str());
+       //c.SaveAs(("output/"+(string)dir+"/"+observables.at(h) + (string)subDet + ".root").c_str());
+       c.SaveAs(("output/"+(string)dir+"/"+observables.at(h) + (string)subDet + ".eps").c_str());
        //delete histD; //do i need that actually?!
    }
 

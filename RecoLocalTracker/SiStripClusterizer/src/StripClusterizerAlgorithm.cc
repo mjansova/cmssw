@@ -26,7 +26,9 @@ initialize(const edm::EventSetup& es) {
   uint32_t n_cache_id = es.get<SiStripNoisesRcd>().cacheIdentifier();
   uint32_t g_cache_id = es.get<SiStripGainRcd>().cacheIdentifier();
   uint32_t q_cache_id = es.get<SiStripQualityRcd>().cacheIdentifier();
-
+ 
+  std::cout << "in StripClusterizerAlgorithm "<< std::endl;
+  
   bool mod=false;
   if(g_cache_id != gain_cache_id) {
     es.get<SiStripGainRcd>().get( gainHandle );

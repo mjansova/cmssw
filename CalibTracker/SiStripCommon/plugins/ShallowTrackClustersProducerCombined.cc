@@ -92,6 +92,8 @@ ShallowTrackClustersProducerCombined::ShallowTrackClustersProducerCombined(const
   produces <std::vector<float> >        ( Suffix + "rhglobalx"     );   
   produces <std::vector<float> >        ( Suffix + "rhglobaly"     );   
   produces <std::vector<float> >        ( Suffix + "rhglobalz"     );
+  produces <std::vector<float> >        ( Suffix + "rhglobaltheta"     );
+  produces <std::vector<float> >        ( Suffix + "rhglobalphi"     );
   produces <std::vector<float> >        ( Suffix + "rhstrip"       );   
   produces <std::vector<float> >        ( Suffix + "rhmerr"        );   
 
@@ -228,6 +230,8 @@ produce(edm::Event& iEvent, const edm::EventSetup& iSetup) {
   auto  rhglobalx    = std::make_unique<std::vector<float>>(); rhglobalx  ->reserve(size);  
   auto  rhglobaly    = std::make_unique<std::vector<float>>(); rhglobaly  ->reserve(size);  
   auto  rhglobalz    = std::make_unique<std::vector<float>>(); rhglobalz  ->reserve(size);  
+  auto  rhglobaltheta    = std::make_unique<std::vector<float>>(); rhglobaltheta  ->reserve(size);  
+  auto  rhglobalphi    = std::make_unique<std::vector<float>>(); rhglobalphi  ->reserve(size);  
   auto  rhstrip      = std::make_unique<std::vector<float>>(); rhstrip    ->reserve(size);  
   auto  rhmerr       = std::make_unique<std::vector<float>>(); rhmerr     ->reserve(size);  
   auto  ubstrip      = std::make_unique<std::vector<float>>(); ubstrip    ->reserve(size);  
@@ -535,6 +539,8 @@ produce(edm::Event& iEvent, const edm::EventSetup& iSetup) {
 				rhglobalx->push_back(   theStripDet->toGlobal(hit->localPosition()).x() );
 				rhglobaly->push_back(   theStripDet->toGlobal(hit->localPosition()).y() );
 				rhglobalz->push_back(   theStripDet->toGlobal(hit->localPosition()).z() );
+				rhglobaltheta->push_back(   theStripDet->toGlobal(hit->localPosition()).theta() );
+				rhglobalphi->push_back(   theStripDet->toGlobal(hit->localPosition()).phi() );
 				rhstrip->push_back(     theStripDet->specificTopology().strip(hit->localPosition()) );
 				rhmerr->push_back(      sqrt(theStripDet->specificTopology().measurementError(hit->localPosition(), hit->localPositionError()).uu()) );
 				ubstrip->push_back(     theStripDet->specificTopology().strip(unbiased.localPosition()) );
@@ -595,6 +601,8 @@ produce(edm::Event& iEvent, const edm::EventSetup& iSetup) {
   iEvent.put(std::move(rhglobalx),   Suffix + "rhglobalx"    );   
   iEvent.put(std::move(rhglobaly),   Suffix + "rhglobaly"    );   
   iEvent.put(std::move(rhglobalz),   Suffix + "rhglobalz"    );   
+  iEvent.put(std::move(rhglobaltheta),   Suffix + "rhglobaltheta"    );   
+  iEvent.put(std::move(rhglobalphi),   Suffix + "rhglobalphi"    );   
   iEvent.put(std::move(rhstrip),     Suffix + "rhstrip"      );   
   iEvent.put(std::move(rhmerr),      Suffix + "rhmerr"       );   
   iEvent.put(std::move(ubstrip),     Suffix + "ubstrip"      );   

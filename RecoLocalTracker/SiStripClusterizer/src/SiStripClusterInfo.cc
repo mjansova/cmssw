@@ -18,6 +18,7 @@ SiStripClusterInfo::SiStripClusterInfo(const SiStripCluster& cluster,
     es(setup),
     qualityLabel(quality),
     detId_(detId) {
+  std::cout << " in SiStripClusterInfo::SiStripClusterInfo " << std::endl;
   es.get<SiStripNoisesRcd>().get(noiseHandle);
   es.get<SiStripGainRcd>().get(gainHandle);
   es.get<SiStripQualityRcd>().get(qualityLabel,qualityHandle);
@@ -53,10 +54,13 @@ stripNoisesRescaledByGain() const {
   SiStripNoises::Range detNoiseRange = noiseHandle->getRange(detId_);
   SiStripApvGain::Range detGainRange = gainHandle->getRange(detId_);
 
+  std::cout << "stripNoisesRescaledByGain; detId " << detId_ << std::endl;
+
   std::vector<float> results;
   results.reserve(width());
   for(size_t i = 0, e = width(); i < e; i++){
     results.push_back(noiseHandle->getNoise(firstStrip()+i, detNoiseRange) / gainHandle->getStripGain( firstStrip()+i, detGainRange));
+    std::cout << "strip " << i << " noiseToGain value " << results.at(i) << "; noise " << noiseHandle->getNoise(firstStrip()+i, detNoiseRange) << "; gain " << gainHandle->getStripGain( firstStrip()+i, detGainRange) << std::endl;
   }
   return results;
 }

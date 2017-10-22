@@ -4,10 +4,96 @@ import sys
 
 
 #process.source.fileNames = cms.untracked.vstring('file:step3CRUZET.root') #0T gen
-process.source.fileNames = cms.untracked.vstring('file:CRUZETVR/step3HICMN_RAW2DIGI_L1Reco_RECO.root') #0T gen
+#process.source.fileNames = cms.untracked.vstring('file:CRUZETVR/step3HICMN_RAW2DIGI_L1Reco_RECO.root') #0T gen
 #process.source.fileNames = cms.untracked.vstring('file:CTcruzet_0.805step3.root') #0T gen
 #process.source.fileNames = cms.untracked.vstring('root://cms-xrd-global.cern.ch//store/data/Run2017B/Cosmics/RECO/PromptReco-v1/000/298/211/00000/46EABE1D-5663-E711-B53F-02163E0142C5.root')
 #process.source.fileNames = cms.untracked.vstring('root://sbgse1.in2p3.fr//dpm/in2p3.fr/home/cms/phedex/store/user/mjansova/simu/CRUZET_VR_RECO/ParkingCosmicsVirginRaw1/Run2017D_v1_RAW/170926_111331/0000/merged/merged_1.root') #VR CRUZET Sep 2017
+
+
+process.source.fileNames = cms.untracked.vstring(
+'root://sbgse1.in2p3.fr//dpm/in2p3.fr/home/cms/phedex/store/user/mjansova/simu/CRUZET_VR_RECO_CT/ParkingCosmicsVirginRaw1/Run2017D_v1_RAW/171013_141134/0000/step3HICMN_RAW2DIGI_L1Reco_RECO_1.root',
+'root://sbgse1.in2p3.fr//dpm/in2p3.fr/home/cms/phedex/store/user/mjansova/simu/CRUZET_VR_RECO_CT/ParkingCosmicsVirginRaw1/Run2017D_v1_RAW/171013_141134/0000/step3HICMN_RAW2DIGI_L1Reco_RECO_2.root',
+'root://sbgse1.in2p3.fr//dpm/in2p3.fr/home/cms/phedex/store/user/mjansova/simu/CRUZET_VR_RECO_CT/ParkingCosmicsVirginRaw1/Run2017D_v1_RAW/171013_141134/0000/step3HICMN_RAW2DIGI_L1Reco_RECO_3.root',
+'root://sbgse1.in2p3.fr//dpm/in2p3.fr/home/cms/phedex/store/user/mjansova/simu/CRUZET_VR_RECO_CT/ParkingCosmicsVirginRaw1/Run2017D_v1_RAW/171013_141134/0000/step3HICMN_RAW2DIGI_L1Reco_RECO_4.root',
+'root://sbgse1.in2p3.fr//dpm/in2p3.fr/home/cms/phedex/store/user/mjansova/simu/CRUZET_VR_RECO_CT/ParkingCosmicsVirginRaw1/Run2017D_v1_RAW/171013_141134/0000/step3HICMN_RAW2DIGI_L1Reco_RECO_5.root',
+'root://sbgse1.in2p3.fr//dpm/in2p3.fr/home/cms/phedex/store/user/mjansova/simu/CRUZET_VR_RECO_CT/ParkingCosmicsVirginRaw1/Run2017D_v1_RAW/171013_141134/0000/step3HICMN_RAW2DIGI_L1Reco_RECO_6.root',
+'root://sbgse1.in2p3.fr//dpm/in2p3.fr/home/cms/phedex/store/user/mjansova/simu/CRUZET_VR_RECO_CT/ParkingCosmicsVirginRaw1/Run2017D_v1_RAW/171013_141134/0000/step3HICMN_RAW2DIGI_L1Reco_RECO_7.root',
+'root://sbgse1.in2p3.fr//dpm/in2p3.fr/home/cms/phedex/store/user/mjansova/simu/CRUZET_VR_RECO_CT/ParkingCosmicsVirginRaw1/Run2017D_v1_RAW/171013_141134/0000/step3HICMN_RAW2DIGI_L1Reco_RECO_8.root',
+'root://sbgse1.in2p3.fr//dpm/in2p3.fr/home/cms/phedex/store/user/mjansova/simu/CRUZET_VR_RECO_CT/ParkingCosmicsVirginRaw1/Run2017D_v1_RAW/171013_141134/0000/step3HICMN_RAW2DIGI_L1Reco_RECO_9.root',
+'root://sbgse1.in2p3.fr//dpm/in2p3.fr/home/cms/phedex/store/user/mjansova/simu/CRUZET_VR_RECO_CT/ParkingCosmicsVirginRaw1/Run2017D_v1_RAW/171013_141134/0000/step3HICMN_RAW2DIGI_L1Reco_RECO_10.root',
+'root://sbgse1.in2p3.fr//dpm/in2p3.fr/home/cms/phedex/store/user/mjansova/simu/CRUZET_VR_RECO_CT/ParkingCosmicsVirginRaw1/Run2017D_v1_RAW/171013_141134/0000/step3HICMN_RAW2DIGI_L1Reco_RECO_11.root',
+'root://sbgse1.in2p3.fr//dpm/in2p3.fr/home/cms/phedex/store/user/mjansova/simu/CRUZET_VR_RECO_CT/ParkingCosmicsVirginRaw1/Run2017D_v1_RAW/171013_141134/0000/step3HICMN_RAW2DIGI_L1Reco_RECO_12.root',
+'root://sbgse1.in2p3.fr//dpm/in2p3.fr/home/cms/phedex/store/user/mjansova/simu/CRUZET_VR_RECO_CT/ParkingCosmicsVirginRaw1/Run2017D_v1_RAW/171013_141134/0000/step3HICMN_RAW2DIGI_L1Reco_RECO_13.root',
+'root://sbgse1.in2p3.fr//dpm/in2p3.fr/home/cms/phedex/store/user/mjansova/simu/CRUZET_VR_RECO_CT/ParkingCosmicsVirginRaw1/Run2017D_v1_RAW/171013_141134/0000/step3HICMN_RAW2DIGI_L1Reco_RECO_14.root',
+'root://sbgse1.in2p3.fr//dpm/in2p3.fr/home/cms/phedex/store/user/mjansova/simu/CRUZET_VR_RECO_CT/ParkingCosmicsVirginRaw1/Run2017D_v1_RAW/171013_141134/0000/step3HICMN_RAW2DIGI_L1Reco_RECO_15.root',
+'root://sbgse1.in2p3.fr//dpm/in2p3.fr/home/cms/phedex/store/user/mjansova/simu/CRUZET_VR_RECO_CT/ParkingCosmicsVirginRaw1/Run2017D_v1_RAW/171013_141134/0000/step3HICMN_RAW2DIGI_L1Reco_RECO_16.root',
+'root://sbgse1.in2p3.fr//dpm/in2p3.fr/home/cms/phedex/store/user/mjansova/simu/CRUZET_VR_RECO_CT/ParkingCosmicsVirginRaw1/Run2017D_v1_RAW/171013_141134/0000/step3HICMN_RAW2DIGI_L1Reco_RECO_17.root',
+'root://sbgse1.in2p3.fr//dpm/in2p3.fr/home/cms/phedex/store/user/mjansova/simu/CRUZET_VR_RECO_CT/ParkingCosmicsVirginRaw1/Run2017D_v1_RAW/171013_141134/0000/step3HICMN_RAW2DIGI_L1Reco_RECO_18.root',
+'root://sbgse1.in2p3.fr//dpm/in2p3.fr/home/cms/phedex/store/user/mjansova/simu/CRUZET_VR_RECO_CT/ParkingCosmicsVirginRaw1/Run2017D_v1_RAW/171013_141134/0000/step3HICMN_RAW2DIGI_L1Reco_RECO_19.root',
+'root://sbgse1.in2p3.fr//dpm/in2p3.fr/home/cms/phedex/store/user/mjansova/simu/CRUZET_VR_RECO_CT/ParkingCosmicsVirginRaw1/Run2017D_v1_RAW/171013_141134/0000/step3HICMN_RAW2DIGI_L1Reco_RECO_20.root',
+'root://sbgse1.in2p3.fr//dpm/in2p3.fr/home/cms/phedex/store/user/mjansova/simu/CRUZET_VR_RECO_CT/ParkingCosmicsVirginRaw1/Run2017D_v1_RAW/171013_141134/0000/step3HICMN_RAW2DIGI_L1Reco_RECO_21.root',
+'root://sbgse1.in2p3.fr//dpm/in2p3.fr/home/cms/phedex/store/user/mjansova/simu/CRUZET_VR_RECO_CT/ParkingCosmicsVirginRaw1/Run2017D_v1_RAW/171013_141134/0000/step3HICMN_RAW2DIGI_L1Reco_RECO_22.root',
+'root://sbgse1.in2p3.fr//dpm/in2p3.fr/home/cms/phedex/store/user/mjansova/simu/CRUZET_VR_RECO_CT/ParkingCosmicsVirginRaw1/Run2017D_v1_RAW/171013_141134/0000/step3HICMN_RAW2DIGI_L1Reco_RECO_23.root',
+'root://sbgse1.in2p3.fr//dpm/in2p3.fr/home/cms/phedex/store/user/mjansova/simu/CRUZET_VR_RECO_CT/ParkingCosmicsVirginRaw1/Run2017D_v1_RAW/171013_141134/0000/step3HICMN_RAW2DIGI_L1Reco_RECO_24.root',
+'root://sbgse1.in2p3.fr//dpm/in2p3.fr/home/cms/phedex/store/user/mjansova/simu/CRUZET_VR_RECO_CT/ParkingCosmicsVirginRaw1/Run2017D_v1_RAW/171013_141134/0000/step3HICMN_RAW2DIGI_L1Reco_RECO_25.root',
+'root://sbgse1.in2p3.fr//dpm/in2p3.fr/home/cms/phedex/store/user/mjansova/simu/CRUZET_VR_RECO_CT/ParkingCosmicsVirginRaw1/Run2017D_v1_RAW/171013_141134/0000/step3HICMN_RAW2DIGI_L1Reco_RECO_26.root',
+'root://sbgse1.in2p3.fr//dpm/in2p3.fr/home/cms/phedex/store/user/mjansova/simu/CRUZET_VR_RECO_CT/ParkingCosmicsVirginRaw1/Run2017D_v1_RAW/171013_141134/0000/step3HICMN_RAW2DIGI_L1Reco_RECO_27.root',
+'root://sbgse1.in2p3.fr//dpm/in2p3.fr/home/cms/phedex/store/user/mjansova/simu/CRUZET_VR_RECO_CT/ParkingCosmicsVirginRaw1/Run2017D_v1_RAW/171013_141134/0000/step3HICMN_RAW2DIGI_L1Reco_RECO_28.root',
+'root://sbgse1.in2p3.fr//dpm/in2p3.fr/home/cms/phedex/store/user/mjansova/simu/CRUZET_VR_RECO_CT/ParkingCosmicsVirginRaw1/Run2017D_v1_RAW/171013_141134/0000/step3HICMN_RAW2DIGI_L1Reco_RECO_29.root',
+'root://sbgse1.in2p3.fr//dpm/in2p3.fr/home/cms/phedex/store/user/mjansova/simu/CRUZET_VR_RECO_CT/ParkingCosmicsVirginRaw1/Run2017D_v1_RAW/171013_141134/0000/step3HICMN_RAW2DIGI_L1Reco_RECO_30.root',
+'root://sbgse1.in2p3.fr//dpm/in2p3.fr/home/cms/phedex/store/user/mjansova/simu/CRUZET_VR_RECO_CT/ParkingCosmicsVirginRaw1/Run2017D_v1_RAW/171013_141134/0000/step3HICMN_RAW2DIGI_L1Reco_RECO_31.root',
+'root://sbgse1.in2p3.fr//dpm/in2p3.fr/home/cms/phedex/store/user/mjansova/simu/CRUZET_VR_RECO_CT/ParkingCosmicsVirginRaw1/Run2017D_v1_RAW/171013_141134/0000/step3HICMN_RAW2DIGI_L1Reco_RECO_32.root',
+'root://sbgse1.in2p3.fr//dpm/in2p3.fr/home/cms/phedex/store/user/mjansova/simu/CRUZET_VR_RECO_CT/ParkingCosmicsVirginRaw1/Run2017D_v1_RAW/171013_141134/0000/step3HICMN_RAW2DIGI_L1Reco_RECO_33.root',
+'root://sbgse1.in2p3.fr//dpm/in2p3.fr/home/cms/phedex/store/user/mjansova/simu/CRUZET_VR_RECO_CT/ParkingCosmicsVirginRaw1/Run2017D_v1_RAW/171013_141134/0000/step3HICMN_RAW2DIGI_L1Reco_RECO_34.root',
+'root://sbgse1.in2p3.fr//dpm/in2p3.fr/home/cms/phedex/store/user/mjansova/simu/CRUZET_VR_RECO_CT/ParkingCosmicsVirginRaw1/Run2017D_v1_RAW/171013_141134/0000/step3HICMN_RAW2DIGI_L1Reco_RECO_35.root',
+'root://sbgse1.in2p3.fr//dpm/in2p3.fr/home/cms/phedex/store/user/mjansova/simu/CRUZET_VR_RECO_CT/ParkingCosmicsVirginRaw1/Run2017D_v1_RAW/171013_141134/0000/step3HICMN_RAW2DIGI_L1Reco_RECO_36.root',
+'root://sbgse1.in2p3.fr//dpm/in2p3.fr/home/cms/phedex/store/user/mjansova/simu/CRUZET_VR_RECO_CT/ParkingCosmicsVirginRaw1/Run2017D_v1_RAW/171013_141134/0000/step3HICMN_RAW2DIGI_L1Reco_RECO_37.root',
+'root://sbgse1.in2p3.fr//dpm/in2p3.fr/home/cms/phedex/store/user/mjansova/simu/CRUZET_VR_RECO_CT/ParkingCosmicsVirginRaw1/Run2017D_v1_RAW/171013_141134/0000/step3HICMN_RAW2DIGI_L1Reco_RECO_38.root',
+'root://sbgse1.in2p3.fr//dpm/in2p3.fr/home/cms/phedex/store/user/mjansova/simu/CRUZET_VR_RECO_CT/ParkingCosmicsVirginRaw1/Run2017D_v1_RAW/171013_141134/0000/step3HICMN_RAW2DIGI_L1Reco_RECO_39.root',
+'root://sbgse1.in2p3.fr//dpm/in2p3.fr/home/cms/phedex/store/user/mjansova/simu/CRUZET_VR_RECO_CT/ParkingCosmicsVirginRaw1/Run2017D_v1_RAW/171013_141134/0000/step3HICMN_RAW2DIGI_L1Reco_RECO_40.root',
+'root://sbgse1.in2p3.fr//dpm/in2p3.fr/home/cms/phedex/store/user/mjansova/simu/CRUZET_VR_RECO_CT/ParkingCosmicsVirginRaw1/Run2017D_v1_RAW/171013_141134/0000/step3HICMN_RAW2DIGI_L1Reco_RECO_41.root',
+'root://sbgse1.in2p3.fr//dpm/in2p3.fr/home/cms/phedex/store/user/mjansova/simu/CRUZET_VR_RECO_CT/ParkingCosmicsVirginRaw2/Run2017D_v1_RAW/171013_141155/0000/step3HICMN_RAW2DIGI_L1Reco_RECO_1.root',
+'root://sbgse1.in2p3.fr//dpm/in2p3.fr/home/cms/phedex/store/user/mjansova/simu/CRUZET_VR_RECO_CT/ParkingCosmicsVirginRaw2/Run2017D_v1_RAW/171013_141155/0000/step3HICMN_RAW2DIGI_L1Reco_RECO_2.root',
+'root://sbgse1.in2p3.fr//dpm/in2p3.fr/home/cms/phedex/store/user/mjansova/simu/CRUZET_VR_RECO_CT/ParkingCosmicsVirginRaw2/Run2017D_v1_RAW/171013_141155/0000/step3HICMN_RAW2DIGI_L1Reco_RECO_3.root',
+'root://sbgse1.in2p3.fr//dpm/in2p3.fr/home/cms/phedex/store/user/mjansova/simu/CRUZET_VR_RECO_CT/ParkingCosmicsVirginRaw2/Run2017D_v1_RAW/171013_141155/0000/step3HICMN_RAW2DIGI_L1Reco_RECO_4.root',
+'root://sbgse1.in2p3.fr//dpm/in2p3.fr/home/cms/phedex/store/user/mjansova/simu/CRUZET_VR_RECO_CT/ParkingCosmicsVirginRaw2/Run2017D_v1_RAW/171013_141155/0000/step3HICMN_RAW2DIGI_L1Reco_RECO_5.root',
+'root://sbgse1.in2p3.fr//dpm/in2p3.fr/home/cms/phedex/store/user/mjansova/simu/CRUZET_VR_RECO_CT/ParkingCosmicsVirginRaw2/Run2017D_v1_RAW/171013_141155/0000/step3HICMN_RAW2DIGI_L1Reco_RECO_6.root',
+'root://sbgse1.in2p3.fr//dpm/in2p3.fr/home/cms/phedex/store/user/mjansova/simu/CRUZET_VR_RECO_CT/ParkingCosmicsVirginRaw2/Run2017D_v1_RAW/171013_141155/0000/step3HICMN_RAW2DIGI_L1Reco_RECO_7.root',
+'root://sbgse1.in2p3.fr//dpm/in2p3.fr/home/cms/phedex/store/user/mjansova/simu/CRUZET_VR_RECO_CT/ParkingCosmicsVirginRaw2/Run2017D_v1_RAW/171013_141155/0000/step3HICMN_RAW2DIGI_L1Reco_RECO_8.root',
+'root://sbgse1.in2p3.fr//dpm/in2p3.fr/home/cms/phedex/store/user/mjansova/simu/CRUZET_VR_RECO_CT/ParkingCosmicsVirginRaw2/Run2017D_v1_RAW/171013_141155/0000/step3HICMN_RAW2DIGI_L1Reco_RECO_9.root',
+'root://sbgse1.in2p3.fr//dpm/in2p3.fr/home/cms/phedex/store/user/mjansova/simu/CRUZET_VR_RECO_CT/ParkingCosmicsVirginRaw2/Run2017D_v1_RAW/171013_141155/0000/step3HICMN_RAW2DIGI_L1Reco_RECO_10.root',
+'root://sbgse1.in2p3.fr//dpm/in2p3.fr/home/cms/phedex/store/user/mjansova/simu/CRUZET_VR_RECO_CT/ParkingCosmicsVirginRaw2/Run2017D_v1_RAW/171013_141155/0000/step3HICMN_RAW2DIGI_L1Reco_RECO_11.root',
+'root://sbgse1.in2p3.fr//dpm/in2p3.fr/home/cms/phedex/store/user/mjansova/simu/CRUZET_VR_RECO_CT/ParkingCosmicsVirginRaw2/Run2017D_v1_RAW/171013_141155/0000/step3HICMN_RAW2DIGI_L1Reco_RECO_12.root',
+'root://sbgse1.in2p3.fr//dpm/in2p3.fr/home/cms/phedex/store/user/mjansova/simu/CRUZET_VR_RECO_CT/ParkingCosmicsVirginRaw2/Run2017D_v1_RAW/171013_141155/0000/step3HICMN_RAW2DIGI_L1Reco_RECO_13.root',
+'root://sbgse1.in2p3.fr//dpm/in2p3.fr/home/cms/phedex/store/user/mjansova/simu/CRUZET_VR_RECO_CT/ParkingCosmicsVirginRaw2/Run2017D_v1_RAW/171013_141155/0000/step3HICMN_RAW2DIGI_L1Reco_RECO_14.root',
+'root://sbgse1.in2p3.fr//dpm/in2p3.fr/home/cms/phedex/store/user/mjansova/simu/CRUZET_VR_RECO_CT/ParkingCosmicsVirginRaw2/Run2017D_v1_RAW/171013_141155/0000/step3HICMN_RAW2DIGI_L1Reco_RECO_15.root',
+'root://sbgse1.in2p3.fr//dpm/in2p3.fr/home/cms/phedex/store/user/mjansova/simu/CRUZET_VR_RECO_CT/ParkingCosmicsVirginRaw2/Run2017D_v1_RAW/171013_141155/0000/step3HICMN_RAW2DIGI_L1Reco_RECO_16.root',
+'root://sbgse1.in2p3.fr//dpm/in2p3.fr/home/cms/phedex/store/user/mjansova/simu/CRUZET_VR_RECO_CT/ParkingCosmicsVirginRaw2/Run2017D_v1_RAW/171013_141155/0000/step3HICMN_RAW2DIGI_L1Reco_RECO_17.root',
+'root://sbgse1.in2p3.fr//dpm/in2p3.fr/home/cms/phedex/store/user/mjansova/simu/CRUZET_VR_RECO_CT/ParkingCosmicsVirginRaw2/Run2017D_v1_RAW/171013_141155/0000/step3HICMN_RAW2DIGI_L1Reco_RECO_18.root',
+'root://sbgse1.in2p3.fr//dpm/in2p3.fr/home/cms/phedex/store/user/mjansova/simu/CRUZET_VR_RECO_CT/ParkingCosmicsVirginRaw2/Run2017D_v1_RAW/171013_141155/0000/step3HICMN_RAW2DIGI_L1Reco_RECO_19.root',
+'root://sbgse1.in2p3.fr//dpm/in2p3.fr/home/cms/phedex/store/user/mjansova/simu/CRUZET_VR_RECO_CT/ParkingCosmicsVirginRaw2/Run2017D_v1_RAW/171013_141155/0000/step3HICMN_RAW2DIGI_L1Reco_RECO_20.root',
+'root://sbgse1.in2p3.fr//dpm/in2p3.fr/home/cms/phedex/store/user/mjansova/simu/CRUZET_VR_RECO_CT/ParkingCosmicsVirginRaw2/Run2017D_v1_RAW/171013_141155/0000/step3HICMN_RAW2DIGI_L1Reco_RECO_21.root',
+'root://sbgse1.in2p3.fr//dpm/in2p3.fr/home/cms/phedex/store/user/mjansova/simu/CRUZET_VR_RECO_CT/ParkingCosmicsVirginRaw2/Run2017D_v1_RAW/171013_141155/0000/step3HICMN_RAW2DIGI_L1Reco_RECO_22.root',
+'root://sbgse1.in2p3.fr//dpm/in2p3.fr/home/cms/phedex/store/user/mjansova/simu/CRUZET_VR_RECO_CT/ParkingCosmicsVirginRaw2/Run2017D_v1_RAW/171013_141155/0000/step3HICMN_RAW2DIGI_L1Reco_RECO_23.root',
+'root://sbgse1.in2p3.fr//dpm/in2p3.fr/home/cms/phedex/store/user/mjansova/simu/CRUZET_VR_RECO_CT/ParkingCosmicsVirginRaw2/Run2017D_v1_RAW/171013_141155/0000/step3HICMN_RAW2DIGI_L1Reco_RECO_24.root',
+'root://sbgse1.in2p3.fr//dpm/in2p3.fr/home/cms/phedex/store/user/mjansova/simu/CRUZET_VR_RECO_CT/ParkingCosmicsVirginRaw2/Run2017D_v1_RAW/171013_141155/0000/step3HICMN_RAW2DIGI_L1Reco_RECO_25.root',
+'root://sbgse1.in2p3.fr//dpm/in2p3.fr/home/cms/phedex/store/user/mjansova/simu/CRUZET_VR_RECO_CT/ParkingCosmicsVirginRaw2/Run2017D_v1_RAW/171013_141155/0000/step3HICMN_RAW2DIGI_L1Reco_RECO_26.root',
+'root://sbgse1.in2p3.fr//dpm/in2p3.fr/home/cms/phedex/store/user/mjansova/simu/CRUZET_VR_RECO_CT/ParkingCosmicsVirginRaw2/Run2017D_v1_RAW/171013_141155/0000/step3HICMN_RAW2DIGI_L1Reco_RECO_27.root',
+'root://sbgse1.in2p3.fr//dpm/in2p3.fr/home/cms/phedex/store/user/mjansova/simu/CRUZET_VR_RECO_CT/ParkingCosmicsVirginRaw2/Run2017D_v1_RAW/171013_141155/0000/step3HICMN_RAW2DIGI_L1Reco_RECO_28.root',
+'root://sbgse1.in2p3.fr//dpm/in2p3.fr/home/cms/phedex/store/user/mjansova/simu/CRUZET_VR_RECO_CT/ParkingCosmicsVirginRaw2/Run2017D_v1_RAW/171013_141155/0000/step3HICMN_RAW2DIGI_L1Reco_RECO_29.root',
+'root://sbgse1.in2p3.fr//dpm/in2p3.fr/home/cms/phedex/store/user/mjansova/simu/CRUZET_VR_RECO_CT/ParkingCosmicsVirginRaw2/Run2017D_v1_RAW/171013_141155/0000/step3HICMN_RAW2DIGI_L1Reco_RECO_30.root',
+'root://sbgse1.in2p3.fr//dpm/in2p3.fr/home/cms/phedex/store/user/mjansova/simu/CRUZET_VR_RECO_CT/ParkingCosmicsVirginRaw2/Run2017D_v1_RAW/171013_141155/0000/step3HICMN_RAW2DIGI_L1Reco_RECO_31.root',
+'root://sbgse1.in2p3.fr//dpm/in2p3.fr/home/cms/phedex/store/user/mjansova/simu/CRUZET_VR_RECO_CT/ParkingCosmicsVirginRaw2/Run2017D_v1_RAW/171013_141155/0000/step3HICMN_RAW2DIGI_L1Reco_RECO_32.root',
+'root://sbgse1.in2p3.fr//dpm/in2p3.fr/home/cms/phedex/store/user/mjansova/simu/CRUZET_VR_RECO_CT/ParkingCosmicsVirginRaw2/Run2017D_v1_RAW/171013_141155/0000/step3HICMN_RAW2DIGI_L1Reco_RECO_33.root',
+'root://sbgse1.in2p3.fr//dpm/in2p3.fr/home/cms/phedex/store/user/mjansova/simu/CRUZET_VR_RECO_CT/ParkingCosmicsVirginRaw2/Run2017D_v1_RAW/171013_141155/0000/step3HICMN_RAW2DIGI_L1Reco_RECO_34.root',
+'root://sbgse1.in2p3.fr//dpm/in2p3.fr/home/cms/phedex/store/user/mjansova/simu/CRUZET_VR_RECO_CT/ParkingCosmicsVirginRaw2/Run2017D_v1_RAW/171013_141155/0000/step3HICMN_RAW2DIGI_L1Reco_RECO_35.root',
+'root://sbgse1.in2p3.fr//dpm/in2p3.fr/home/cms/phedex/store/user/mjansova/simu/CRUZET_VR_RECO_CT/ParkingCosmicsVirginRaw2/Run2017D_v1_RAW/171013_141155/0000/step3HICMN_RAW2DIGI_L1Reco_RECO_36.root',
+'root://sbgse1.in2p3.fr//dpm/in2p3.fr/home/cms/phedex/store/user/mjansova/simu/CRUZET_VR_RECO_CT/ParkingCosmicsVirginRaw2/Run2017D_v1_RAW/171013_141155/0000/step3HICMN_RAW2DIGI_L1Reco_RECO_37.root',
+'root://sbgse1.in2p3.fr//dpm/in2p3.fr/home/cms/phedex/store/user/mjansova/simu/CRUZET_VR_RECO_CT/ParkingCosmicsVirginRaw2/Run2017D_v1_RAW/171013_141155/0000/step3HICMN_RAW2DIGI_L1Reco_RECO_38.root',
+'root://sbgse1.in2p3.fr//dpm/in2p3.fr/home/cms/phedex/store/user/mjansova/simu/CRUZET_VR_RECO_CT/ParkingCosmicsVirginRaw2/Run2017D_v1_RAW/171013_141155/0000/step3HICMN_RAW2DIGI_L1Reco_RECO_39.root',
+'root://sbgse1.in2p3.fr//dpm/in2p3.fr/home/cms/phedex/store/user/mjansova/simu/CRUZET_VR_RECO_CT/ParkingCosmicsVirginRaw2/Run2017D_v1_RAW/171013_141155/0000/step3HICMN_RAW2DIGI_L1Reco_RECO_40.root',
+'root://sbgse1.in2p3.fr//dpm/in2p3.fr/home/cms/phedex/store/user/mjansova/simu/CRUZET_VR_RECO_CT/ParkingCosmicsVirginRaw2/Run2017D_v1_RAW/171013_141155/0000/step3HICMN_RAW2DIGI_L1Reco_RECO_41.root'
+)#VR CRUZET Sep2017 with onwn clustering
 
 '''
 process.source.fileNames = cms.untracked.vstring(
@@ -61,10 +147,10 @@ found = inputStr.find("root")
 
 if found > 0:
     process.source.fileNames = cms.untracked.vstring("file:"+inputStr)
-    process.TFileService.fileName = 'test_shallowTrackCRUZET_2017VRdigis.root' + inputStr
+    process.TFileService.fileName = 'test_shallowTrackCRUZET_2017VRNewClusteringTimingTestDiscard.root' + inputStr
     print(input)
 else:
-    process.TFileService.fileName = 'test_shallowTrackCRUZET_2017VRdigis.root'
+    process.TFileService.fileName = 'test_shallowTrackCRUZET_2017VRNewClusteringTimingTestDiscard.root'
 
 
 #process.source.fileNames = cms.untracked.vstring('root://cms-xrd-global.cern.ch//store/mc/CosmicFall16PhaseIDR/TKCosmics_38T/GEN-SIM-RECO/DECO_90X_upgrade2017cosmics_realistic_deco_v18-v1/00000/0A229457-9122-E711-8E68-0CC47A78A4A6.root') #3.8 cosmics MC 28300ev
@@ -80,7 +166,7 @@ else:
 
 
 process.maxEvents = cms.untracked.PSet(
-    input = cms.untracked.int32(10)
+    input = cms.untracked.int32(-1)
     )
 
 #from RecoTracker.TrackProducer.TrackRefitter_cfi import TrackRefitter
@@ -91,6 +177,10 @@ process.ShallowTrackClustersCombinedVR = cms.EDProducer("ShallowTrackClustersPro
                                       Tracks=cms.InputTag("ctfWithMaterialTracksP5",""),
                                       Clusters=cms.InputTag("siStripClusters"),
                                       vertices=cms.InputTag("offlinePrimaryVertices"),
+                                      CombinedTiming = cms.InputTag("muons","combined"),
+                                      DtTiming = cms.InputTag("muons","dt"),
+                                      CscTiming = cms.InputTag("muons","csc"),
+                                      Muons = cms.InputTag("muons"),
                                       LorentzAngle = cms.string(''),
                                       Prefix=cms.string("cluster"),
                                       Suffix=cms.string("tsos"),

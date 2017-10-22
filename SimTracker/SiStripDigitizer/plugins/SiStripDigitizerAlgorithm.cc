@@ -381,7 +381,8 @@ SiStripDigitizerAlgorithm::digitize(
 	noiseRMSv.insert(noiseRMSv.begin(),numStrips,0.); 
 	for(int strip=0; strip< numStrips; ++strip){ 
 	  if(!badChannels[strip]){
-	    float gainValue = gainHandle->getStripGain(strip, detGainRange); 
+	    float gainValue = gainHandle->getStripGain(strip, detGainRange);
+            //std::cout << "TEST GAIN VALUE" << gainValue << std::endl;
 	    noiseRMSv[strip] = (noiseHandle->getNoise(strip,detNoiseRange))* theElectronPerADC/gainValue;
 	    //std::cout<<"<SiStripDigitizerAlgorithm::digitize>: gainValue: "<<gainValue<<"\tnoiseRMSv["<<strip<<"]: "<<noiseRMSv[strip]<<std::endl;
 	  }
