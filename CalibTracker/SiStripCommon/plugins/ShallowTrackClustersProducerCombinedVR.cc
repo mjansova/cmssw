@@ -255,6 +255,9 @@ ShallowTrackClustersProducerCombinedVR::ShallowTrackClustersProducerCombinedVR(c
   produces <std::vector<float> >         ( "muonsDTMuontrackDirection"        );
   produces <std::vector<float> >         ( "muonsDTMuontrackSector"        );
 
+  produces <std::vector<float> >         ( "muonsDTMuontrackInOut"        );
+  produces <std::vector<float> >         ( "muonsDTMuontrackOutIn"        );
+
   produces <unsigned int>               ( "nroftracks"       );
   produces <unsigned int>               ( "nrofmuons"       );
   produces <unsigned int>               ( "nrofevents"       );
@@ -426,6 +429,9 @@ produce(edm::Event& iEvent, const edm::EventSetup& iSetup) {
   auto         muonsDTMuontrackDirection = std::make_unique<std::vector<float>>();
   auto         muonsDTMuontrackSector= std::make_unique<std::vector<float>>();
 
+  auto         muonsDTMuontrackInOut= std::make_unique<std::vector<float>>();
+  auto         muonsDTMuontrackOutIn= std::make_unique<std::vector<float>>();
+
   auto       PU      = std::make_unique<std::vector<float>>();
   auto bx            = std::make_unique<std::vector<unsigned int>>();
   auto nroftracks            = std::make_unique<unsigned int>();
@@ -489,68 +495,8 @@ produce(edm::Event& iEvent, const edm::EventSetup& iSetup) {
 	size_t ontrk_cluster_idx=0;
   std::map<size_t, std::vector<size_t> > mapping; //cluster idx --> on trk cluster idx (multiple)
 
-
-
-  //myfile2.open(filename);
-  float PU_=0;
-  PU_=vtx->size();
-  //PU_=5; //@MJ@ TODO completely fake
-  //if(PU_>lowBound && PU_<highBound)
-  //{
-  *nrofevents = 1;
-      PU->push_back(PU_);
-      bx->push_back(iEvent.bunchCrossing());
- // }
-  //myfile2 << "n events " << ev << std::endl;
-
-  //TFileDirectory sdRawDigis_= fs_->mkdir("ShallowTrackClustersCombinedVR");
-
-  *nroftracks = 0;
-  *nrofmuons = 0;
-  uint32_t trackerTrack = 0;
-  //float mutime = 0 ;
-  //float mudirection  = 0 ;
-  cout << "in here 1 " << endl;
-  for (uint32_t mmu=0; mmu<MuCollection->size(); mmu++)
-  {  
-      reco::MuonRef muonR2(MuCollection, mmu); //@MJ@ TODO - for now first track but I must deal with that!!
-     /* cout << "muon " << mu << endl;
-      cout << "global muon" << MuCollection->at(mu).isGlobalMuon() << endl;
-      cout << "tracker muon" << MuCollection->at(mu).isTrackerMuon() << endl;
-      cout << "tracker muon" << MuCollection->at(mu).isTrackerMuon() << endl;
-      cout << "PF muon" << MuCollection->at(mu).isPFMuon() << endl;
-      cout << "local muon" << MuCollection->at(mu).isMuon() << endl;*/
-      cout << "tracker muon " << mmu  << " is tracker muon " << MuCollection->at(mmu).isTrackerMuon() << endl;
-      cout << "timing of tracker muon OutIn " << timeMapCmb[muonR2].timeAtIpOutIn() << endl;
-      cout << "timing of tracker muon InOut " << timeMapCmb[muonR2].timeAtIpInOut() << endl;
-      cout << "timing of tracker muon direction " << static_cast<int>(timeMapCmb[muonR2].direction());
-      /*reco::MuonRef muonR2(MuCollection, mu); //@MJ@ TODO - for now first track but I must deal with that!!
-    cout << "muon " << mu << endl;
-          int direction = static_cast<int>(timeMapCmb[muonR2].direction());
-          cout << "track direction " << direction << endl;*/
-      //if(MuCollection->at(mu).isTrackerMuon())
-      if(MuCollection->at(mmu).isTrackerMuon())
-      {
-       /*   (*nrofmuons)++;
-          cout << "TRACK timing of tracker muon OutIn " << timeMapCmb[muonR2].timeAtIpOutIn() << endl;
-          cout << "TRACK timing of tracker muon InOut " << timeMapCmb[muonR2].timeAtIpInOut() << endl;
-          int direction = static_cast<int>(timeMapCmb[muonR2].direction());
-          cout << "track direction " << direction << endl;*/
-          //cout << "global muon" << MuCollection->at(mu).isGlobalMuon() << endl;
-          //cout << "tracker muon" << MuCollection->at(mu).isTrackerMuon() << endl;
-          trackerTrack = mmu;
-          cout << "tracker track set to " << trackerTrack << endl;
-          break;
-      }
-  }
-
-      reco::MuonRef muonR(MuCollection,(int) trackerTrack); //@MJ@ TODO - for now first track but I must deal with that!!
-      //if(!timeMapCmb.contains(muonR) || !timeMapDT.contains(muonR) || !timeMapCSC.contains(muonR))
-      //    return;
-      cout << "trackerTrack " << trackerTrack << " sizes " << timeMapCmb.size() << " " << timeMapDT.size() << " " << timeMapCSC.size() << endl;
-
-
-      for( reco::MuonTimeExtraMap::const_iterator timeIt = timeMapCmb.begin(); timeIt!= timeMapCmb.end(); timeIt++)
+      //ITERATING thorough value map
+      /*for( reco::MuonTimeExtraMap::const_iterator timeIt = timeMapCmb.begin(); timeIt!= timeMapCmb.end(); timeIt++)
       {
           reco::MuonTimeExtraMap::container::const_iterator timeIt2 = timeIt.begin();
           for(;timeIt2!= timeIt.end(); timeIt2++)
@@ -559,48 +505,19 @@ produce(edm::Event& iEvent, const edm::EventSetup& iSetup) {
           float ttex = timeIt2->timeAtIpOutIn(); 
           cout << "values in the map" << ftex << "time " << ttex << std::endl;
           }
-      }
-      /*if(timeMapCmb.size() <= (uint16_t) (trackerTrack+1) || timeMapDT.size() <= (uint16_t) (trackerTrack+1) || timeMapCSC.size() <= (uint16_t) (trackerTrack+1))
-      {
-          cout << "not compatible sizes " << endl;
-          return;
       }*/
-      reco::MuonTimeExtra timec = timeMapCmb[muonR];
-      reco::MuonTimeExtra timedt = timeMapDT[muonR];
-      reco::MuonTimeExtra timecsc = timeMapCSC[muonR];
 
-     //muon hits
-     //const reco::TrackRef standaloneMuon = muonR->standAloneMuon();
-     //reco::TrackRef muTrack = muonR->standAloneMuon();
-     reco::TrackRef muTrack = muonR->globalTrack();
-     cout << "global track is null " << muTrack.isNull() << endl;
-     if(!muTrack.isNull())
-     {
-         cout << "some global muon found " << endl;
-     //for(uint32_t sm = 0; sm< standaloneMuon->size(); sm++)
-     //{
-         //reco::Track muTrack= standaloneMuon->at(sm);
-         for( trackingRecHit_iterator  muHit= muTrack->recHitsBegin() ; muHit !=  muTrack->recHitsEnd(); muHit++)
-         {
-             //const GeomDetUnit* theDTDet = NULL;
-             //theDTDet = (*muHit)->detUnit() ;
-             //cout << " theDTDet " << theDTDet << endl;
-             //float rhglobalphiDT =   theDTDet->toGlobal((*muHit)->localPosition()).phi() ;
-             //cout <<   (*muHit)->geographicalId().rawId() << " phi " << rhglobalphiDT   << endl;
-             //cout <<   (*muHit)->geographicalId().rawId() << " partition " << static_cast<int>((*muHit)->geographicalId().det()) << " subdet " << static_cast<int>((*muHit)->geographicalId().subdetId())   << endl;
-             if( static_cast<int>((*muHit)->geographicalId().det()) ==2  && static_cast<int>((*muHit)->geographicalId().subdetId()) == static_cast<int>(MuonSubdetId::DT))
-             {
-                 DTChamberId DTchamber((*muHit)->geographicalId());
-                 DTLayerId DTLayer((*muHit)->geographicalId());
-                 muonsDTMuontrackDirection->push_back(static_cast<int>(timeMapDT[muonR].direction()));
-                 muonsDTMuontrackSector->push_back( DTchamber.sector() );
-                 //cout << " sector " << DTchamber.sector() << " layer " << DTLayer.layer() << " station " << DTchamber.station() << " sector  " << DTchamber.sector() << endl;
-                 //cout << " dt direction " <<  static_cast<int>(timeMapDT[muonR].direction())<< endl;
-             }
-         }
 
-     //}
-     }
+  float PU_=0;
+  PU_=vtx->size();
+
+  *nrofevents = 1;
+  PU->push_back(PU_);
+  bx->push_back(iEvent.bunchCrossing());
+
+  *nroftracks = 0;
+  *nrofmuons = 0;
+
 
 //track loop
   for( TrajTrackAssociationCollection::const_iterator association = associations->begin(); 
@@ -615,27 +532,59 @@ cout << "before good track " << endl;
     bool isGoodTrack = trackFilter(track);
     if(!isGoodTrack)
         continue;
+
+
+  uint32_t trackerTrack = 0;
+  bool muFound = false;
+  for (uint32_t mmu=0; mmu<MuCollection->size(); mmu++)
+  {  
+      if(MuCollection->at(mmu).isTrackerMuon())
+      {
+          // (*nrofmuons)++;
+          //cout << "global muon" << MuCollection->at(mu).isGlobalMuon() << endl;
+          muFound = true;
+          trackerTrack = mmu;
+          break;
+      }
+  }
+      
+      if(!muFound) //no tacker muon
+          continue;
+
+      reco::MuonRef muonR(MuCollection, trackerTrack); //@MJ@ TODO - for now first track but I must deal with that!!
+      reco::MuonTimeExtra timec = timeMapCmb[muonR];
+      reco::MuonTimeExtra timedt = timeMapDT[muonR];
+      reco::MuonTimeExtra timecsc = timeMapCSC[muonR];
+
+     //muon hits
+     //reco::TrackRef muTrack = muonR->standAloneMuon();
+     reco::TrackRef muTrack = muonR->globalTrack();
+     if(!muTrack.isNull())
+     {
+         for( trackingRecHit_iterator  muHit= muTrack->recHitsBegin() ; muHit !=  muTrack->recHitsEnd(); muHit++)
+         {
+             if( static_cast<int>((*muHit)->geographicalId().det()) ==2  && static_cast<int>((*muHit)->geographicalId().subdetId()) == static_cast<int>(MuonSubdetId::DT))
+             {
+                 DTChamberId DTchamber((*muHit)->geographicalId());
+                 DTLayerId DTLayer((*muHit)->geographicalId());
+                 muonsDTMuontrackDirection->push_back(static_cast<int>(timeMapDT[muonR].direction()));
+                 muonsDTMuontrackInOut->push_back(timeMapDT[muonR].timeAtIpInOut());
+                 muonsDTMuontrackOutIn->push_back(timeMapDT[muonR].timeAtIpOutIn());
+                 muonsDTMuontrackSector->push_back( DTchamber.sector() );
+             }
+         }
+     }
+
   
    if(muTrack.isNull()) //only global muons
        continue;
+
 cout << " after good track " << endl;
     
-    int trackDirection = static_cast<int>(timeMapCmb[muonR].direction());
-    int DTtrackDirection = static_cast<int>(timeMapDT[muonR].direction());
+     int trackDirection = static_cast<int>(timeMapCmb[muonR].direction());
+     int DTtrackDirection = static_cast<int>(timeMapDT[muonR].direction());
 
-
-
-
-
-    //reco::TrackRef glbTrack = muonR->combinedMuon();
- 
-  //if(PU_>lowBound && PU_<highBound)
-  //{
-      //*nroftracks = *nroftracks+1;
       (*nroftracks)++;
-  //}
-  //myfile2 << "n tracks " << ntracks << std::endl;
-  //myfile2.close();
 
     BOOST_FOREACH( const TrajectoryMeasurement measurement, traj->measurements() ) {
       const TrajectoryStateOnSurface tsos = measurement.updatedState();
@@ -1132,6 +1081,8 @@ cout << " after good track " << endl;
   iEvent.put(std::move(muonsDTMuontrackDirection),       "muonsDTMuontrackDirection"        );
   iEvent.put(std::move(muonsDTMuontrackSector),       "muonsDTMuontrackSector"        );
 
+  iEvent.put(std::move(muonsDTMuontrackInOut),       "muonsDTMuontrackInOut"        );
+  iEvent.put(std::move(muonsDTMuontrackOutIn),       "muonsDTMuontrackOutIn"        );
   /*iEvent.put(std::move(passHLTL1SingleMu3v1), "passHLTL1SingleMu3v1" ); 
   iEvent.put(std::move(passHLTL1SingleMu5v1), "passHLTL1SingleMu5v1" ); 
   iEvent.put(std::move(passHLTL1SingleMu7v1), "passHLTL1SingleMu7v1" );

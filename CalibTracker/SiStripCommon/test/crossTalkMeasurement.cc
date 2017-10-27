@@ -1,6 +1,8 @@
 //./crossTalkMeasurement test_shallowTrackCRUZET_2017VRdigis.root crossTalkMeasurement //small stats
 //./crossTalkMeasurement test_shallowTrackCRUZET_2017VRNewClusteringTimingTestFULL.root crossTalkMeasurement
 //./crossTalkMeasurement test_shallowTrackCRUZET_2017VRNewClusteringTimingTest.root crossTalkMeasurement
+//./crossTalkMeasurement test_shallowTrackCRUZET_2017VRNewClusteringTimingTestOnlyGlobalTracks.root crossTalkMeasurement
+//./crossTalkMeasurement test_shallowTrackCRUZET_2017VRNewClusteringTimingTestOnlyGlobalTracks.root crossTalkMeasurementNar0.1
 
 #include <fstream>
 #include <iostream>
@@ -227,10 +229,26 @@ int main(int argc, char *argv[]){
        vector<TH1F*> narrowTrackSharing1Data;
        vector<TH1F*> narrowTrackSharing2Data;
 
+       vector<TH1F*> narrowTrackSharing1Data5to5;
+       vector<TH1F*> narrowTrackSharing2Data5to5;
+       vector<TH1F*> narrowTrackSharing1Datainfto5;
+       vector<TH1F*> narrowTrackSharing2Datainfto5;
+       vector<TH1F*> narrowTrackSharing1Data25to35;
+       vector<TH1F*> narrowTrackSharing2Data25to35;
+       vector<TH1F*> narrowTrackSharing1Data35toinf;
+       vector<TH1F*> narrowTrackSharing2Data35toinf;
+       vector<TH1F*> narrowTrackSharing1Data10to20;
+       vector<TH1F*> narrowTrackSharing2Data10to20;
+
        vector<TH1F*> timingErrorTop;
        vector<TH1F*> timingErrorTopInOut;
        vector<TCanvas*> timingErrorTopCan;
        vector<TCanvas*> timingErrorTopInOutCan;
+
+       vector<TH1F*> timingDirectionTop;
+       vector<TH1F*> timingDirectionTopInOut;
+       vector<TCanvas*> timingDirectionTopCan;
+       vector<TCanvas*> timingDirectionTopInOutCan;
 
        vector<TProfile*> widthTopInOut;
        vector<TProfile*> widthBottomInOut;
@@ -244,6 +262,17 @@ int main(int argc, char *argv[]){
 
        vector<TCanvas*> narrowTrackSharing1DataCan;
        vector<TCanvas*> narrowTrackSharing2DataCan;
+
+       vector<TCanvas*> narrowTrackSharing1Data5to5Can;
+       vector<TCanvas*> narrowTrackSharing2Data5to5Can;
+       vector<TCanvas*> narrowTrackSharing1Datainfto5Can;
+       vector<TCanvas*> narrowTrackSharing2Datainfto5Can;
+       vector<TCanvas*> narrowTrackSharing1Data25to35Can;
+       vector<TCanvas*> narrowTrackSharing2Data25to35Can;
+       vector<TCanvas*> narrowTrackSharing2Data35toinfCan;
+       vector<TCanvas*> narrowTrackSharing1Data35toinfCan;
+       vector<TCanvas*> narrowTrackSharing1Data10to20Can;
+       vector<TCanvas*> narrowTrackSharing2Data10to20Can;
 
        vector<TCanvas*> widthTopInOutCan;
        vector<TCanvas*> widthBottomInOutCan;
@@ -269,6 +298,29 @@ int main(int argc, char *argv[]){
        narrowTrackSharing2Data.resize(20, NULL);
        narrowTrackSharing1DataCan.resize(20, NULL);
        narrowTrackSharing2DataCan.resize(20, NULL);
+
+
+       narrowTrackSharing1Data5to5.resize(20, NULL);
+       narrowTrackSharing2Data5to5.resize(20, NULL);
+       narrowTrackSharing1Datainfto5.resize(20, NULL);
+       narrowTrackSharing2Datainfto5.resize(20, NULL);
+       narrowTrackSharing1Data25to35.resize(20, NULL);
+       narrowTrackSharing2Data25to35.resize(20, NULL);
+       narrowTrackSharing1Data35toinf.resize(20, NULL);
+       narrowTrackSharing2Data35toinf.resize(20, NULL);
+       narrowTrackSharing1Data10to20.resize(20, NULL);
+       narrowTrackSharing2Data10to20.resize(20, NULL);
+
+       narrowTrackSharing1Data5to5Can.resize(20, NULL);
+       narrowTrackSharing2Data5to5Can.resize(20, NULL);
+       narrowTrackSharing1Datainfto5Can.resize(20, NULL);
+       narrowTrackSharing2Datainfto5Can.resize(20, NULL);
+       narrowTrackSharing1Data25to35Can.resize(20, NULL);
+       narrowTrackSharing2Data25to35Can.resize(20, NULL);
+       narrowTrackSharing1Data35toinfCan.resize(20, NULL);
+       narrowTrackSharing2Data35toinfCan.resize(20, NULL);
+       narrowTrackSharing1Data10to20Can.resize(20, NULL);
+       narrowTrackSharing2Data10to20Can.resize(20, NULL);
 
        widthTopInOut.resize(20, NULL);
        widthBottomInOut.resize(20, NULL);
@@ -304,6 +356,10 @@ int main(int argc, char *argv[]){
        timingErrorTopCan.resize(20, NULL);
        timingErrorTopInOutCan.resize(20, NULL);
 
+       timingDirectionTop.resize(20, NULL);
+       timingDirectionTopInOut.resize(20, NULL);
+       timingDirectionTopCan.resize(20, NULL);
+       timingDirectionTopInOutCan.resize(20, NULL);
 
        uint8_t TIDoffset = 3;
        uint8_t TECoffset = 6;
@@ -337,12 +393,12 @@ int main(int argc, char *argv[]){
                    if(subCTstripChargeLayerwheel.at(clusterStart)>0 && subCTstripChargeLayerwheel.at(clusterStart)<5)
                    {
                        partPos = 2;
-                       parName = "TOB1";
+                       parName = "TOB2";
                    }
                    else
                    {
                        partPos = 3;
-                       parName = "TOB2";
+                       parName = "TOB1";
                    }
 
                }
@@ -416,11 +472,37 @@ int main(int argc, char *argv[]){
 		       chargeTopOutInCan.at(partPos)=   new TCanvas( ("chargeTopOutIn"+ parName).c_str(), ("chargeTopOutIn"+ parName).c_str()) ;
 		       chargeBottomOutInCan.at(partPos) = new TCanvas( ("chargeBottomOutIn"+ parName).c_str(), ("chargeBottomOutIn"+ parName).c_str()) ;
 
-                       timingErrorTop.at(partPos) = new TH1F( ("timingErrorTop"+ parName).c_str() , ("timingErrorTop"+parName).c_str() , 100, 0, 20 );
-                       timingErrorTopInOut.at(partPos)  = new TH1F( ("timingErrorTopInOut"+ parName).c_str() , ("timingErrorTopInOut"+parName).c_str() , 100, 0, 20 );
+                       timingErrorTop.at(partPos) = new TH1F( ("timingErrorTop"+ parName).c_str() , ("timingErrorTop"+parName).c_str() , 100, -100, 100 );
+                       timingErrorTopInOut.at(partPos)  = new TH1F( ("timingErrorTopInOut"+ parName).c_str() , ("timingErrorTopInOut"+parName).c_str() , 100, -100, 100 );
                        timingErrorTopCan.at(partPos) = new TCanvas( ("timingErrorTop"+ parName).c_str() , ("timingErrorTop"+parName).c_str() ) ;
                        timingErrorTopInOutCan.at(partPos) = new TCanvas( ("timingErrorTopInOut"+ parName).c_str() , ("timingErrorTopInOut"+parName).c_str()  ) ;
 
+                       timingDirectionTop.at(partPos) = new TH1F( ("timingDirectionTop"+ parName).c_str() , ("timingDirectionTop"+parName).c_str() , 4, -2, 2 );
+                       timingDirectionTopInOut.at(partPos)  = new TH1F( ("timingDirectionTopInOut"+ parName).c_str() , ("timingDirectionTopInOut"+parName).c_str() , 4, -2, 2 );
+                       timingDirectionTopCan.at(partPos) = new TCanvas( ("timingDirectionTop"+ parName).c_str() , ("timingDirectionTop"+parName).c_str() ) ;
+                       timingDirectionTopInOutCan.at(partPos) = new TCanvas( ("timingDirectionTopInOut"+ parName).c_str() , ("timingDirectionTopInOut"+parName).c_str()  ) ;
+
+                       narrowTrackSharing1Data5to5.at(partPos) = new TH1F( ("narrowTrack5to5Sharing1"+ parName).c_str() , ("narrowTrack5to5Sharing1"+parName).c_str() , 200, -1, 1 ) ;
+                       narrowTrackSharing2Data5to5.at(partPos) = new TH1F( ("narrowTrack5to5Sharing2"+ parName).c_str() , ("narrowTrack5to5Sharing2"+parName).c_str() , 200, -1, 1 )  ;
+                       narrowTrackSharing1Datainfto5.at(partPos) = new TH1F( ("narrowTrackinfto5Sharing1"+ parName).c_str() , ("narrowTrackinfto5Sharing1"+parName).c_str() , 200, -1, 1 ) ;
+                       narrowTrackSharing2Datainfto5.at(partPos) = new TH1F( ("narrowTrackinfto5Sharing2"+ parName).c_str() , ("narrowTrackinfto5Sharing2"+parName).c_str() , 200, -1, 1 )  ;
+                       narrowTrackSharing1Data25to35.at(partPos) = new TH1F( ("narrowTracki25to35Sharing1"+ parName).c_str() , ("narrowTrack25to35Sharing1"+parName).c_str() , 200, -1, 1 ) ;
+                       narrowTrackSharing2Data25to35.at(partPos) = new TH1F( ("narrowTrack25to35Sharing2"+ parName).c_str() , ("narrowTrack25to35Sharing2"+parName).c_str() , 200, -1, 1 ) ;
+                       narrowTrackSharing1Data35toinf.at(partPos) = new TH1F( ("narrowTrack35toinfSharing1"+ parName).c_str() , ("narrowTrack35toinfSharing1"+parName).c_str() , 200, -1, 1 ) ;
+                       narrowTrackSharing2Data35toinf.at(partPos) = new TH1F( ("narrowTrack35toinfSharing2"+ parName).c_str() , ("narrowTrack35toinfSharing2"+parName).c_str() , 200, -1, 1 ) ;
+                       narrowTrackSharing1Data10to20.at(partPos) = new TH1F( ("narrowTrack10to20Sharing1"+ parName).c_str() , ("narrowTrack10to20Sharing1"+parName).c_str() , 200, -1, 1 ) ;
+                       narrowTrackSharing2Data10to20.at(partPos) = new TH1F( ("narrowTrack0to20Sharing2"+ parName).c_str() , ("narrowTrack10to20Sharing2"+parName).c_str() , 200, -1, 1 ) ;
+
+                       narrowTrackSharing1Data5to5Can.at(partPos) = new TCanvas( ("narrowTrack5to5Sharing1"+ parName).c_str() , ("narrowTrack5to5Sharing1"+parName).c_str() ) ;
+                       narrowTrackSharing2Data5to5Can.at(partPos) = new TCanvas( ("narrowTrack5to5Sharing2"+ parName).c_str() , ("narrowTrack5to5Sharing2"+parName).c_str()  )  ;
+                       narrowTrackSharing1Datainfto5Can.at(partPos) = new TCanvas( ("narrowTrackinfto5Sharing1"+ parName).c_str() , ("narrowTrackinfto5Sharing1"+parName).c_str() ) ;
+                       narrowTrackSharing2Datainfto5Can.at(partPos) = new TCanvas( ("narrowTrackinfto5Sharing2"+ parName).c_str() , ("narrowTrackinfto5Sharing2"+parName).c_str()  )  ;
+                       narrowTrackSharing1Data35toinfCan.at(partPos) = new TCanvas( ("narrowTrack35toinfSharing1"+ parName).c_str() , ("narrowTrack35toinfSharing1"+parName).c_str()  ) ;
+                       narrowTrackSharing2Data35toinfCan.at(partPos) = new TCanvas( ("narrowTrack35toinfSharing2"+ parName).c_str() , ("narrowTrack35toinfSharing2"+parName).c_str()  ) ;
+                       narrowTrackSharing1Data10to20Can.at(partPos) = new TCanvas( ("narrowTrack10to20Sharing1"+ parName).c_str() , ("narrowTrack10to20Sharing1"+parName).c_str()  ) ;
+                       narrowTrackSharing2Data10to20Can.at(partPos) = new TCanvas( ("narrowTrack0to20Sharing2"+ parName).c_str() , ("narrowTrack10to20Sharing2"+parName).c_str()  ) ;
+                       narrowTrackSharing1Data25to35Can.at(partPos) = new TCanvas( ("narrowTracki25to35Sharing1"+ parName).c_str() , ("narrowTrack25to35Sharing1"+parName).c_str()  ) ;
+                       narrowTrackSharing2Data25to35Can.at(partPos) = new TCanvas( ("narrowTrack25to35Sharing2"+ parName).c_str() , ("narrowTrack25to35Sharing2"+parName).c_str()  ) ;
 
                    }
 
@@ -431,19 +513,75 @@ int main(int argc, char *argv[]){
                        {
                            widthTopInOutOnly.at(partPos)->Fill(subCTCmbtimeVtx.at(clusterStart), subCTstripChargeTotWidth.at(clusterStart));
                            chargeTopInOutOnly.at(partPos)->Fill(subCTCmbtimeVtx.at(clusterStart), subCTstripChargeTotCharge.at(clusterStart));
-                           if(subCTMuontrackDirection.at(clusterStart) > 0)
+                           timingDirectionTop.at(partPos)->Fill(subCTMuontrackDirection.at(clusterStart));
+                           if(subCTMuontrackDirection.at(clusterStart) > 0) //inOut
                            {
                                cout << "top In Out "  << endl;
                                widthTopInOut.at(partPos)->Fill(subCTCmbtimeVtx.at(clusterStart), subCTstripChargeTotWidth.at(clusterStart));
                                chargeTopInOut.at(partPos)->Fill(subCTCmbtimeVtx.at(clusterStart), subCTstripChargeTotCharge.at(clusterStart));
+                               timingErrorTopInOut.at(partPos)->Fill(subCTCmbtimeVtx.at(clusterStart));
+               
+
+
+                               if(subCTstripCharge.at(clusterStart+1) != -333)
+                               {
+                                   if(subCTCmbtimeVtx.at(clusterStart)>-5 && subCTCmbtimeVtx.at(clusterStart)<=5)
+                                       narrowTrackSharing1Data5to5.at(partPos)->Fill((float) subCTstripCharge.at(clusterStart+1)/subCTstripCharge.at(clusterStart+2));
+                                   if(subCTCmbtimeVtx.at(clusterStart)>=25 && subCTCmbtimeVtx.at(clusterStart)<35)
+                                       narrowTrackSharing1Data25to35.at(partPos)->Fill((float) subCTstripCharge.at(clusterStart+1)/subCTstripCharge.at(clusterStart+2));
+                                   if(subCTCmbtimeVtx.at(clusterStart)>=10 && subCTCmbtimeVtx.at(clusterStart)<=20)
+                                       narrowTrackSharing1Data10to20.at(partPos)->Fill((float) subCTstripCharge.at(clusterStart+1)/subCTstripCharge.at(clusterStart+2));
+                                   if(subCTCmbtimeVtx.at(clusterStart)<=-5)
+                                       narrowTrackSharing1Datainfto5.at(partPos)->Fill((float) subCTstripCharge.at(clusterStart+1)/subCTstripCharge.at(clusterStart+2));
+                                   if(subCTCmbtimeVtx.at(clusterStart)>=35)
+                                       narrowTrackSharing1Data35toinf.at(partPos)->Fill((float) subCTstripCharge.at(clusterStart+1)/subCTstripCharge.at(clusterStart+2));
+                               }
+                               if(subCTstripCharge.at(clusterStart+3) != -333)
+                               {
+                                   if(subCTCmbtimeVtx.at(clusterStart)>-5 && subCTCmbtimeVtx.at(clusterStart)<=5)
+                                       narrowTrackSharing1Data5to5.at(partPos)->Fill((float) subCTstripCharge.at(clusterStart+3)/subCTstripCharge.at(clusterStart+2));
+                                   if(subCTCmbtimeVtx.at(clusterStart)>=25 && subCTCmbtimeVtx.at(clusterStart)<35)
+                                       narrowTrackSharing1Data25to35.at(partPos)->Fill((float) subCTstripCharge.at(clusterStart+3)/subCTstripCharge.at(clusterStart+2));
+                                   if(subCTCmbtimeVtx.at(clusterStart)>=10 && subCTCmbtimeVtx.at(clusterStart)<=20)
+                                       narrowTrackSharing1Data10to20.at(partPos)->Fill((float) subCTstripCharge.at(clusterStart+3)/subCTstripCharge.at(clusterStart+2));
+                                   if(subCTCmbtimeVtx.at(clusterStart)<=-5)
+                                       narrowTrackSharing1Datainfto5.at(partPos)->Fill((float) subCTstripCharge.at(clusterStart+3)/subCTstripCharge.at(clusterStart+2));
+                                   if(subCTCmbtimeVtx.at(clusterStart)>=35)
+                                       narrowTrackSharing1Data35toinf.at(partPos)->Fill((float) subCTstripCharge.at(clusterStart+3)/subCTstripCharge.at(clusterStart+2));
+                               }
+                               if(subCTstripCharge.at(clusterStart) != -333)
+                               {
+                                   if(subCTCmbtimeVtx.at(clusterStart)>-5 && subCTCmbtimeVtx.at(clusterStart)<=5)
+                                       narrowTrackSharing2Data5to5.at(partPos)->Fill((float) subCTstripCharge.at(clusterStart)/subCTstripCharge.at(clusterStart+2));
+                                   if(subCTCmbtimeVtx.at(clusterStart)>=25 && subCTCmbtimeVtx.at(clusterStart)<35)
+                                       narrowTrackSharing2Data25to35.at(partPos)->Fill((float) subCTstripCharge.at(clusterStart)/subCTstripCharge.at(clusterStart+2));
+                                   if(subCTCmbtimeVtx.at(clusterStart)>=10 && subCTCmbtimeVtx.at(clusterStart)<=20)
+                                       narrowTrackSharing2Data10to20.at(partPos)->Fill((float) subCTstripCharge.at(clusterStart)/subCTstripCharge.at(clusterStart+2));
+                                   if(subCTCmbtimeVtx.at(clusterStart)<=-5)
+                                       narrowTrackSharing2Datainfto5.at(partPos)->Fill((float) subCTstripCharge.at(clusterStart)/subCTstripCharge.at(clusterStart+2));
+                                   if(subCTCmbtimeVtx.at(clusterStart)>=35)
+                                       narrowTrackSharing2Data35toinf.at(partPos)->Fill((float) subCTstripCharge.at(clusterStart)/subCTstripCharge.at(clusterStart+2));
+                               }
+                               if(subCTstripCharge.at(clusterStart+4) != -333)
+                               {
+                                   if(subCTCmbtimeVtx.at(clusterStart)>-5 && subCTCmbtimeVtx.at(clusterStart)<=5)
+                                       narrowTrackSharing2Data5to5.at(partPos)->Fill((float) subCTstripCharge.at(clusterStart+4)/subCTstripCharge.at(clusterStart+2));
+                                   if(subCTCmbtimeVtx.at(clusterStart)>=25 && subCTCmbtimeVtx.at(clusterStart)<35)
+                                       narrowTrackSharing2Data25to35.at(partPos)->Fill((float) subCTstripCharge.at(clusterStart+4)/subCTstripCharge.at(clusterStart+2));
+                                   if(subCTCmbtimeVtx.at(clusterStart)>=10 && subCTCmbtimeVtx.at(clusterStart)<=20)
+                                       narrowTrackSharing2Data10to20.at(partPos)->Fill((float) subCTstripCharge.at(clusterStart+4)/subCTstripCharge.at(clusterStart+2));
+                                   if(subCTCmbtimeVtx.at(clusterStart)<=-5 )
+                                       narrowTrackSharing2Datainfto5.at(partPos)->Fill((float) subCTstripCharge.at(clusterStart+4)/subCTstripCharge.at(clusterStart+2));
+                                   if(subCTCmbtimeVtx.at(clusterStart)>=35)
+                                       narrowTrackSharing2Data35toinf.at(partPos)->Fill((float) subCTstripCharge.at(clusterStart+4)/subCTstripCharge.at(clusterStart+2));
+                               }
                            }
                            else if(subCTMuontrackDirection.at(clusterStart) < 0)
                            {
                                cout << "top Out In "  << endl;
                                widthTopOutIn.at(partPos)->Fill(subCTCmbtimeVtxr.at(clusterStart), subCTstripChargeTotWidth.at(clusterStart));
                                chargeTopOutIn.at(partPos)->Fill(subCTCmbtimeVtxr.at(clusterStart), subCTstripChargeTotCharge.at(clusterStart));
-                               timingErrorTop.at(partPos)->Fill(subCTCmbtimeVtxrErr.at(clusterStart));
-                               timingErrorTopInOut.at(partPos)->Fill(subCTCmbtimeVtxErr.at(clusterStart));
+                               timingErrorTop.at(partPos)->Fill(subCTCmbtimeVtxr.at(clusterStart));
                            }
                            else
                                cout << "direction undefined" << endl;
@@ -527,19 +665,99 @@ int main(int argc, char *argv[]){
        //c37.SaveAs(("output/"+(string)dir+"/"+  "narrowTrackSharing1.eps").c_str());
        //
        //
+       narrowTrackSharing1Data5to5.at(c)->SetMarkerStyle(kFullCircle);
+       narrowTrackSharing1Data5to5.at(c)->SetMarkerColor(kBlack);
+       narrowTrackSharing1Datainfto5.at(c)->SetMarkerStyle(kFullCircle);
+       narrowTrackSharing1Datainfto5.at(c)->SetMarkerColor(kBlack);
+       narrowTrackSharing1Data25to35.at(c)->SetMarkerStyle(kFullCircle);
+       narrowTrackSharing1Data25to35.at(c)->SetMarkerColor(kBlack);
+       narrowTrackSharing1Data35toinf.at(c)->SetMarkerStyle(kFullCircle);
+       narrowTrackSharing1Data35toinf.at(c)->SetMarkerColor(kBlack);
+       narrowTrackSharing1Data10to20.at(c)->SetMarkerStyle(kFullCircle);
+       narrowTrackSharing1Data10to20.at(c)->SetMarkerColor(kBlack);
+       narrowTrackSharing1Data5to5.at(c)->GetXaxis()->SetTitle("#eta #pm 1");
+       narrowTrackSharing2Data5to5.at(c)->GetXaxis()->SetTitle("#eta #pm 2");
+       narrowTrackSharing1Datainfto5.at(c)->GetXaxis()->SetTitle("#eta #pm 1");
+       narrowTrackSharing2Datainfto5.at(c)->GetXaxis()->SetTitle("#eta #pm 2");
+       narrowTrackSharing1Data25to35.at(c)->GetXaxis()->SetTitle("#eta #pm 1");
+       narrowTrackSharing2Data25to35.at(c)->GetXaxis()->SetTitle("#eta #pm 2");
+       narrowTrackSharing1Data35toinf.at(c)->GetXaxis()->SetTitle("#eta #pm 1");
+       narrowTrackSharing2Data35toinf.at(c)->GetXaxis()->SetTitle("#eta #pm 2");
+       narrowTrackSharing1Data10to20.at(c)->GetXaxis()->SetTitle("#eta #pm 1");
+       narrowTrackSharing2Data10to20.at(c)->GetXaxis()->SetTitle("#eta #pm 2");
        
+       narrowTrackSharing1Data5to5Can.at(c)->cd();
+       narrowTrackSharing1Data5to5.at(c)->DrawNormalized(""); 
+       narrowTrackSharing1Data5to5Can.at(c)->SaveAs(("output/"+(string)dir+"/"+ narrowTrackSharing1Data5to5.at(c)->GetName()+ ".root").c_str());
+       narrowTrackSharing1Data5to5Can.at(c)->SaveAs(("output/"+(string)dir+"/"+ narrowTrackSharing1Data5to5.at(c)->GetName()+ ".eps").c_str());
+
+       narrowTrackSharing1Datainfto5Can.at(c)->cd();
+       narrowTrackSharing1Datainfto5.at(c)->DrawNormalized(""); 
+       narrowTrackSharing1Datainfto5Can.at(c)->SaveAs(("output/"+(string)dir+"/"+ narrowTrackSharing1Datainfto5.at(c)->GetName()+ ".root").c_str());
+       narrowTrackSharing1Datainfto5Can.at(c)->SaveAs(("output/"+(string)dir+"/"+ narrowTrackSharing1Datainfto5.at(c)->GetName()+ ".eps").c_str());
+
+       narrowTrackSharing1Data25to35Can.at(c)->cd();
+       narrowTrackSharing1Data25to35.at(c)->DrawNormalized(""); 
+       narrowTrackSharing1Data25to35Can.at(c)->SaveAs(("output/"+(string)dir+"/"+ narrowTrackSharing1Data25to35.at(c)->GetName()+ ".root").c_str());
+       narrowTrackSharing1Data25to35Can.at(c)->SaveAs(("output/"+(string)dir+"/"+ narrowTrackSharing1Data25to35.at(c)->GetName()+ ".eps").c_str());
+
+       narrowTrackSharing1Data35toinfCan.at(c)->cd();
+       narrowTrackSharing1Data35toinf.at(c)->DrawNormalized(""); 
+       narrowTrackSharing1Data35toinfCan.at(c)->SaveAs(("output/"+(string)dir+"/"+ narrowTrackSharing1Data35toinf.at(c)->GetName()+ ".root").c_str());
+       narrowTrackSharing1Data35toinfCan.at(c)->SaveAs(("output/"+(string)dir+"/"+ narrowTrackSharing1Data35toinf.at(c)->GetName()+ ".eps").c_str());
+
+       narrowTrackSharing1Data10to20Can.at(c)->cd();
+       narrowTrackSharing1Data10to20.at(c)->DrawNormalized(""); 
+       narrowTrackSharing1Data10to20Can.at(c)->SaveAs(("output/"+(string)dir+"/"+ narrowTrackSharing1Data10to20.at(c)->GetName()+ ".root").c_str());
+       narrowTrackSharing1Data10to20Can.at(c)->SaveAs(("output/"+(string)dir+"/"+ narrowTrackSharing1Data10to20.at(c)->GetName()+ ".eps").c_str());
+       
+       narrowTrackSharing2Data5to5Can.at(c)->cd();
+       narrowTrackSharing2Data5to5.at(c)->DrawNormalized(""); 
+       narrowTrackSharing2Data5to5Can.at(c)->SaveAs(("output/"+(string)dir+"/"+ narrowTrackSharing2Data5to5.at(c)->GetName()+ ".root").c_str());
+       narrowTrackSharing2Data5to5Can.at(c)->SaveAs(("output/"+(string)dir+"/"+ narrowTrackSharing2Data5to5.at(c)->GetName()+ ".eps").c_str());
+
+       narrowTrackSharing2Datainfto5Can.at(c)->cd();
+       narrowTrackSharing2Datainfto5.at(c)->DrawNormalized(""); 
+       narrowTrackSharing2Datainfto5Can.at(c)->SaveAs(("output/"+(string)dir+"/"+ narrowTrackSharing2Datainfto5.at(c)->GetName()+ ".root").c_str());
+       narrowTrackSharing2Datainfto5Can.at(c)->SaveAs(("output/"+(string)dir+"/"+ narrowTrackSharing2Datainfto5.at(c)->GetName()+ ".eps").c_str());
+
+       narrowTrackSharing2Data25to35Can.at(c)->cd();
+       narrowTrackSharing2Data25to35.at(c)->DrawNormalized(""); 
+       narrowTrackSharing2Data25to35Can.at(c)->SaveAs(("output/"+(string)dir+"/"+ narrowTrackSharing2Data25to35.at(c)->GetName()+ ".root").c_str());
+       narrowTrackSharing2Data25to35Can.at(c)->SaveAs(("output/"+(string)dir+"/"+ narrowTrackSharing2Data25to35.at(c)->GetName()+ ".eps").c_str());
+
+       narrowTrackSharing2Data35toinfCan.at(c)->cd();
+       narrowTrackSharing2Data35toinf.at(c)->DrawNormalized(""); 
+       narrowTrackSharing2Data35toinfCan.at(c)->SaveAs(("output/"+(string)dir+"/"+ narrowTrackSharing2Data35toinf.at(c)->GetName()+ ".root").c_str());
+       narrowTrackSharing2Data35toinfCan.at(c)->SaveAs(("output/"+(string)dir+"/"+ narrowTrackSharing2Data35toinf.at(c)->GetName()+ ".eps").c_str());
+
+       narrowTrackSharing2Data10to20Can.at(c)->cd();
+       narrowTrackSharing2Data10to20.at(c)->DrawNormalized(""); 
+       narrowTrackSharing2Data10to20Can.at(c)->SaveAs(("output/"+(string)dir+"/"+ narrowTrackSharing2Data10to20.at(c)->GetName()+ ".root").c_str());
+       narrowTrackSharing2Data10to20Can.at(c)->SaveAs(("output/"+(string)dir+"/"+ narrowTrackSharing2Data10to20.at(c)->GetName()+ ".eps").c_str());
+
+       narrowTrackSharing2DataCan.at(c)->cd();
+       narrowTrackSharing2Data.at(c)->DrawNormalized(""); 
+       narrowTrackSharing2DataCan.at(c)->SaveAs(("output/"+(string)dir+"/"+ narrowTrackSharing2Data.at(c)->GetName() + ".root").c_str());
+       narrowTrackSharing2DataCan.at(c)->SaveAs(("output/"+(string)dir+"/"+ narrowTrackSharing2Data.at(c)->GetName()+ ".eps").c_str());
        
        widthTopInOutCan.at(c)->cd();
+       widthTopInOut.at(c)->GetXaxis()->SetTitle("time");
+       widthTopInOut.at(c)->GetYaxis()->SetTitle("cluster width");
        widthTopInOut.at(c)->Draw("");
        widthTopInOutCan.at(c)->SaveAs(("output/"+(string)dir+"/"+ widthTopInOut.at(c)->GetName()+ ".eps").c_str());
        widthTopInOutCan.at(c)->SaveAs(("output/"+(string)dir+"/"+ widthTopInOut.at(c)->GetName()+ ".root").c_str());
 
        widthTopInOutOnlyCan.at(c)->cd();
+       widthTopInOutOnly.at(c)->GetXaxis()->SetTitle("time");
+       widthTopInOutOnly.at(c)->GetYaxis()->SetTitle("cluster width");
        widthTopInOutOnly.at(c)->Draw("");
        widthTopInOutOnlyCan.at(c)->SaveAs(("output/"+(string)dir+"/"+ widthTopInOutOnly.at(c)->GetName()+ ".eps").c_str());
        widthTopInOutOnlyCan.at(c)->SaveAs(("output/"+(string)dir+"/"+ widthTopInOutOnly.at(c)->GetName()+ ".root").c_str());
 
        widthTopOutInCan.at(c)->cd();
+       widthTopOutIn.at(c)->GetXaxis()->SetTitle("time");
+       widthTopOutIn.at(c)->GetYaxis()->SetTitle("cluster width");
        widthTopOutIn.at(c)->Draw("");
        widthTopOutInCan.at(c)->SaveAs(("output/"+(string)dir+"/"+ widthTopOutIn.at(c)->GetName()+ ".eps").c_str());
        widthTopOutInCan.at(c)->SaveAs(("output/"+(string)dir+"/"+ widthTopOutIn.at(c)->GetName()+ ".root").c_str());
@@ -560,16 +778,22 @@ int main(int argc, char *argv[]){
        widthBottomOutInCan.at(c)->SaveAs(("output/"+(string)dir+"/"+ widthBottomOutIn.at(c)->GetName()+ ".root").c_str());
 
        chargeTopInOutCan.at(c)->cd();
+       chargeTopInOut.at(c)->GetXaxis()->SetTitle("time");
+       chargeTopInOut.at(c)->GetYaxis()->SetTitle("cluster charge");
        chargeTopInOut.at(c)->Draw("");
        chargeTopInOutCan.at(c)->SaveAs(("output/"+(string)dir+"/"+ chargeTopInOut.at(c)->GetName()+ ".eps").c_str());
        chargeTopInOutCan.at(c)->SaveAs(("output/"+(string)dir+"/"+ chargeTopInOut.at(c)->GetName()+ ".root").c_str());
 
        chargeTopInOutOnlyCan.at(c)->cd();
+       chargeTopInOutOnly.at(c)->GetXaxis()->SetTitle("time");
+       chargeTopInOutOnly.at(c)->GetYaxis()->SetTitle("cluster charge");
        chargeTopInOutOnly.at(c)->Draw("");
        chargeTopInOutOnlyCan.at(c)->SaveAs(("output/"+(string)dir+"/"+ chargeTopInOutOnly.at(c)->GetName()+ ".eps").c_str());
        chargeTopInOutOnlyCan.at(c)->SaveAs(("output/"+(string)dir+"/"+ chargeTopInOutOnly.at(c)->GetName()+ ".root").c_str());
 
        chargeTopOutInCan.at(c)->cd();
+       chargeTopOutIn.at(c)->GetXaxis()->SetTitle("time");
+       chargeTopOutIn.at(c)->GetYaxis()->SetTitle("cluster charge");
        chargeTopOutIn.at(c)->Draw("");
        chargeTopOutInCan.at(c)->SaveAs(("output/"+(string)dir+"/"+ chargeTopOutIn.at(c)->GetName()+ ".eps").c_str());
        chargeTopOutInCan.at(c)->SaveAs(("output/"+(string)dir+"/"+ chargeTopOutIn.at(c)->GetName()+ ".root").c_str());
@@ -591,12 +815,20 @@ int main(int argc, char *argv[]){
 
 
        timingErrorTopCan.at(c)->cd();
-       timingErrorTop.at(c)->DrawNormalized(""); 
+       timingErrorTop.at(c)->GetXaxis()->SetTitle("time");
+       timingErrorTop.at(c)->SetTitle("");
+       timingErrorTop.at(c)->DrawNormalized("hist"); 
        timingErrorTopInOut.at(c)->SetLineColor(kRed); 
        timingErrorTopInOut.at(c)->DrawNormalized("same hist"); 
        timingErrorTopCan.at(c)->SaveAs(("output/"+(string)dir+"/"+ timingErrorTop.at(c)->GetName()+ ".root").c_str());
        timingErrorTopCan.at(c)->SaveAs(("output/"+(string)dir+"/"+ timingErrorTop.at(c)->GetName()+ ".eps").c_str());
 
+       timingDirectionTopCan.at(c)->cd();
+       timingDirectionTop.at(c)->GetXaxis()->SetTitle("direction");
+       timingDirectionTop.at(c)->SetTitle("");
+       timingDirectionTop.at(c)->Draw("hist"); 
+       timingDirectionTopCan.at(c)->SaveAs(("output/"+(string)dir+"/"+ timingDirectionTop.at(c)->GetName()+ ".root").c_str());
+       timingDirectionTopCan.at(c)->SaveAs(("output/"+(string)dir+"/"+ timingDirectionTop.at(c)->GetName()+ ".eps").c_str());
        }
 
 

@@ -47,6 +47,7 @@
 //cluster width phi dependence
 //./makeAndCompareDistributions test_shallowTrackCRUZET_2017VRmodulePos.root test_shallowTrackCRUZET_2017VRmodulePos.root TOB 0 5 yes CRUZETPhiDep 
 //./makeAndCompareDistributions test_shallowTrackCRUZET_2017VRNewClusteringTimingTestMuonInfo.root test_shallowTrackCRUZET_2017VRNewClusteringTimingTestMuonInfo.root TOB 0 5 yes CRUZETPhiDep 
+//./makeAndCompareDistributions test_shallowTrackCRUZET_2017VRNewClusteringTimingTestOnlyGlobalTracks.root test_shallowTrackCRUZET_2017VRNewClusteringTimingTestOnlyGlobalTracks.root TOB 0 5 yes CRUZETPhiDep 
 //
 #include <fstream>
 #include <iostream>
