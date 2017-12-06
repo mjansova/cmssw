@@ -3,9 +3,6 @@
 //./crossTalkMeasurement test_shallowTrackCRUZET_2017VRNewClusteringTimingTest.root crossTalkMeasurement
 //./crossTalkMeasurement test_shallowTrackCRUZET_2017VRNewClusteringTimingTestOnlyGlobalTracks.root crossTalkMeasurement
 //./crossTalkMeasurement test_shallowTrackCRUZET_2017VRNewClusteringTimingTestOnlyGlobalTracks.root crossTalkMeasurementNar0.1
-//./crossTalkMeasurement test_shallowTrackCRUZET_2017VRNewClusteringTimingMuonTimingTests3.root crossTalkMeasurementPrecise
-//./crossTalkMeasurement test_shallowTrackCRUZET_2017VRNewClusteringTimingMuonTimingTestsZOffsetPlusCT.root crossTalkMeasurementPrecise
-//./crossTalkMeasurement test_shallowTrackCRUZET_2017VRNewClusteringTimingMuonTimingTestsZOffsetPlusCTvzPlusEta.root crossTalkMeasurementPrecise
 
 #include <fstream>
 #include <iostream>
@@ -24,7 +21,6 @@
 #include "TChain.h"
 #include "TH1F.h"
 #include "TH2F.h"
-#include "TH2D.h"
 #include "TH1D.h"
 #include "TF1.h"
 #include "TF2.h"
@@ -109,9 +105,6 @@ int main(int argc, char *argv[]){
        //unsigned int  nrofevents;
        vector<float>* tsosrhglobalphi = 0;
        vector<uint32_t>* clusterdetid = 0;
-       vector<float>* CTMuonCombinedFreeInverseBeta = 0;
-       vector<uint32_t>* CTnrOfMuHits = 0;
-       vector<uint32_t>* CTsectorsOfDT = 0;
 
        vector<float> subCTstripChargeSubdetid;
        vector<float> subCTstripCharge;
@@ -139,27 +132,6 @@ int main(int argc, char *argv[]){
        //vector<unsigned int>  subnrofevents;
        vector<float> subtsosrhglobalphi;
        vector<uint32_t> subclusterdetid;
-       vector<float>  subCTMuonCombinedFreeInverseBeta ;
-       vector<uint32_t> subCTnrOfMuHits;
-       vector<uint32_t> subCTsectorsOfDT;
-
-       vector<float>*  CTinnerXtop = 0;
-       vector<float>*  CTinnerYtop = 0;
-       vector<float>*  CTinnerZtop = 0;
-       vector<float>*  CTinnerVZtop = 0;
-       vector<float>*  CTouterXtop = 0;
-       vector<float>*  CTouterYtop = 0;
-       vector<float>*  CTouterZtop = 0;
-       vector<float>*  CTouterEtatop = 0;
-
-       vector<float>  subCTinnerXtop;
-       vector<float>  subCTinnerYtop;
-       vector<float>  subCTinnerZtop ;
-       vector<float>  subCTinnerVZtop ;
-       vector<float>  subCTouterXtop;
-       vector<float>  subCTouterYtop;
-       vector<float>  subCTouterZtop;
-       vector<float>  subCTouterEtatop;
 
        float bx;
        vector<float> bxPerStrip;
@@ -191,28 +163,16 @@ int main(int argc, char *argv[]){
        t1->SetBranchAddress("tsosrhglobalphi",  &tsosrhglobalphi );
        t1->SetBranchAddress("clusterdetid",  &clusterdetid );
        //t1->SetBranchAddress("bx",  &bx );
-       t1->SetBranchAddress("CTMuonCombinedFreeInverseBeta",  &CTMuonCombinedFreeInverseBeta );
-       t1->SetBranchAddress("CTnrOfMuHits",  &CTnrOfMuHits );
-       t1->SetBranchAddress("CTsectorsOfDT",  &CTsectorsOfDT );
-
-       t1->SetBranchAddress("CTinnerXtop",  &CTinnerXtop );
-       t1->SetBranchAddress("CTinnerYtop",  &CTinnerYtop );
-       t1->SetBranchAddress("CTinnerZtop",  &CTinnerZtop );
-       t1->SetBranchAddress("CTinnerVZtop",  &CTinnerVZtop );
-       t1->SetBranchAddress("CTouterXtop",  &CTouterXtop );
-       t1->SetBranchAddress("CTouterYtop",  &CTouterYtop );
-       t1->SetBranchAddress("CTouterZtop",  &CTouterZtop );
-       t1->SetBranchAddress("CTouterEtatop",  &CTouterEtatop );
-   ///adata always first
+   //data always first
     
 
    uint32_t evCount=0;
    vector<uint32_t> eventCount;
    
-   cout << "in here a" << endl;
+   //cout << "in here a" << endl;
    Int_t nentries = (Int_t)t1->GetEntries();
 
-   cout << "in here b" << endl;
+   //cout << "in here b" << endl;
    ///fill variables from tree 1
    for (Int_t e=0; e<nentries; e++) 
    {
@@ -253,18 +213,6 @@ int main(int argc, char *argv[]){
                        //subCTstripChargeBdotY.push_back(CTstripChargeBdotY->at(k));
                        //bxPerStrip.push_back(bx);
                        eventCount.push_back(e);
-                       subCTMuonCombinedFreeInverseBeta.push_back(CTMuonCombinedFreeInverseBeta->at(k)) ;
-                       subCTnrOfMuHits.push_back(CTnrOfMuHits->at(k));
-                       subCTsectorsOfDT.push_back(CTsectorsOfDT->at(k));
-                       subCTinnerXtop.push_back(CTinnerXtop->at(k));
-                       subCTinnerYtop.push_back(CTinnerYtop->at(k));
-                       subCTinnerZtop.push_back(CTinnerZtop->at(k));
-                       subCTinnerVZtop.push_back(CTinnerVZtop->at(k));
-                       subCTouterXtop.push_back(CTouterXtop->at(k));
-                       subCTouterYtop.push_back(CTouterYtop->at(k));
-                       subCTouterZtop.push_back(CTouterZtop->at(k));
-                       subCTouterEtatop.push_back(CTouterEtatop->at(k));
-
                    }
                }
            }
@@ -275,7 +223,6 @@ int main(int argc, char *argv[]){
            }
    }
 
-   cout << "in here c" << endl;
 
 
        //F
@@ -293,14 +240,6 @@ int main(int argc, char *argv[]){
        vector<TH1F*> narrowTrackSharing1Data10to20;
        vector<TH1F*> narrowTrackSharing2Data10to20;
 
-       vector<TH1F*> narrowTrackSharing1DataSmallError;
-       vector<TH1F*> narrowTrackSharing1DataLargeError;
-       vector<TCanvas*> narrowTrackSharing1DataSmallErrorCan;
-       vector<TCanvas*> narrowTrackSharing1DataLargeErrorCan;
-
-       vector<TH1F*> narrowTrackSharing1DataLargeErrorSmallZ;
-       vector<TCanvas*> narrowTrackSharing1DataLargeErrorSmallZCan;
-
        vector<TH1F*> timingErrorTop;
        vector<TH1F*> timingErrorTopInOut;
        vector<TCanvas*> timingErrorTopCan;
@@ -311,56 +250,15 @@ int main(int argc, char *argv[]){
        vector<TCanvas*> timingDirectionTopCan;
        vector<TCanvas*> timingDirectionTopInOutCan;
 
-       vector<TProfile*> widthTopInOutOnly;
-       vector<TProfile*> widthBottomInOutOnly;
+       vector<TProfile*> widthTopInOut;
+       vector<TProfile*> widthBottomInOut;
        vector<TProfile*> widthTopOutIn;
        vector<TProfile*> widthBottomOutIn;
 
-       vector<TProfile*> chargeTopInOutOnly;
-       vector<TProfile*> chargeBottomInOutOnly;
+       vector<TProfile*> chargeTopInOut;
+       vector<TProfile*> chargeBottomInOut;
        vector<TProfile*> chargeTopOutIn;
        vector<TProfile*> chargeBottomOutIn;
-
-
-       vector<TProfile*> chargeCenterOutIn;
-       vector<TProfile*> chargeEdgeOutIn;
-       vector<TCanvas*> chargeCenterOutInCan;
-       vector<TCanvas*> chargeEdgeOutInCan;
-       vector<TH1F*> innerZ;
-       vector<TCanvas*> innerZCan;
-       vector<TH1F*> innerVZ;
-       vector<TCanvas*> innerVZCan;
-
-
-       vector<TH2F*> vnrOfHitsVsError;
-       vector<TH2F*> nrOfSectorsVsError;
-       vector<TH2F*> chargeVsFreeInverseBeta;
-       vector<TH2F*> chargeVsOutIn;
-       vector<TH2F*> chargeVsOutInErr;
-       vector<TH2F*> chargeVsOutInLE;
-       vector<TH2F*> chargeVsOutInErrLE;
-       vector<TH2F*> outInErrVsFreeInverseBeta;
-       vector<TH2F*> outInErrVsOutIn;
-       vector<TH2F*> outInVsFreeInverseBeta;
-       vector<TCanvas*> vnrOfHitsVsErrorCan;
-       vector<TCanvas*> nrOfSectorsVsErrorCan;
-       vector<TCanvas*> chargeVsFreeInverseBetaCan;
-       vector<TCanvas*> chargeVsOutInCan;
-       vector<TCanvas*> chargeVsOutInErrCan;
-       vector<TCanvas*> chargeVsOutInCanLE;
-       vector<TCanvas*> chargeVsOutInErrCanLE;
-       vector<TCanvas*> outInErrVsFreeInverseBetaCan;
-       vector<TCanvas*> outInErrVsOutInCan;
-       vector<TCanvas*> outInVsFreeInverseBetaCan;
-
-
-
-       vector<TH1D*> chargeVsOutInLE_1;
-       vector<TH1D*> chargeVsOutInLE_2;
-       vector<TH1D*> chargeVsOutInLE_3;
-       vector<TCanvas*> chargeVsOutInLE_1Can;
-       vector<TCanvas*> chargeVsOutInLE_2Can;
-       vector<TCanvas*> chargeVsOutInLE_3Can;
 
        vector<TCanvas*> narrowTrackSharing1DataCan;
        vector<TCanvas*> narrowTrackSharing2DataCan;
@@ -376,45 +274,25 @@ int main(int argc, char *argv[]){
        vector<TCanvas*> narrowTrackSharing1Data10to20Can;
        vector<TCanvas*> narrowTrackSharing2Data10to20Can;
 
-       vector<TCanvas*> widthTopInOutOnlyCan;
-       vector<TCanvas*> widthBottomInOutOnlyCan;
+       vector<TCanvas*> widthTopInOutCan;
+       vector<TCanvas*> widthBottomInOutCan;
        vector<TCanvas*> widthTopOutInCan;
        vector<TCanvas*> widthBottomOutInCan;
 
-       vector<TCanvas*> chargeTopInOutOnlyCan;
-       vector<TCanvas*> chargeBottomInOutOnlyCan;
+       vector<TCanvas*> chargeTopInOutCan;
+       vector<TCanvas*> chargeBottomInOutCan;
        vector<TCanvas*> chargeTopOutInCan;
        vector<TCanvas*> chargeBottomOutInCan;
 
 
-       vector<TProfile*> widthTopOutInOnly;
-       vector<TProfile*> widthBottomOutInOnly;
-       vector<TProfile*> chargeTopOutInOnly;
-       vector<TProfile*> chargeBottomOutInOnly;
-       vector<TCanvas*> widthTopOutInOnlyCan;
-       vector<TCanvas*> widthBottomOutInOnlyCan;
-       vector<TCanvas*> chargeTopOutInOnlyCan;
-       vector<TCanvas*> chargeBottomOutInOnlyCan;
-
-       vector<TProfile*> chargeTopOutInOnlySE;
-       vector<TCanvas*> chargeTopOutInOnlyCanSE;
-       vector<TProfile*> chargeTopOutInOnlyLE;
-       vector<TCanvas*> chargeTopOutInOnlyCanLE;
-       chargeTopOutInOnlySE.resize(20, NULL);
-       chargeTopOutInOnlyLE.resize(20, NULL);
-       chargeTopOutInOnlyCanSE.resize(20, NULL);
-       chargeTopOutInOnlyCanLE.resize(20, NULL);
-
-       chargeCenterOutIn.resize(20, NULL);
-       chargeEdgeOutIn.resize(20, NULL);
-       chargeCenterOutInCan.resize(20, NULL);
-       chargeEdgeOutInCan.resize(20, NULL);
-
-       innerZ.resize(20, NULL);
-       innerZCan.resize(20, NULL);
-       innerVZ.resize(20, NULL);
-       innerVZCan.resize(20, NULL);
-
+       vector<TProfile*> widthTopInOutOnly;
+       vector<TProfile*> widthBottomInOutOnly;
+       vector<TProfile*> chargeTopInOutOnly;
+       vector<TProfile*> chargeBottomInOutOnly;
+       vector<TCanvas*> widthTopInOutOnlyCan;
+       vector<TCanvas*> widthBottomInOutOnlyCan;
+       vector<TCanvas*> chargeTopInOutOnlyCan;
+       vector<TCanvas*> chargeBottomInOutOnlyCan;
 
        narrowTrackSharing1Data.resize(20, NULL);
        narrowTrackSharing2Data.resize(20, NULL);
@@ -444,64 +322,33 @@ int main(int argc, char *argv[]){
        narrowTrackSharing1Data10to20Can.resize(20, NULL);
        narrowTrackSharing2Data10to20Can.resize(20, NULL);
 
+       widthTopInOut.resize(20, NULL);
+       widthBottomInOut.resize(20, NULL);
        widthTopInOutOnly.resize(20, NULL);
        widthBottomInOutOnly.resize(20, NULL);
-       widthTopOutInOnly.resize(20, NULL);
-       widthBottomOutInOnly.resize(20, NULL);
        widthTopOutIn.resize(20, NULL);
        widthBottomOutIn.resize(20, NULL);
 
+       chargeTopInOut.resize(20, NULL);
+       chargeBottomInOut.resize(20, NULL);
        chargeTopInOutOnly.resize(20, NULL);
        chargeBottomInOutOnly.resize(20, NULL);
-       chargeTopOutInOnly.resize(20, NULL);
-       chargeBottomOutInOnly.resize(20, NULL);
        chargeTopOutIn.resize(20, NULL);
        chargeBottomOutIn.resize(20, NULL);
 
-
+       widthTopInOutCan.resize(20, NULL);
+       widthBottomInOutCan.resize(20, NULL);
        widthTopInOutOnlyCan.resize(20, NULL);
        widthBottomInOutOnlyCan.resize(20, NULL);
-       widthTopOutInOnlyCan.resize(20, NULL);
-       widthBottomOutInOnlyCan.resize(20, NULL);
        widthTopOutInCan.resize(20, NULL);
        widthBottomOutInCan.resize(20, NULL);
 
+       chargeTopInOutCan.resize(20, NULL);
+       chargeBottomInOutCan.resize(20, NULL);
        chargeTopInOutOnlyCan.resize(20, NULL);
        chargeBottomInOutOnlyCan.resize(20, NULL);
-       chargeTopOutInOnlyCan.resize(20, NULL);
-       chargeBottomOutInOnlyCan.resize(20, NULL);
        chargeTopOutInCan.resize(20, NULL);
        chargeBottomOutInCan.resize(20, NULL);
-
-
-       vnrOfHitsVsError.resize(20, NULL);
-       nrOfSectorsVsError.resize(20, NULL);
-       chargeVsFreeInverseBeta.resize(20, NULL);
-       chargeVsOutIn.resize(20, NULL);
-       chargeVsOutInErr.resize(20, NULL);
-       chargeVsOutInLE.resize(20, NULL);
-       chargeVsOutInErrLE.resize(20, NULL);
-       outInErrVsFreeInverseBeta.resize(20, NULL);
-       outInErrVsOutIn.resize(20, NULL);
-       outInVsFreeInverseBeta.resize(20, NULL);
-       vnrOfHitsVsErrorCan.resize(20, NULL);
-       nrOfSectorsVsErrorCan.resize(20, NULL);
-       chargeVsFreeInverseBetaCan.resize(20, NULL);
-       chargeVsOutInCan.resize(20, NULL);
-       chargeVsOutInErrCan.resize(20, NULL);
-       chargeVsOutInCanLE.resize(20, NULL);
-       chargeVsOutInErrCanLE.resize(20, NULL);
-       outInErrVsFreeInverseBetaCan.resize(20, NULL);
-       outInErrVsOutInCan.resize(20, NULL);
-       outInVsFreeInverseBetaCan.resize(20, NULL);
-
-
-       chargeVsOutInLE_1.resize(20, NULL);
-       chargeVsOutInLE_2.resize(20, NULL);
-       chargeVsOutInLE_3.resize(20, NULL);
-       chargeVsOutInLE_1Can.resize(20, NULL);
-       chargeVsOutInLE_2Can.resize(20, NULL);
-       chargeVsOutInLE_3Can.resize(20, NULL);
 
 
        timingErrorTop.resize(20, NULL);
@@ -514,17 +361,6 @@ int main(int argc, char *argv[]){
        timingDirectionTopCan.resize(20, NULL);
        timingDirectionTopInOutCan.resize(20, NULL);
 
-
-       narrowTrackSharing1DataSmallError.resize(20, NULL);
-       narrowTrackSharing1DataLargeError.resize(20, NULL);
-       narrowTrackSharing1DataSmallErrorCan.resize(20, NULL);
-       narrowTrackSharing1DataLargeErrorCan.resize(20, NULL);
-
-       narrowTrackSharing1DataLargeErrorSmallZ.resize(20, NULL);
-       narrowTrackSharing1DataLargeErrorSmallZCan.resize(20, NULL);
-
-       TProfile*  chargeThroughTracker=  new TProfile("chargeThroughTracker", "chargeThroughTracker" , 25, 0, 25, 0, 500 ) ;
-       TProfile*  widthThroughTracker=  new TProfile("widthThroughTracker", "widthThroughTracker" , 25, 0, 25, 0, 15 ) ;
        uint8_t TIDoffset = 3;
        uint8_t TECoffset = 6;
 
@@ -537,29 +373,8 @@ int main(int argc, char *argv[]){
 
            int32_t partPos = -1;
            string  parName;
-           uint32_t TOBtop = 7;
-           uint32_t TIBtop = 11;
-           uint32_t TIBbottom = 10;
-           uint32_t TOBbottom = 14;
-
-   cout << "in here d" << endl;
-           //is the cluster narrow?           
-           if( abs(tan(subCTstripChargeLocalTrackTheta.at(clusterStart))*cos(subCTstripChargeLocalTrackPhi.at(clusterStart))) < narrowness*(subCTstripChargelocalpitch.at(clusterStart)/subCTstripChargesensorThickness.at(clusterStart)) )
-           {
-
                if(subCTstripChargeSubdetid.at(clusterStart) == 3 ) //TIB
                {
-                   if(subtsosrhglobalphi.at(m)>0 && (subCTCmbtimeVtxr.at(clusterStart)>-2 &&   subCTCmbtimeVtxr.at(clusterStart)<2) ) //top
-                   {
-                       chargeThroughTracker->Fill( TIBtop - subCTstripChargeLayerwheel.at(clusterStart), subCTstripChargeTotCharge.at(clusterStart));
-                       widthThroughTracker->Fill( TIBtop - subCTstripChargeLayerwheel.at(clusterStart), subCTstripChargeTotWidth.at(clusterStart));
-                   }
-                   if(subtsosrhglobalphi.at(m)<0 && (subCTCmbtimeVtxr.at(clusterStart)>-2 &&   subCTCmbtimeVtxr.at(clusterStart)<2) ) //top
-                   {
-                       chargeThroughTracker->Fill( TIBbottom + subCTstripChargeLayerwheel.at(clusterStart), subCTstripChargeTotCharge.at(clusterStart));
-                       widthThroughTracker->Fill( TIBbottom + subCTstripChargeLayerwheel.at(clusterStart), subCTstripChargeTotWidth.at(clusterStart));
-                   }
-
                    if(subCTstripChargeLayerwheel.at(clusterStart)>0 && subCTstripChargeLayerwheel.at(clusterStart)<3)
                    {
                        partPos = 0;
@@ -575,16 +390,6 @@ int main(int argc, char *argv[]){
                }
                if(subCTstripChargeSubdetid.at(clusterStart) == 5 ) //TOB
                {
-                   if(subtsosrhglobalphi.at(m)>0 && (subCTCmbtimeVtxr.at(clusterStart)>-2 &&   subCTCmbtimeVtxr.at(clusterStart)<2) ) //top
-                   {
-                       chargeThroughTracker->Fill( TOBtop - subCTstripChargeLayerwheel.at(clusterStart), subCTstripChargeTotCharge.at(clusterStart));
-                       widthThroughTracker->Fill( TOBtop - subCTstripChargeLayerwheel.at(clusterStart), subCTstripChargeTotWidth.at(clusterStart));
-                   }
-                   if(subtsosrhglobalphi.at(m)<0 && (subCTCmbtimeVtxr.at(clusterStart)>-2 &&   subCTCmbtimeVtxr.at(clusterStart)<2) ) //top
-                   {
-                       chargeThroughTracker->Fill( TOBbottom + subCTstripChargeLayerwheel.at(clusterStart), subCTstripChargeTotCharge.at(clusterStart));
-                       widthThroughTracker->Fill( TOBbottom + subCTstripChargeLayerwheel.at(clusterStart), subCTstripChargeTotWidth.at(clusterStart));
-                   }
                    if(subCTstripChargeLayerwheel.at(clusterStart)>0 && subCTstripChargeLayerwheel.at(clusterStart)<5)
                    {
                        partPos = 2;
@@ -611,6 +416,9 @@ int main(int argc, char *argv[]){
                }
 
 
+           //is the cluster narrow?           
+           if( abs(tan(subCTstripChargeLocalTrackTheta.at(clusterStart))*cos(subCTstripChargeLocalTrackPhi.at(clusterStart))) < narrowness*(subCTstripChargelocalpitch.at(clusterStart)/subCTstripChargesensorThickness.at(clusterStart)) )
+           {
                {
                    if(narrowTrackSharing1Data.at(partPos) == NULL)
                    {
@@ -634,89 +442,35 @@ int main(int argc, char *argv[]){
                    narrowTrackSharing2Data.at(partPos)->Fill( (float) subCTstripCharge.at(clusterStart+4)/subCTstripCharge.at(clusterStart+2));
 
 
-                   if(widthTopInOutOnly.at(partPos) == NULL)
+                   if(widthTopInOut.at(partPos) == NULL)
                    {
+		       widthTopInOut.at(partPos) =  new TProfile(("widthTopInOut"+ parName).c_str(), ("widthTopInOut"+ parName).c_str() , 200, -100, 100, 0, 10 ) ;
+		       widthBottomInOut.at(partPos) = new TProfile(("widthBottomInOut"+ parName).c_str(), ("widthBottomInOut"+ parName).c_str() , 200, -100, 100, 0, 10 ) ;
 		       widthTopInOutOnly.at(partPos) =  new TProfile(("widthTopInOutOnly"+ parName).c_str(), ("widthTopInOutOnly"+ parName).c_str() , 200, -100, 100, 0, 10 ) ;
 		       widthBottomInOutOnly.at(partPos) = new TProfile(("widthBottomInOutOnly"+ parName).c_str(), ("widthBottomInOutOnly"+ parName).c_str() , 200, -100, 100, 0, 10 ) ;
-		       widthTopOutInOnly.at(partPos) =  new TProfile(("widthTopOutInOnly"+ parName).c_str(), ("widthTopOutInOnly"+ parName).c_str() , 200, -100, 100, 0, 10 ) ;
-		       widthBottomOutInOnly.at(partPos) = new TProfile(("widthBottomOutInOnly"+ parName).c_str(), ("widthBottomOutInOnly"+ parName).c_str() , 200, -100, 100, 0, 10 ) ;
 		       widthTopOutIn.at(partPos) =  new TProfile(("widthTopOutIn"+ parName).c_str(), ("widthTopOutIn"+ parName).c_str() , 200, -100, 100, 0, 10 ) ;
 		       widthBottomOutIn.at(partPos) =  new TProfile(("widthBottomOutIn"+ parName).c_str(), ("widthBottomOutIn"+ parName).c_str() , 200, -100, 100, 0, 10 ) ;
 
+		       chargeTopInOut.at(partPos) =  new TProfile(("chargeTopInOut"+ parName).c_str(), ("chargeTopInOut"+ parName).c_str() , 200, -100, 100, 0, 1000 ) ;
+		       chargeBottomInOut.at(partPos) =  new TProfile(("chargeBottomInOut"+ parName).c_str(), ("chargeBottomInOut"+ parName).c_str() , 200, -100, 100, 0, 1000 ) ;
 		       chargeTopInOutOnly.at(partPos) =  new TProfile(("chargeTopInOutOnly"+ parName).c_str(), ("chargeTopInOutOnly"+ parName).c_str() , 200, -100, 100, 0, 1000 ) ;
 		       chargeBottomInOutOnly.at(partPos) =  new TProfile(("chargeBottomInOutOnly"+ parName).c_str(), ("chargeBottomInOutOnly"+ parName).c_str() , 200, -100, 100, 0, 1000 ) ;
-		       chargeTopOutInOnly.at(partPos) =  new TProfile(("chargeTopOutInOnly"+ parName).c_str(), ("chargeTopOutInOnly"+ parName).c_str() , 200, -100, 100, 0, 1000 ) ;
-		       chargeBottomOutInOnly.at(partPos) =  new TProfile(("chargeBottomOutInOnly"+ parName).c_str(), ("chargeBottomOutInOnly"+ parName).c_str() , 200, -100, 100, 0, 1000 ) ;
 		       chargeTopOutIn.at(partPos)=  new TProfile(("chargeTopOutIn"+ parName).c_str(), ("chargeTopOutIn"+ parName).c_str() , 200, -100, 100, 0, 1000 ) ;
 		       chargeBottomOutIn.at(partPos) =  new TProfile(("chargeBottomOutIn"+ parName).c_str(), ("chargeBottomOutIn"+ parName).c_str() , 200, -100, 100, 0, 1000 ) ;
 
-		       chargeTopOutInOnlySE.at(partPos) =  new TProfile(("chargeTopOutInOnlySE"+ parName).c_str(), ("chargeTopOutInOnlySE"+ parName).c_str() , 200, -100, 100, 0, 1000 ) ;
-		       chargeTopOutInOnlyLE.at(partPos) =  new TProfile(("chargeTopOutInOnlyLE"+ parName).c_str(), ("chargeTopOutInOnlyLE"+ parName).c_str() , 200, -100, 100, 0, 1000 ) ;
-
-
-
-		       chargeCenterOutIn.at(partPos) =  new TProfile(("chargeCenterOutIn"+ parName).c_str(), ("chargeCenterOutIn"+ parName).c_str() , 200, -100, 100, 0, 1000 ) ;
-		       chargeEdgeOutIn.at(partPos) =  new TProfile(("chargeEdgeOutIn"+ parName).c_str(), ("chargeEdgeOutIn"+ parName).c_str() , 200, -100, 100, 0, 1000 ) ;
-		       chargeCenterOutInCan.at(partPos) =   new TCanvas( ("chargeCenterOutInCan"+ parName).c_str(), ("chargeCenterOutInCan"+ parName).c_str()) ;
-		       chargeEdgeOutInCan.at(partPos) =   new TCanvas( ("chargeEdgeOutInCan"+ parName).c_str(), ("chargeEdgeOutInCan"+ parName).c_str()) ;
-
-
-		       innerZ.at(partPos) =  new TH1F(("innerZ"+ parName).c_str(), ("innerZ"+ parName).c_str() , 300, -300, 300 ) ;
-		       innerZCan.at(partPos) =   new TCanvas( ("innerZ"+ parName).c_str(), ("innerZ"+ parName).c_str()) ;
-		       innerVZ.at(partPos) =  new TH1F(("innerVZ"+ parName).c_str(), ("innerVZ"+ parName).c_str() , 300, -300, 300 ) ;
-		       innerVZCan.at(partPos) =   new TCanvas( ("innerVZ"+ parName).c_str(), ("innerVZ"+ parName).c_str()) ;
-
-                       vnrOfHitsVsError.at(partPos) = new TH2F( ("vnrOfHitsVsError"+ parName).c_str(),("vnrOfHitsVsError"+ parName).c_str() , 40, 0, 20, 100 , 0, 60);
-                       nrOfSectorsVsError.at(partPos) = new TH2F( ("nrOfSectorsVsError"+ parName).c_str(),("nrOfSectorsVsError"+ parName).c_str() , 10, 0, 10, 10 , 0, 10);
-                       chargeVsFreeInverseBeta.at(partPos) = new TH2F( ("chargeVsFreeInverseBeta"+ parName).c_str(),("chargeVsFreeInverseBeta"+ parName).c_str() , 60, -20, 20, 100 , 0, 1000);
-                       chargeVsOutIn.at(partPos) = new TH2F( ("chargeVsOutIn"+ parName).c_str(),("chargeVsOutIn"+ parName).c_str() , 200, -100, 100, 100 , 0, 1000);
-                       chargeVsOutInErr.at(partPos) = new TH2F( ("chargeVsOutInErr"+ parName).c_str(),("chargeVsOutInErr"+ parName).c_str() , 40, 0, 20, 100 , 0, 1000);
-                       chargeVsOutInLE.at(partPos) = new TH2F( ("chargeVsOutInLE"+ parName).c_str(),("chargeVsOutInLE"+ parName).c_str() , 200, -100, 100, 100 , 0, 1000);
-                       chargeVsOutInErrLE.at(partPos) = new TH2F( ("chargeVsOutInErrLE"+ parName).c_str(),("chargeVsOutInErrLE"+ parName).c_str() , 40, 0, 20, 100 , 0, 1000);
-                       outInErrVsFreeInverseBeta.at(partPos) = new TH2F( ("outInErrVsFreeInverseBeta"+ parName).c_str(),("outInErrVsFreeInverseBeta"+ parName).c_str() , 40, -20, 20, 40 , 0, 20);
-                       outInErrVsOutIn.at(partPos) = new TH2F( ("outInErrVsOutIn"+ parName).c_str(),("outInErrVsOutIn"+ parName).c_str() , 100, -50, 50, 40 , 0, 20);
-                       outInVsFreeInverseBeta.at(partPos) = new TH2F( ("outInVsFreeInverseBeta"+ parName).c_str(),("outInVsFreeInverseBeta"+ parName).c_str() , 40, -20, 20, 100 , -50, 50);
-
-
-		       chargeVsOutInLE_1.at(partPos) = new TH1D();
-		       chargeVsOutInLE_2.at(partPos) = new TH1D();
-		       chargeVsOutInLE_3.at(partPos) = new TH1D();
-		       chargeVsOutInLE_1Can.at(partPos) = new TCanvas( ("chargeVsOutInCanLE_1"+ parName).c_str(),("chargeVsOutInCanLE_1"+ parName).c_str() );
-		       chargeVsOutInLE_2Can.at(partPos) = new TCanvas( ("chargeVsOutInCanLE_2"+ parName).c_str(),("chargeVsOutInCanLE_2"+ parName).c_str() ) ;
-		       chargeVsOutInLE_3Can.at(partPos) = new TCanvas( ("chargeVsOutInCanLE_3"+ parName).c_str(),("chargeVsOutInCanLE_3"+ parName).c_str() ) ;
-
-
-                       vnrOfHitsVsErrorCan.at(partPos) = new TCanvas( ("vnrOfHitsVsErrorCan"+ parName).c_str(),("vnrOfHitsVsErrorCan"+ parName).c_str());
-                       nrOfSectorsVsErrorCan.at(partPos) = new TCanvas( ("nrOfSectorsVsErrorCan"+ parName).c_str(),("nrOfSectorsVsErrorCan"+ parName).c_str() );
-                       chargeVsFreeInverseBetaCan.at(partPos) = new TCanvas( ("chargeVsFreeInverseBetaCan"+ parName).c_str(),("chargeVsFreeInverseBetaCan"+ parName).c_str() );
-                       chargeVsOutInCan.at(partPos) = new TCanvas( ("chargeVsOutInCan"+ parName).c_str(),("chargeVsOutInCan"+ parName).c_str() );
-                       chargeVsOutInErrCan.at(partPos) = new TCanvas( ("chargeVsOutInErrCan"+ parName).c_str(),("chargeVsOutInErrCan"+ parName).c_str() );
-                       chargeVsOutInCanLE.at(partPos) = new TCanvas( ("chargeVsOutInCanLE"+ parName).c_str(),("chargeVsOutInCanLE"+ parName).c_str() );
-                       chargeVsOutInErrCanLE.at(partPos) = new TCanvas( ("chargeVsOutInErrCanLE"+ parName).c_str(),("chargeVsOutInErrCanLE"+ parName).c_str() );
-                       outInErrVsFreeInverseBetaCan.at(partPos) = new TCanvas( ("outInErrVsFreeInverseBetaCan"+ parName).c_str(),("outInErrVsFreeInverseBetaCan"+ parName).c_str() );
-                       outInErrVsOutInCan.at(partPos) = new TCanvas( ("outInErrVsOutInCan"+ parName).c_str(),("outInErrVsOutInCan"+ parName).c_str() );
-                       outInVsFreeInverseBetaCan.at(partPos) = new TCanvas( ("outInVsFreeInverseBetaCan"+ parName).c_str(),("outInVsFreeInverseBetaCan"+ parName).c_str() );
-
-
+		       widthTopInOutCan.at(partPos) =   new TCanvas( ("widthTopInOut"+ parName).c_str(), ("widthTopInOut"+ parName).c_str()) ;
+		       widthBottomInOutCan.at(partPos) = new TCanvas( ("widthBottomInOut"+ parName).c_str(), ("widthBottomInOut"+ parName).c_str()) ;
 		       widthTopInOutOnlyCan.at(partPos) =   new TCanvas( ("widthTopInOutOnly"+ parName).c_str(), ("widthTopInOutOnly"+ parName).c_str()) ;
 		       widthBottomInOutOnlyCan.at(partPos) = new TCanvas( ("widthBottomInOutOnly"+ parName).c_str(), ("widthBottomInOutOnly"+ parName).c_str()) ;
-		       widthTopOutInOnlyCan.at(partPos) =   new TCanvas( ("widthTopOutInOnly"+ parName).c_str(), ("widthTopOutInOnly"+ parName).c_str()) ;
-		       widthBottomOutInOnlyCan.at(partPos) = new TCanvas( ("widthBottomOutInOnly"+ parName).c_str(), ("widthBottomOutInOnly"+ parName).c_str()) ;
 		       widthTopOutInCan.at(partPos) =   new TCanvas( ("widthTopOutIn"+ parName).c_str(), ("widthTopOutIn"+ parName).c_str()) ;
 		       widthBottomOutInCan.at(partPos) =   new TCanvas( ("widthBottomOutIn"+ parName).c_str(), ("widthBottomOutIn"+ parName).c_str()) ;
 
+		       chargeTopInOutCan.at(partPos) =   new TCanvas( ("chargeTopInOut"+ parName).c_str(), ("chargeTopInOut"+ parName).c_str()) ;
+		       chargeBottomInOutCan.at(partPos) =  new TCanvas( ("chargeBottomInOut"+ parName).c_str(), ("chargeBottomInOut"+ parName).c_str()) ;
 		       chargeTopInOutOnlyCan.at(partPos) =   new TCanvas( ("chargeTopInOutOnly"+ parName).c_str(), ("chargeTopInOutOnly"+ parName).c_str()) ;
 		       chargeBottomInOutOnlyCan.at(partPos) =  new TCanvas( ("chargeBottomInOutOnly"+ parName).c_str(), ("chargeBottomInOutOnly"+ parName).c_str()) ;
-		       chargeTopOutInOnlyCan.at(partPos) =   new TCanvas( ("chargeTopOutInOnly"+ parName).c_str(), ("chargeTopOutInOnly"+ parName).c_str()) ;
-		       chargeBottomOutInOnlyCan.at(partPos) =  new TCanvas( ("chargeBottomOutInOnly"+ parName).c_str(), ("chargeBottomOutInOnly"+ parName).c_str()) ;
 		       chargeTopOutInCan.at(partPos)=   new TCanvas( ("chargeTopOutIn"+ parName).c_str(), ("chargeTopOutIn"+ parName).c_str()) ;
 		       chargeBottomOutInCan.at(partPos) = new TCanvas( ("chargeBottomOutIn"+ parName).c_str(), ("chargeBottomOutIn"+ parName).c_str()) ;
-
-
-   cout << "in here iii" << endl;
-		       chargeTopOutInOnlyCanSE.at(partPos) =   new TCanvas( ("chargeTopOutInOnlySE"+ parName).c_str(), ("chargeTopOutInOnlySE"+ parName).c_str()) ;
-		       chargeTopOutInOnlyCanLE.at(partPos) =   new TCanvas( ("chargeTopOutInOnlyLE"+ parName).c_str(), ("chargeTopOutInOnlyLE"+ parName).c_str()) ;
-   cout << "in here iv" << endl;
 
                        timingErrorTop.at(partPos) = new TH1F( ("timingErrorTop"+ parName).c_str() , ("timingErrorTop"+parName).c_str() , 100, -100, 100 );
                        timingErrorTopInOut.at(partPos)  = new TH1F( ("timingErrorTopInOut"+ parName).c_str() , ("timingErrorTopInOut"+parName).c_str() , 100, -100, 100 );
@@ -750,14 +504,6 @@ int main(int argc, char *argv[]){
                        narrowTrackSharing1Data25to35Can.at(partPos) = new TCanvas( ("narrowTracki25to35Sharing1"+ parName).c_str() , ("narrowTrack25to35Sharing1"+parName).c_str()  ) ;
                        narrowTrackSharing2Data25to35Can.at(partPos) = new TCanvas( ("narrowTrack25to35Sharing2"+ parName).c_str() , ("narrowTrack25to35Sharing2"+parName).c_str()  ) ;
 
-                       narrowTrackSharing1DataSmallErrorCan.at(partPos) = new TCanvas( ("narrowsmallerrSharing1"+ parName).c_str() , ("narrowsmallerrSharing1"+parName).c_str() ) ;
-                       narrowTrackSharing1DataSmallError.at(partPos) = new TH1F( ("narrowsmallerrSharing1"+ parName).c_str() , ("narrowsmallerrSharing1"+parName).c_str() , 200, -1, 1 ) ;
-                       narrowTrackSharing1DataLargeErrorCan.at(partPos) = new TCanvas( ("narrowlargeerrSharing1"+ parName).c_str() , ("narrowlargeerrSharing1"+parName).c_str() ) ;
-                       narrowTrackSharing1DataLargeError.at(partPos) = new TH1F( ("narrowlargeerrSharing1"+ parName).c_str() , ("narrowlargeerrSharing1"+parName).c_str() , 200, -1, 1 ) ;
-
-                       narrowTrackSharing1DataLargeErrorSmallZCan.at(partPos) = new TCanvas( ("narrowlargeerrSmallZSharing1"+ parName).c_str() , ("narrowlargeerrSmallZSharing1"+parName).c_str() ) ;
-                       narrowTrackSharing1DataLargeErrorSmallZ.at(partPos) = new TH1F( ("narrowlargeerrSmallZSharing1"+ parName).c_str() , ("narrowlargeerrSmallZSharing1"+parName).c_str() , 200, -1, 1 ) ;
-   cout << "in here f" << endl;
                    }
 
                    if(true) //if(subclusterlayerwheel.at(m) == 3)
@@ -765,40 +511,14 @@ int main(int argc, char *argv[]){
                        cout << "partition name " << parName << " event count " << eventCount.at(clusterStart) << "layer " << subCTstripChargeLayerwheel.at(clusterStart) << " detid " << subclusterdetid.at(m) << endl;
                        if(subtsosrhglobalphi.at(m)>0) //top
                        {
-                           widthTopOutInOnly.at(partPos)->Fill(subCTCmbtimeVtxr.at(clusterStart), subCTstripChargeTotWidth.at(clusterStart));
-                           chargeTopOutInOnly.at(partPos)->Fill(subCTCmbtimeVtxr.at(clusterStart), subCTstripChargeTotCharge.at(clusterStart));
-                           timingDirectionTop.at(partPos)->Fill(subCTMuontrackDirection.at(clusterStart));
-                           vnrOfHitsVsError.at(partPos)->Fill(subCTCmbtimeVtxrErr.at(clusterStart), subCTnrOfMuHits.at(clusterStart));
-                           nrOfSectorsVsError.at(partPos)->Fill( subCTCmbtimeVtxrErr.at(clusterStart), subCTsectorsOfDT.at(clusterStart));
-                           chargeVsFreeInverseBeta.at(partPos)->Fill( subCTMuonCombinedFreeInverseBeta.at(clusterStart), subCTstripChargeTotCharge.at(clusterStart) );
-                           chargeVsOutIn.at(partPos)->Fill( subCTCmbtimeVtxr.at(clusterStart) , subCTstripChargeTotCharge.at(clusterStart) );
-                           chargeVsOutInErr.at(partPos)->Fill( subCTCmbtimeVtxrErr.at(clusterStart) , subCTstripChargeTotCharge.at(clusterStart) );
-                           outInErrVsFreeInverseBeta.at(partPos)->Fill( subCTMuonCombinedFreeInverseBeta.at(clusterStart), subCTCmbtimeVtxrErr.at(clusterStart) );
-                           outInErrVsOutIn.at(partPos)->Fill( subCTCmbtimeVtxr.at(clusterStart), subCTCmbtimeVtxrErr.at(clusterStart) );
-                           outInVsFreeInverseBeta.at(partPos)->Fill( subCTMuonCombinedFreeInverseBeta.at(clusterStart), subCTCmbtimeVtxr.at(clusterStart) );
                            widthTopInOutOnly.at(partPos)->Fill(subCTCmbtimeVtx.at(clusterStart), subCTstripChargeTotWidth.at(clusterStart));
                            chargeTopInOutOnly.at(partPos)->Fill(subCTCmbtimeVtx.at(clusterStart), subCTstripChargeTotCharge.at(clusterStart));
-
-   cout << "in here g" << endl;
-                           if(subCTCmbtimeVtxrErr.at(clusterStart)<2.5)
-                               chargeTopOutInOnlySE.at(partPos)->Fill(subCTCmbtimeVtxr.at(clusterStart), subCTstripChargeTotCharge.at(clusterStart));
-                           if(subCTCmbtimeVtxrErr.at(clusterStart)>2.5)
-                           {
-                               chargeTopOutInOnlyLE.at(partPos)->Fill(subCTCmbtimeVtxr.at(clusterStart), subCTstripChargeTotCharge.at(clusterStart));
-                               chargeVsOutInErrLE.at(partPos)->Fill( subCTCmbtimeVtxrErr.at(clusterStart) , subCTstripChargeTotCharge.at(clusterStart) );
-                               innerZ.at(partPos)->Fill( subCTinnerZtop.at(clusterStart) );
-                               innerVZ.at(partPos)->Fill( subCTinnerVZtop.at(clusterStart) );
-                               if(subCTinnerVZtop.at(clusterStart)> -50 && subCTinnerVZtop.at(clusterStart)<50)
-                               {
-		                   chargeCenterOutIn.at(partPos)->Fill( subCTCmbtimeVtxr.at(clusterStart) , subCTstripChargeTotCharge.at(clusterStart) );
-                                   chargeVsOutInLE.at(partPos)->Fill( subCTCmbtimeVtxr.at(clusterStart) , subCTstripChargeTotCharge.at(clusterStart) );
-                               }
-                               if(subCTinnerVZtop.at(clusterStart)< -50 || subCTinnerVZtop.at(clusterStart)>50)
-		                   chargeEdgeOutIn.at(partPos)->Fill( subCTCmbtimeVtxr.at(clusterStart) , subCTstripChargeTotCharge.at(clusterStart) ) ;
-                           }
+                           timingDirectionTop.at(partPos)->Fill(subCTMuontrackDirection.at(clusterStart));
                            if(subCTMuontrackDirection.at(clusterStart) > 0) //inOut
                            {
-                               cout << "top Out In "  << endl;
+                               cout << "top In Out "  << endl;
+                               widthTopInOut.at(partPos)->Fill(subCTCmbtimeVtx.at(clusterStart), subCTstripChargeTotWidth.at(clusterStart));
+                               chargeTopInOut.at(partPos)->Fill(subCTCmbtimeVtx.at(clusterStart), subCTstripChargeTotCharge.at(clusterStart));
                                timingErrorTopInOut.at(partPos)->Fill(subCTCmbtimeVtx.at(clusterStart));
                
 
@@ -815,15 +535,6 @@ int main(int argc, char *argv[]){
                                        narrowTrackSharing1Datainfto5.at(partPos)->Fill((float) subCTstripCharge.at(clusterStart+1)/subCTstripCharge.at(clusterStart+2));
                                    if(subCTCmbtimeVtx.at(clusterStart)>=35)
                                        narrowTrackSharing1Data35toinf.at(partPos)->Fill((float) subCTstripCharge.at(clusterStart+1)/subCTstripCharge.at(clusterStart+2));
-                                   if(subCTCmbtimeVtxrErr.at(clusterStart)<2.5)
-                                       narrowTrackSharing1DataSmallError.at(partPos)->Fill((float) subCTstripCharge.at(clusterStart+1)/subCTstripCharge.at(clusterStart+2));
-                                   if(subCTCmbtimeVtxrErr.at(clusterStart)>2.5 && (subCTCmbtimeVtxr.at(clusterStart) > -10 && subCTCmbtimeVtxr.at(clusterStart) < -6 ) )
-                                   {
-                                       narrowTrackSharing1DataLargeError.at(partPos)->Fill((float) subCTstripCharge.at(clusterStart+1)/subCTstripCharge.at(clusterStart+2));
-				       if(subCTinnerVZtop.at(clusterStart)> -50 && subCTinnerVZtop.at(clusterStart)<50)
-                                           narrowTrackSharing1DataLargeErrorSmallZ.at(partPos)->Fill((float) subCTstripCharge.at(clusterStart+1)/subCTstripCharge.at(clusterStart+2));
-                                   }
-   cout << "in here h" << endl;
                                }
                                if(subCTstripCharge.at(clusterStart+3) != -333)
                                {
@@ -837,14 +548,6 @@ int main(int argc, char *argv[]){
                                        narrowTrackSharing1Datainfto5.at(partPos)->Fill((float) subCTstripCharge.at(clusterStart+3)/subCTstripCharge.at(clusterStart+2));
                                    if(subCTCmbtimeVtx.at(clusterStart)>=35)
                                        narrowTrackSharing1Data35toinf.at(partPos)->Fill((float) subCTstripCharge.at(clusterStart+3)/subCTstripCharge.at(clusterStart+2));
-                                   if(subCTCmbtimeVtxrErr.at(clusterStart)<2.5)
-                                       narrowTrackSharing1DataSmallError.at(partPos)->Fill((float) subCTstripCharge.at(clusterStart+3)/subCTstripCharge.at(clusterStart+2));
-                                   if(subCTCmbtimeVtxrErr.at(clusterStart)>2.5 && (subCTCmbtimeVtxr.at(clusterStart) > -10 && subCTCmbtimeVtxr.at(clusterStart) < -6 ) )
-                                   {
-                                       narrowTrackSharing1DataLargeError.at(partPos)->Fill((float) subCTstripCharge.at(clusterStart+3)/subCTstripCharge.at(clusterStart+2));
-				       if(subCTinnerVZtop.at(clusterStart)> -50 && subCTinnerVZtop.at(clusterStart)<50)
-                                           narrowTrackSharing1DataLargeErrorSmallZ.at(partPos)->Fill((float) subCTstripCharge.at(clusterStart+3)/subCTstripCharge.at(clusterStart+2));
-                                   }
                                }
                                if(subCTstripCharge.at(clusterStart) != -333)
                                {
@@ -885,13 +588,13 @@ int main(int argc, char *argv[]){
                        }
                        else if(subtsosrhglobalphi.at(m)<0)
                        {
-                           widthBottomOutInOnly.at(partPos)->Fill(subCTCmbtimeVtxr.at(clusterStart), subCTstripChargeTotWidth.at(clusterStart));
-                           chargeBottomOutInOnly.at(partPos)->Fill(subCTCmbtimeVtxr.at(clusterStart), subCTstripChargeTotCharge.at(clusterStart));
                            widthBottomInOutOnly.at(partPos)->Fill(subCTCmbtimeVtx.at(clusterStart), subCTstripChargeTotWidth.at(clusterStart));
                            chargeBottomInOutOnly.at(partPos)->Fill(subCTCmbtimeVtx.at(clusterStart), subCTstripChargeTotCharge.at(clusterStart));
                            if(subCTMuontrackDirection.at(clusterStart) > 0)
                            {
                                cout << "bottom In Out "  << endl;
+                               widthBottomInOut.at(partPos)->Fill(subCTCmbtimeVtx.at(clusterStart), subCTstripChargeTotWidth.at(clusterStart));
+                               chargeBottomInOut.at(partPos)->Fill(subCTCmbtimeVtx.at(clusterStart), subCTstripChargeTotCharge.at(clusterStart));
                            }
                            else if(subCTMuontrackDirection.at(clusterStart) < 0)
                            {
@@ -964,12 +667,6 @@ int main(int argc, char *argv[]){
        //
        narrowTrackSharing1Data5to5.at(c)->SetMarkerStyle(kFullCircle);
        narrowTrackSharing1Data5to5.at(c)->SetMarkerColor(kBlack);
-       narrowTrackSharing1DataSmallError.at(c)->SetMarkerStyle(kFullCircle);
-       narrowTrackSharing1DataSmallError.at(c)->SetMarkerColor(kBlack);
-       narrowTrackSharing1DataLargeError.at(c)->SetMarkerStyle(kFullCircle);
-       narrowTrackSharing1DataLargeError.at(c)->SetMarkerColor(kBlack);
-       narrowTrackSharing1DataLargeErrorSmallZ.at(c)->SetMarkerStyle(kFullCircle);
-       narrowTrackSharing1DataLargeErrorSmallZ.at(c)->SetMarkerColor(kBlack);
        narrowTrackSharing1Datainfto5.at(c)->SetMarkerStyle(kFullCircle);
        narrowTrackSharing1Datainfto5.at(c)->SetMarkerColor(kBlack);
        narrowTrackSharing1Data25to35.at(c)->SetMarkerStyle(kFullCircle);
@@ -979,9 +676,6 @@ int main(int argc, char *argv[]){
        narrowTrackSharing1Data10to20.at(c)->SetMarkerStyle(kFullCircle);
        narrowTrackSharing1Data10to20.at(c)->SetMarkerColor(kBlack);
        narrowTrackSharing1Data5to5.at(c)->GetXaxis()->SetTitle("#eta #pm 1");
-       narrowTrackSharing1DataSmallError.at(c)->GetXaxis()->SetTitle("#eta #pm 1");
-       narrowTrackSharing1DataLargeError.at(c)->GetXaxis()->SetTitle("#eta #pm 1");
-       narrowTrackSharing1DataLargeErrorSmallZ.at(c)->GetXaxis()->SetTitle("#eta #pm 1");
        narrowTrackSharing2Data5to5.at(c)->GetXaxis()->SetTitle("#eta #pm 2");
        narrowTrackSharing1Datainfto5.at(c)->GetXaxis()->SetTitle("#eta #pm 1");
        narrowTrackSharing2Datainfto5.at(c)->GetXaxis()->SetTitle("#eta #pm 2");
@@ -1047,19 +741,19 @@ int main(int argc, char *argv[]){
        narrowTrackSharing2DataCan.at(c)->SaveAs(("output/"+(string)dir+"/"+ narrowTrackSharing2Data.at(c)->GetName() + ".root").c_str());
        narrowTrackSharing2DataCan.at(c)->SaveAs(("output/"+(string)dir+"/"+ narrowTrackSharing2Data.at(c)->GetName()+ ".eps").c_str());
        
+       widthTopInOutCan.at(c)->cd();
+       widthTopInOut.at(c)->GetXaxis()->SetTitle("time");
+       widthTopInOut.at(c)->GetYaxis()->SetTitle("cluster width");
+       widthTopInOut.at(c)->Draw("");
+       widthTopInOutCan.at(c)->SaveAs(("output/"+(string)dir+"/"+ widthTopInOut.at(c)->GetName()+ ".eps").c_str());
+       widthTopInOutCan.at(c)->SaveAs(("output/"+(string)dir+"/"+ widthTopInOut.at(c)->GetName()+ ".root").c_str());
+
        widthTopInOutOnlyCan.at(c)->cd();
        widthTopInOutOnly.at(c)->GetXaxis()->SetTitle("time");
        widthTopInOutOnly.at(c)->GetYaxis()->SetTitle("cluster width");
        widthTopInOutOnly.at(c)->Draw("");
        widthTopInOutOnlyCan.at(c)->SaveAs(("output/"+(string)dir+"/"+ widthTopInOutOnly.at(c)->GetName()+ ".eps").c_str());
        widthTopInOutOnlyCan.at(c)->SaveAs(("output/"+(string)dir+"/"+ widthTopInOutOnly.at(c)->GetName()+ ".root").c_str());
-
-       widthTopOutInOnlyCan.at(c)->cd();
-       widthTopOutInOnly.at(c)->GetXaxis()->SetTitle("time");
-       widthTopOutInOnly.at(c)->GetYaxis()->SetTitle("cluster width");
-       widthTopOutInOnly.at(c)->Draw("");
-       widthTopOutInOnlyCan.at(c)->SaveAs(("output/"+(string)dir+"/"+ widthTopOutInOnly.at(c)->GetName()+ ".eps").c_str());
-       widthTopOutInOnlyCan.at(c)->SaveAs(("output/"+(string)dir+"/"+ widthTopOutInOnly.at(c)->GetName()+ ".root").c_str());
 
        widthTopOutInCan.at(c)->cd();
        widthTopOutIn.at(c)->GetXaxis()->SetTitle("time");
@@ -1068,20 +762,27 @@ int main(int argc, char *argv[]){
        widthTopOutInCan.at(c)->SaveAs(("output/"+(string)dir+"/"+ widthTopOutIn.at(c)->GetName()+ ".eps").c_str());
        widthTopOutInCan.at(c)->SaveAs(("output/"+(string)dir+"/"+ widthTopOutIn.at(c)->GetName()+ ".root").c_str());
 
+       widthBottomInOutCan.at(c)->cd();
+       widthBottomInOut.at(c)->Draw("");
+       widthBottomInOutCan.at(c)->SaveAs(("output/"+(string)dir+"/"+ widthBottomInOut.at(c)->GetName()+ ".eps").c_str());
+       widthBottomInOutCan.at(c)->SaveAs(("output/"+(string)dir+"/"+ widthBottomInOut.at(c)->GetName()+ ".root").c_str());
+
        widthBottomInOutOnlyCan.at(c)->cd();
        widthBottomInOutOnly.at(c)->Draw("");
        widthBottomInOutOnlyCan.at(c)->SaveAs(("output/"+(string)dir+"/"+ widthBottomInOutOnly.at(c)->GetName()+ ".eps").c_str());
        widthBottomInOutOnlyCan.at(c)->SaveAs(("output/"+(string)dir+"/"+ widthBottomInOutOnly.at(c)->GetName()+ ".root").c_str());
 
-       widthBottomOutInOnlyCan.at(c)->cd();
-       widthBottomOutInOnly.at(c)->Draw("");
-       widthBottomOutInOnlyCan.at(c)->SaveAs(("output/"+(string)dir+"/"+ widthBottomOutInOnly.at(c)->GetName()+ ".eps").c_str());
-       widthBottomOutInOnlyCan.at(c)->SaveAs(("output/"+(string)dir+"/"+ widthBottomOutInOnly.at(c)->GetName()+ ".root").c_str());
-
        widthBottomOutInCan.at(c)->cd();
        widthBottomOutIn.at(c)->Draw("");
        widthBottomOutInCan.at(c)->SaveAs(("output/"+(string)dir+"/"+ widthBottomOutIn.at(c)->GetName()+ ".eps").c_str());
        widthBottomOutInCan.at(c)->SaveAs(("output/"+(string)dir+"/"+ widthBottomOutIn.at(c)->GetName()+ ".root").c_str());
+
+       chargeTopInOutCan.at(c)->cd();
+       chargeTopInOut.at(c)->GetXaxis()->SetTitle("time");
+       chargeTopInOut.at(c)->GetYaxis()->SetTitle("cluster charge");
+       chargeTopInOut.at(c)->Draw("");
+       chargeTopInOutCan.at(c)->SaveAs(("output/"+(string)dir+"/"+ chargeTopInOut.at(c)->GetName()+ ".eps").c_str());
+       chargeTopInOutCan.at(c)->SaveAs(("output/"+(string)dir+"/"+ chargeTopInOut.at(c)->GetName()+ ".root").c_str());
 
        chargeTopInOutOnlyCan.at(c)->cd();
        chargeTopInOutOnly.at(c)->GetXaxis()->SetTitle("time");
@@ -1090,13 +791,6 @@ int main(int argc, char *argv[]){
        chargeTopInOutOnlyCan.at(c)->SaveAs(("output/"+(string)dir+"/"+ chargeTopInOutOnly.at(c)->GetName()+ ".eps").c_str());
        chargeTopInOutOnlyCan.at(c)->SaveAs(("output/"+(string)dir+"/"+ chargeTopInOutOnly.at(c)->GetName()+ ".root").c_str());
 
-       chargeTopOutInOnlyCan.at(c)->cd();
-       chargeTopOutInOnly.at(c)->GetXaxis()->SetTitle("time");
-       chargeTopOutInOnly.at(c)->GetYaxis()->SetTitle("cluster charge");
-       chargeTopOutInOnly.at(c)->Draw("");
-       chargeTopOutInOnlyCan.at(c)->SaveAs(("output/"+(string)dir+"/"+ chargeTopOutInOnly.at(c)->GetName()+ ".eps").c_str());
-       chargeTopOutInOnlyCan.at(c)->SaveAs(("output/"+(string)dir+"/"+ chargeTopOutInOnly.at(c)->GetName()+ ".root").c_str());
-
        chargeTopOutInCan.at(c)->cd();
        chargeTopOutIn.at(c)->GetXaxis()->SetTitle("time");
        chargeTopOutIn.at(c)->GetYaxis()->SetTitle("cluster charge");
@@ -1104,15 +798,15 @@ int main(int argc, char *argv[]){
        chargeTopOutInCan.at(c)->SaveAs(("output/"+(string)dir+"/"+ chargeTopOutIn.at(c)->GetName()+ ".eps").c_str());
        chargeTopOutInCan.at(c)->SaveAs(("output/"+(string)dir+"/"+ chargeTopOutIn.at(c)->GetName()+ ".root").c_str());
 
+       chargeBottomInOutCan.at(c)->cd();
+       chargeBottomInOut.at(c)->Draw("");
+       chargeBottomInOutCan.at(c)->SaveAs(("output/"+(string)dir+"/"+ chargeBottomInOut.at(c)->GetName()+ ".eps").c_str());
+       chargeBottomInOutCan.at(c)->SaveAs(("output/"+(string)dir+"/"+ chargeBottomInOut.at(c)->GetName()+ ".root").c_str());
+
        chargeBottomInOutOnlyCan.at(c)->cd();
        chargeBottomInOutOnly.at(c)->Draw("");
        chargeBottomInOutOnlyCan.at(c)->SaveAs(("output/"+(string)dir+"/"+ chargeBottomInOutOnly.at(c)->GetName()+ ".eps").c_str());
        chargeBottomInOutOnlyCan.at(c)->SaveAs(("output/"+(string)dir+"/"+ chargeBottomInOutOnly.at(c)->GetName()+ ".root").c_str());
-
-       chargeBottomOutInOnlyCan.at(c)->cd();
-       chargeBottomOutInOnly.at(c)->Draw("");
-       chargeBottomOutInOnlyCan.at(c)->SaveAs(("output/"+(string)dir+"/"+ chargeBottomOutInOnly.at(c)->GetName()+ ".eps").c_str());
-       chargeBottomOutInOnlyCan.at(c)->SaveAs(("output/"+(string)dir+"/"+ chargeBottomOutInOnly.at(c)->GetName()+ ".root").c_str());
 
        chargeBottomOutInCan.at(c)->cd();
        chargeBottomOutIn.at(c)->Draw("");
@@ -1135,200 +829,6 @@ int main(int argc, char *argv[]){
        timingDirectionTop.at(c)->Draw("hist"); 
        timingDirectionTopCan.at(c)->SaveAs(("output/"+(string)dir+"/"+ timingDirectionTop.at(c)->GetName()+ ".root").c_str());
        timingDirectionTopCan.at(c)->SaveAs(("output/"+(string)dir+"/"+ timingDirectionTop.at(c)->GetName()+ ".eps").c_str());
-
-
-       TCanvas* cvs = new TCanvas("chargeThroughTrackerc", "chargeThroughTrackerc");
-       chargeThroughTracker->GetXaxis()->SetTitle("layer from top to bottom");
-       chargeThroughTracker->SetTitle("");
-       chargeThroughTracker->Draw("hist e"); 
-       cvs->SaveAs(("output/"+(string)dir+"/"+ "chargeThroughTracker"+ ".root").c_str());
-       cvs->SaveAs(("output/"+(string)dir+"/"+ "chargeThroughTracker" + ".eps").c_str());
-
-       TCanvas* cvs2 = new TCanvas("widthThroughTrackerc", "widthThroughTrackerc");
-       widthThroughTracker->GetXaxis()->SetTitle("layer from top to bottom");
-       widthThroughTracker->SetTitle("");
-       widthThroughTracker->Draw("hist e"); 
-       cvs2->SaveAs(("output/"+(string)dir+"/"+ "widthThroughTracker"+ ".root").c_str());
-       cvs2->SaveAs(("output/"+(string)dir+"/"+ "widthThroughTracker" + ".eps").c_str());
-
-
-       vnrOfHitsVsErrorCan.at(c)->cd();
-       vnrOfHitsVsError.at(c)->GetXaxis()->SetTitle("OutIn error");
-       vnrOfHitsVsError.at(c)->GetYaxis()->SetTitle("nr of Muon hits");
-       vnrOfHitsVsError.at(c)->SetTitle("");
-       vnrOfHitsVsError.at(c)->Draw("colz"); 
-       vnrOfHitsVsErrorCan.at(c)->SaveAs(("output/"+(string)dir+"/"+ vnrOfHitsVsError.at(c)->GetName()+ ".root").c_str());
-       vnrOfHitsVsErrorCan.at(c)->SaveAs(("output/"+(string)dir+"/"+ vnrOfHitsVsError.at(c)->GetName()+ ".eps").c_str());
-
-       nrOfSectorsVsErrorCan.at(c)->cd();
-       nrOfSectorsVsError.at(c)->GetXaxis()->SetTitle("OutIn error");
-       nrOfSectorsVsError.at(c)->GetYaxis()->SetTitle("nr of hitted Muon sectors");
-       nrOfSectorsVsError.at(c)->SetTitle("");
-       nrOfSectorsVsError.at(c)->Draw("colz"); 
-       nrOfSectorsVsErrorCan.at(c)->SaveAs(("output/"+(string)dir+"/"+ nrOfSectorsVsError.at(c)->GetName()+ ".root").c_str());
-       nrOfSectorsVsErrorCan.at(c)->SaveAs(("output/"+(string)dir+"/"+ nrOfSectorsVsError.at(c)->GetName()+ ".eps").c_str());
-
-       chargeVsFreeInverseBetaCan.at(c)->cd();
-       chargeVsFreeInverseBeta.at(c)->GetXaxis()->SetTitle("free inverse beta");
-       chargeVsFreeInverseBeta.at(c)->GetYaxis()->SetTitle("cluster charge");
-       chargeVsFreeInverseBeta.at(c)->SetTitle("");
-       chargeVsFreeInverseBeta.at(c)->Draw("colz"); 
-       chargeVsFreeInverseBetaCan.at(c)->SaveAs(("output/"+(string)dir+"/"+ chargeVsFreeInverseBeta.at(c)->GetName()+ ".root").c_str());
-       chargeVsFreeInverseBetaCan.at(c)->SaveAs(("output/"+(string)dir+"/"+ chargeVsFreeInverseBeta.at(c)->GetName()+ ".eps").c_str());
-
-
-       outInErrVsFreeInverseBetaCan.at(c)->cd();
-       outInErrVsFreeInverseBeta.at(c)->GetXaxis()->SetTitle("free inverse beta");
-       outInErrVsFreeInverseBeta.at(c)->GetYaxis()->SetTitle("cluster outInErr");
-       outInErrVsFreeInverseBeta.at(c)->SetTitle("");
-       outInErrVsFreeInverseBeta.at(c)->Draw("colz"); 
-       outInErrVsFreeInverseBetaCan.at(c)->SaveAs(("output/"+(string)dir+"/"+ outInErrVsFreeInverseBeta.at(c)->GetName()+ ".root").c_str());
-       outInErrVsFreeInverseBetaCan.at(c)->SaveAs(("output/"+(string)dir+"/"+ outInErrVsFreeInverseBeta.at(c)->GetName()+ ".eps").c_str());
-
-       outInErrVsOutInCan.at(c)->cd();
-       outInErrVsOutIn.at(c)->GetXaxis()->SetTitle("cluster OutIn");
-       outInErrVsOutIn.at(c)->GetYaxis()->SetTitle("cluster outInErr");
-       outInErrVsOutIn.at(c)->SetTitle("");
-       outInErrVsOutIn.at(c)->Draw("colz"); 
-       outInErrVsOutInCan.at(c)->SaveAs(("output/"+(string)dir+"/"+ outInErrVsOutIn.at(c)->GetName()+ ".root").c_str());
-       outInErrVsOutInCan.at(c)->SaveAs(("output/"+(string)dir+"/"+ outInErrVsOutIn.at(c)->GetName()+ ".eps").c_str());
-
-       outInVsFreeInverseBetaCan.at(c)->cd();
-       outInVsFreeInverseBeta.at(c)->GetXaxis()->SetTitle("free inverse beta");
-       outInVsFreeInverseBeta.at(c)->GetYaxis()->SetTitle("cluster outIn");
-       outInVsFreeInverseBeta.at(c)->SetTitle("");
-       outInVsFreeInverseBeta.at(c)->Draw("colz"); 
-       cout << outInVsFreeInverseBeta.at(c)->GetName() << " correlation factor" << outInVsFreeInverseBeta.at(c)->GetCorrelationFactor() << endl; 
-       outInVsFreeInverseBetaCan.at(c)->SaveAs(("output/"+(string)dir+"/"+ outInVsFreeInverseBeta.at(c)->GetName()+ ".root").c_str());
-       outInVsFreeInverseBetaCan.at(c)->SaveAs(("output/"+(string)dir+"/"+ outInVsFreeInverseBeta.at(c)->GetName()+ ".eps").c_str());
-
-
-       narrowTrackSharing1DataSmallErrorCan.at(c)->cd();
-       narrowTrackSharing1DataSmallError.at(c)->DrawNormalized(""); 
-       narrowTrackSharing1DataSmallErrorCan.at(c)->SaveAs(("output/"+(string)dir+"/"+ narrowTrackSharing1DataSmallError.at(c)->GetName()+ ".root").c_str());
-       narrowTrackSharing1DataSmallErrorCan.at(c)->SaveAs(("output/"+(string)dir+"/"+ narrowTrackSharing1DataSmallError.at(c)->GetName()+ ".eps").c_str());
-
-       narrowTrackSharing1DataLargeErrorCan.at(c)->cd();
-       narrowTrackSharing1DataLargeError.at(c)->DrawNormalized(""); 
-       narrowTrackSharing1DataLargeErrorCan.at(c)->SaveAs(("output/"+(string)dir+"/"+ narrowTrackSharing1DataLargeError.at(c)->GetName()+ ".root").c_str());
-       narrowTrackSharing1DataLargeErrorCan.at(c)->SaveAs(("output/"+(string)dir+"/"+ narrowTrackSharing1DataLargeError.at(c)->GetName()+ ".eps").c_str());
-
-       narrowTrackSharing1DataLargeErrorSmallZCan.at(c)->cd();
-       narrowTrackSharing1DataLargeErrorSmallZ.at(c)->DrawNormalized(""); 
-       narrowTrackSharing1DataLargeErrorSmallZCan.at(c)->SaveAs(("output/"+(string)dir+"/"+ narrowTrackSharing1DataLargeErrorSmallZ.at(c)->GetName()+ ".root").c_str());
-       narrowTrackSharing1DataLargeErrorSmallZCan.at(c)->SaveAs(("output/"+(string)dir+"/"+ narrowTrackSharing1DataLargeErrorSmallZ.at(c)->GetName()+ ".eps").c_str());
-
-       chargeTopOutInOnlyCanSE.at(c)->cd();
-       chargeTopOutInOnlySE.at(c)->GetXaxis()->SetTitle("time");
-       chargeTopOutInOnlySE.at(c)->GetYaxis()->SetTitle("cluster charge");
-       chargeTopOutInOnlySE.at(c)->Draw("");
-       chargeTopOutInOnlyCanSE.at(c)->SaveAs(("output/"+(string)dir+"/"+ chargeTopOutInOnlySE.at(c)->GetName()+ ".eps").c_str());
-       chargeTopOutInOnlyCanSE.at(c)->SaveAs(("output/"+(string)dir+"/"+ chargeTopOutInOnlySE.at(c)->GetName()+ ".root").c_str());
-
-       chargeTopOutInOnlyCanLE.at(c)->cd();
-       chargeTopOutInOnlyLE.at(c)->GetXaxis()->SetTitle("OutIn time");
-       chargeTopOutInOnlyLE.at(c)->GetYaxis()->SetTitle("cluster charge");
-       chargeTopOutInOnlyLE.at(c)->Draw("");
-       chargeTopOutInOnlyCanLE.at(c)->SaveAs(("output/"+(string)dir+"/"+ chargeTopOutInOnlyLE.at(c)->GetName()+ ".eps").c_str());
-       chargeTopOutInOnlyCanLE.at(c)->SaveAs(("output/"+(string)dir+"/"+ chargeTopOutInOnlyLE.at(c)->GetName()+ ".root").c_str());
-
-
-       chargeVsOutInCan.at(c)->cd();
-       chargeVsOutIn.at(c)->GetXaxis()->SetTitle("out in");
-       chargeVsOutIn.at(c)->GetYaxis()->SetTitle("cluster charge");
-       chargeVsOutIn.at(c)->SetTitle("");
-       chargeVsOutIn.at(c)->Draw("colz"); 
-       chargeVsOutInCan.at(c)->SaveAs(("output/"+(string)dir+"/"+ chargeVsOutIn.at(c)->GetName()+ ".root").c_str());
-       chargeVsOutInCan.at(c)->SaveAs(("output/"+(string)dir+"/"+ chargeVsOutIn.at(c)->GetName()+ ".eps").c_str());
-
-
-       chargeVsOutInErrCan.at(c)->cd();
-       chargeVsOutInErr.at(c)->GetXaxis()->SetTitle("out in err");
-       chargeVsOutInErr.at(c)->GetYaxis()->SetTitle("cluster charge");
-       chargeVsOutInErr.at(c)->SetTitle("");
-       chargeVsOutInErr.at(c)->Draw("colz"); 
-       chargeVsOutInErrCan.at(c)->SaveAs(("output/"+(string)dir+"/"+ chargeVsOutInErr.at(c)->GetName()+ ".root").c_str());
-       chargeVsOutInErrCan.at(c)->SaveAs(("output/"+(string)dir+"/"+ chargeVsOutInErr.at(c)->GetName()+ ".eps").c_str());
-
-       chargeVsOutInCanLE.at(c)->cd();
-       chargeVsOutInLE.at(c)->GetXaxis()->SetTitle("OutIn time ");
-       chargeVsOutInLE.at(c)->GetYaxis()->SetTitle("cluster charge");
-       chargeVsOutInLE.at(c)->SetTitle("");
-       chargeVsOutInLE.at(c)->Draw("colz"); 
-       chargeVsOutInCanLE.at(c)->SaveAs(("output/"+(string)dir+"/"+ chargeVsOutInLE.at(c)->GetName()+ ".root").c_str());
-       chargeVsOutInCanLE.at(c)->SaveAs(("output/"+(string)dir+"/"+ chargeVsOutInLE.at(c)->GetName()+ ".eps").c_str());
-
-
-           TF1 *fb = new TF1("fb","TMath::Landau(x,[0],[1],0)",0,1000);
-           fb->SetParameters(130,21);
-	   chargeVsOutInLE.at(c)->FitSlicesY(fb);
-	   chargeVsOutInLE_1.at(c) =  (TH1D*)gDirectory->Get( ((string)chargeVsOutInLE.at(c)->GetName()+ "_0").c_str());
-	   chargeVsOutInLE_2.at(c) =  (TH1D*)gDirectory->Get( ((string)chargeVsOutInLE.at(c)->GetName()+ "_1").c_str());
-	   //chargeVsOutInLE_3.at(c) =  (TH1D*)gDirectory->Get( ((string)chargeVsOutInLE.at(c)->GetName()+ "_2").c_str());
-
-       chargeVsOutInLE_1Can.at(c)->cd();
-       chargeVsOutInLE_1.at(c)->GetXaxis()->SetTitle("OutIn");
-       chargeVsOutInLE_1.at(c)->GetYaxis()->SetTitle("par 1");
-       chargeVsOutInLE_1.at(c)->SetTitle("");
-       chargeVsOutInLE_1.at(c)->Draw("hist"); 
-       chargeVsOutInLE_1Can.at(c)->SaveAs(("output/"+(string)dir+"/"+ chargeVsOutInLE_1Can.at(c)->GetName()+ ".root").c_str());
-       chargeVsOutInLE_1Can.at(c)->SaveAs(("output/"+(string)dir+"/"+ chargeVsOutInLE_1Can.at(c)->GetName()+ ".eps").c_str());
-
-       chargeVsOutInLE_2Can.at(c)->cd();
-       chargeVsOutInLE_2.at(c)->GetXaxis()->SetTitle("OutIn");
-       chargeVsOutInLE_2.at(c)->GetYaxis()->SetTitle("par 2");
-       chargeVsOutInLE_2.at(c)->SetTitle("");
-       chargeVsOutInLE_2.at(c)->Draw("hist"); 
-       chargeVsOutInLE_2Can.at(c)->SaveAs(("output/"+(string)dir+"/"+ chargeVsOutInLE_2Can.at(c)->GetName()+ ".root").c_str());
-       chargeVsOutInLE_2Can.at(c)->SaveAs(("output/"+(string)dir+"/"+ chargeVsOutInLE_2Can.at(c)->GetName()+ ".eps").c_str());
-
-
-       chargeVsOutInLE_3Can.at(c)->cd();
-       chargeVsOutInLE_3.at(c)->GetXaxis()->SetTitle("charge");
-       chargeVsOutInLE_3.at(c)->GetYaxis()->SetTitle("fit");
-       chargeVsOutInLE_3.at(c)->SetTitle("");
-       //chargeVsOutInLE_3.at(c)->Draw("hist"); 
-       fb->Draw(""); 
-       chargeVsOutInLE_3Can.at(c)->SaveAs(("output/"+(string)dir+"/"+ chargeVsOutInLE_3Can.at(c)->GetName()+ "fit.root").c_str());
-       chargeVsOutInLE_3Can.at(c)->SaveAs(("output/"+(string)dir+"/"+ chargeVsOutInLE_3Can.at(c)->GetName()+ "fit.eps").c_str());
-
-
-       chargeVsOutInErrCanLE.at(c)->cd();
-       chargeVsOutInErrLE.at(c)->GetXaxis()->SetTitle("OutIn Err");
-       chargeVsOutInErrLE.at(c)->GetYaxis()->SetTitle("cluster charge");
-       chargeVsOutInErrLE.at(c)->SetTitle("");
-       chargeVsOutInErrLE.at(c)->Draw("colz"); 
-       chargeVsOutInErrCanLE.at(c)->SaveAs(("output/"+(string)dir+"/"+ chargeVsOutInErrLE.at(c)->GetName()+ ".root").c_str());
-       chargeVsOutInErrCanLE.at(c)->SaveAs(("output/"+(string)dir+"/"+ chargeVsOutInErrLE.at(c)->GetName()+ ".eps").c_str());
-
-
-       chargeCenterOutInCan.at(c)->cd();
-       chargeCenterOutIn.at(c)->GetXaxis()->SetTitle("outIn time");
-       chargeCenterOutIn.at(c)->GetYaxis()->SetTitle("cluster charge");
-       chargeCenterOutIn.at(c)->SetTitle("");
-       chargeCenterOutIn.at(c)->SetLineColor(kBlue);
-       chargeEdgeOutIn.at(c)->SetLineColor(kRed);
-       chargeCenterOutIn.at(c)->Draw(""); 
-       chargeEdgeOutIn.at(c)->Draw("same"); 
-       chargeCenterOutInCan.at(c)->SaveAs(("output/"+(string)dir+"/"+ chargeCenterOutIn.at(c)->GetName()+ ".root").c_str());
-       chargeCenterOutInCan.at(c)->SaveAs(("output/"+(string)dir+"/"+ chargeCenterOutIn.at(c)->GetName()+ ".eps").c_str());
-
-
-       innerZCan.at(c)->cd();
-       innerZ.at(c)->GetXaxis()->SetTitle("z");
-       innerZ.at(c)->SetTitle("");
-       innerZ.at(c)->Draw("hist"); 
-       innerZCan.at(c)->SaveAs(("output/"+(string)dir+"/"+ innerZ.at(c)->GetName()+ ".root").c_str());
-       innerZCan.at(c)->SaveAs(("output/"+(string)dir+"/"+ innerZ.at(c)->GetName()+ ".eps").c_str());
-
-       innerVZCan.at(c)->cd();
-       innerVZ.at(c)->GetXaxis()->SetTitle("vz");
-       innerVZ.at(c)->SetTitle("");
-       innerVZ.at(c)->Draw("hist"); 
-       innerVZCan.at(c)->SaveAs(("output/"+(string)dir+"/"+ innerVZ.at(c)->GetName()+ ".root").c_str());
-       innerVZCan.at(c)->SaveAs(("output/"+(string)dir+"/"+ innerVZ.at(c)->GetName()+ ".eps").c_str());
-
-
        }
 
 

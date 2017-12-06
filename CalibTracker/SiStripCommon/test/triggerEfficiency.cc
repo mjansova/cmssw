@@ -1,5 +1,7 @@
 //./triggerEfficiency test_shallowTrackAndClusterNarrowInfoCRUZETforTriggerEff.root triggerEff 
 //./triggerEfficiency test_shallowTrackCRUZET_2017VR.root  triggerEffNewVR 
+//./triggerEfficiency test_shallowTrackCRUZET_2017VRNewClusteringTimingTest.root  triggerEffNewVR 
+//./triggerEfficiency test_shallowTrackCRUZET_2017VRNewClusteringTimingTestNoQualityCuts.root  triggerEffNewVR 
 
 #include <fstream>
 #include <iostream>
@@ -42,8 +44,8 @@ using namespace std;
 
 int main(int argc, char *argv[]){
 
- //gStyle->SetOptStat(0);
- //gROOT->ForceStyle();
+ gStyle->SetOptStat(0);
+ gROOT->ForceStyle();
  
  TH1::SetDefaultSumw2();
     if(argc != 3)
@@ -339,12 +341,15 @@ int main(int argc, char *argv[]){
            }
        }
        cout << "we need " << (float) subnrofevents.size()/trackCounter << "events triggered by cosmics trigger to get one track" << endl;
+       cout << "we have " << (float) trackCounter << "tracks" << endl;
+       cout << "we have " << (float) subnrofevents.size() << "events" << endl;
        cout << "we need " << (float) evCounterpassHLTL1SingleMuOpenDTv2/trackCounterpassHLTL1SingleMuOpenDTv2 << "events triggered by trackCounterpassHLTL1SingleMuOpenDTv2  tigger to get one track" << endl;
        cout << "we need " << (float) evCounterpassHLTL1SingleMuOpenv2/trackCounterpassHLTL1SingleMuOpenv2 << "events triggered by trackCounterpassHLTL1SingleMuOpenv2 trigger to get one track" << endl;
 
        bool smuOpenDT = false;
        bool smuOpen = false;
 
+       vector<string> labels {"IB1", "IB2", "OB1", "OB2", "W1a", "W2a", "W3a", "W1b", "W2b", "W3b", "W4b", "W5b", "W6b", "W7b"};
        for(uint32_t m = 0; m<subclustercharge.size(); m++)
        {
            narrowtrack=false;
@@ -554,7 +559,12 @@ int main(int argc, char *argv[]){
        narrowTrackSharing2Data->SetMaximum(1.5*  narrowTrackSharing2Data->GetMaximum());
 
 
+       for(uint32_t l=0; l<labels.size(); l++)
+       {
 
+           usefulCluster->GetXaxis()->SetBinLabel(l+2,labels.at(l).c_str()); 
+           fofCluster->GetXaxis()->SetBinLabel(l+2,labels.at(l).c_str()); 
+       }
 
        TCanvas c36("narrowTrackClusterWidth","narrowTrackClusterWidth");
        narrowTrackClusterWidthData->DrawNormalized(""); 
@@ -573,16 +583,18 @@ int main(int argc, char *argv[]){
 
 
        TCanvas c39("usefulCluster","usefulCluster");
+       usefulCluster->SetTitle(""); 
        usefulCluster->Draw("hist"); 
        c39.SaveAs(("output/"+(string)dir+"/"+  "usefulCluster.root").c_str());
        c39.SaveAs(("output/"+(string)dir+"/"+  "usefulCluster.eps").c_str());
 
        TCanvas c40("allCluster","allCluster");
-       usefulCluster->Draw("hist"); 
+       allCluster->Draw("hist"); 
        c40.SaveAs(("output/"+(string)dir+"/"+  "allCluster.root").c_str());
        c40.SaveAs(("output/"+(string)dir+"/"+  "allCluster.eps").c_str());
 
        TCanvas c41("fofCluster","fofCluster");
+       fofCluster->SetTitle(""); 
        fofCluster->Draw("hist"); 
        c41.SaveAs(("output/"+(string)dir+"/"+  "fofCluster.root").c_str());
        c41.SaveAs(("output/"+(string)dir+"/"+  "fofCluster.eps").c_str());

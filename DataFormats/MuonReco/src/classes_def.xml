@@ -32,8 +32,8 @@
   <class name="reco::MuonTime" ClassVersion="10">
    <version ClassVersion="10" checksum="799301851"/>
   </class>
-  <class name="reco::MuonTimeExtra" ClassVersion="10">
-   <version ClassVersion="10" checksum="1523685726"/>
+  <class name="reco::MuonTimeExtra" ClassVersion="11">
+   <version ClassVersion="11" checksum="1490817946"/>
   </class>
   <class name="std::vector<reco::MuonTimeExtra>"/>
   <class name="reco::MuonTimeExtraMap"/>

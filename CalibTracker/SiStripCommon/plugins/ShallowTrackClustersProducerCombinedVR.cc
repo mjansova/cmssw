@@ -227,6 +227,8 @@ ShallowTrackClustersProducerCombinedVR::ShallowTrackClustersProducerCombinedVR(c
   produces <std::vector<float> >         ( "CTstripChargeTotWidth"        );
   produces <std::vector<float> >         ( "CTCmbtimeVtxr"        );
   produces <std::vector<float> >         ( "CTCmbtimeVtxrErr"        );
+  produces <std::vector<float> >         ( "CTCombinedTimeOutInInOutDiffErr"        );
+  produces <std::vector<float> >         ( "CTCombinedTimeOutInInOutDiff"        );
   produces <std::vector<float> >         ( "CTDttimeVtxr"        );
   produces <std::vector<float> >         ( "CTDttimeVtxrErr"        );
   produces <std::vector<float> >         ( "CTCsctimeVtxr"        );
@@ -245,9 +247,20 @@ ShallowTrackClustersProducerCombinedVR::ShallowTrackClustersProducerCombinedVR(c
   produces <std::vector<float> >         ( "CTDTMuontrackDirection"        );
   produces <std::vector<float> >         ( "CTMuonCombinedInverseBeta"        );
   produces <std::vector<float> >         ( "CTMuonCombinedFreeInverseBeta"        );
+  produces <std::vector<float> >         ( "CTDTFreeInverseBeta"        );
   //produces <std::vector<float> >         ( "CTMuontrackPhi"        );
   produces <std::vector<float> >         ( "CTCombinedTimeForInOut"        );
   produces <std::vector<float> >         ( "CTCombinedTimeForOutIn"        );
+
+  produces <std::vector<float> >    (   "CTDTlayer0"        );
+  produces <std::vector<float> >    (   "CTDTlayer1"        );
+  produces <std::vector<float> >    (  "CTDTlayer2"        );
+  produces <std::vector<float> >    (   "CTDTlayer3"        );
+  produces <std::vector<float> >    (   "CTDTlayer4"        );
+  produces <std::vector<float> >    (   "CTnrOfMuHits"        );
+  produces <std::vector<float> >    (   "CTsectorsOfDT"        );
+
+
   produces <std::vector<float> >        ( "PU"       );
   produces <std::vector<unsigned int> > ( "bx"       );
 
@@ -261,6 +274,35 @@ ShallowTrackClustersProducerCombinedVR::ShallowTrackClustersProducerCombinedVR(c
   produces <unsigned int>               ( "nroftracks"       );
   produces <unsigned int>               ( "nrofmuons"       );
   produces <unsigned int>               ( "nrofevents"       );
+
+
+
+  produces <std::vector<float> >               ( "muonsDTMuontrackInOutTop"       );
+  produces <std::vector<float> >              ( "muonsDTMuontrackInOutErrTop"       );
+  produces <std::vector<float> >              ( "muonsDTMuontrackOutInTop"       );
+  produces <std::vector<float> >              ( "muonsDTMuontrackOutInErrTop"       );
+  produces <std::vector<float> >              ( "innerXtop"       );
+  produces <std::vector<float> >              ( "innerYtop"       );
+  produces <std::vector<float> >              ( "innerZtop"       );
+  produces <std::vector<float> >              ( "innerVZtop"       );
+  produces <std::vector<float> >              ( "Etatop"       );
+  produces <std::vector<float> >              ( "outerXtop"       );
+  produces <std::vector<float> >              ( "outerYtop"       );
+  produces <std::vector<float> >              ( "outerZtop"       );
+  produces <std::vector<float> >              ( "outerEtatop"       );
+  produces <std::vector<float> >              ( "muonsDTMuontrackLastWheel"       );
+
+  produces <std::vector<float> >              ( "CTouterXtop"       );
+  produces <std::vector<float> >              ( "CTouterYtop"       );
+  produces <std::vector<float> >              ( "CTouterZtop"       );
+  produces <std::vector<float> >              ( "CTouterEtatop"       );
+  produces <std::vector<float> >              ( "CTinnerXtop"       );
+  produces <std::vector<float> >              ( "CTinnerYtop"       );
+  produces <std::vector<float> >              ( "CTinnerZtop"       );
+  produces <std::vector<float> >              ( "CTinnerVZtop"       );
+  produces <std::vector<float> >              ( "CTEtatop"       );
+  produces <std::vector<float> >              ( "CTmuonsDTMuontrackLastWheel"       );
+
 /*  produces <bool>              ("passHLTL1SingleMu3v1" ); 
   produces <bool>              ( "passHLTL1SingleMu5v1" ); 
   produces <bool>              ("passHLTL1SingleMu7v1" );
@@ -421,10 +463,20 @@ produce(edm::Event& iEvent, const edm::EventSetup& iSetup) {
   auto       CTDTMuontrackDirection   = std::make_unique<std::vector<float>>();
   auto        CTMuonCombinedInverseBeta  = std::make_unique<std::vector<float>>();
   auto        CTMuonCombinedFreeInverseBeta  = std::make_unique<std::vector<float>>();
+  auto        CTDTFreeInverseBeta  = std::make_unique<std::vector<float>>();
   //auto       CTMuontrackPhi   = std::make_unique<std::vector<float>>();
   auto       CTCombinedTimeForInOut   = std::make_unique<std::vector<float>>();
   auto       CTCombinedTimeForOutIn   = std::make_unique<std::vector<float>>();
+  auto       CTCombinedTimeOutInInOutDiff   = std::make_unique<std::vector<float>>();
+  auto       CTCombinedTimeOutInInOutDiffErr   = std::make_unique<std::vector<float>>();
 
+  auto  CTDTlayer0 = std::make_unique<std::vector<float>>();
+  auto  CTDTlayer1 = std::make_unique<std::vector<float>>();
+  auto  CTDTlayer2 = std::make_unique<std::vector<float>>();
+  auto  CTDTlayer3 = std::make_unique<std::vector<float>>();
+  auto  CTDTlayer4 = std::make_unique<std::vector<float>>();
+  auto  CTnrOfMuHits = std::make_unique<std::vector<float>>();
+  auto   CTsectorsOfDT= std::make_unique<std::vector<float>>();
 
   auto         muonsDTMuontrackDirection = std::make_unique<std::vector<float>>();
   auto         muonsDTMuontrackSector= std::make_unique<std::vector<float>>();
@@ -437,6 +489,33 @@ produce(edm::Event& iEvent, const edm::EventSetup& iSetup) {
   auto nroftracks            = std::make_unique<unsigned int>();
   auto nrofmuons            = std::make_unique<unsigned int>();
   auto nrofevents            = std::make_unique<unsigned int>();
+
+  auto muonsDTMuontrackInOutTop = std::make_unique<std::vector<float>>(); 
+    auto               muonsDTMuontrackOutInTop = std::make_unique<std::vector<float>>() ;
+    auto               muonsDTMuontrackInOutErrTop = std::make_unique<std::vector<float>>(); 
+    auto               muonsDTMuontrackOutInErrTop = std::make_unique<std::vector<float>>() ;
+    auto               innerXtop =  std::make_unique<std::vector<float>>();
+  auto                 innerYtop =  std::make_unique<std::vector<float>>();
+  auto                 innerZtop =  std::make_unique<std::vector<float>>();
+  auto                 innerVZtop =  std::make_unique<std::vector<float>>();
+  auto                 Etatop =  std::make_unique<std::vector<float>>();
+  auto                 outerXtop =  std::make_unique<std::vector<float>>();
+  auto                 outerYtop =  std::make_unique<std::vector<float>>();
+  auto                 outerZtop =  std::make_unique<std::vector<float>>();
+  auto                 outerEtatop =  std::make_unique<std::vector<float>>();
+  auto                  muonsDTMuontrackLastWheel=  std::make_unique<std::vector<float>>();
+
+    auto               CTinnerXtop =  std::make_unique<std::vector<float>>();
+  auto                 CTinnerYtop =  std::make_unique<std::vector<float>>();
+  auto                 CTinnerZtop =  std::make_unique<std::vector<float>>();
+  auto                 CTinnerVZtop =  std::make_unique<std::vector<float>>();
+  auto                 CTEtatop =  std::make_unique<std::vector<float>>();
+  auto                 CTouterXtop =  std::make_unique<std::vector<float>>();
+  auto                 CTouterYtop =  std::make_unique<std::vector<float>>();
+  auto                 CTouterZtop =  std::make_unique<std::vector<float>>();
+  auto                 CTouterEtatop =  std::make_unique<std::vector<float>>();
+  auto                 CTmuonsDTMuontrackLastWheel=  std::make_unique<std::vector<float>>();
+
 /*  auto passHLTL1SingleMu3v1 = std::make_unique<bool>(); 
   auto passHLTL1SingleMu5v1 =  std::make_unique<bool>(); 
   auto passHLTL1SingleMu7v1 =   std::make_unique<bool>();
@@ -558,22 +637,75 @@ cout << "before good track " << endl;
 
      //muon hits
      //reco::TrackRef muTrack = muonR->standAloneMuon();
+     bool topOnly = true;
+     bool DTlayer0 = false;
+     bool DTlayer1 = false;
+     bool DTlayer2 = false;
+     bool DTlayer3 = false;
+     bool DTlayer4 = false;
+     uint32_t nrOfMuHits = 0;
+     std::vector<uint32_t> sectorsOfDT;
+
      reco::TrackRef muTrack = muonR->globalTrack();
      if(!muTrack.isNull())
      {
-         for( trackingRecHit_iterator  muHit= muTrack->recHitsBegin() ; muHit !=  muTrack->recHitsEnd(); muHit++)
+
+         trackingRecHit_iterator  muHit= muTrack->recHitsBegin();
+         DTChamberId lastDTchamber;
+         
+         for(  ; muHit !=  muTrack->recHitsEnd(); muHit++)
          {
+             //save size of the hits
+             //booleans for layer 1,2,3,4
+             //booleans for layer 0 -full SL
              if( static_cast<int>((*muHit)->geographicalId().det()) ==2  && static_cast<int>((*muHit)->geographicalId().subdetId()) == static_cast<int>(MuonSubdetId::DT))
              {
                  DTChamberId DTchamber((*muHit)->geographicalId());
+                 lastDTchamber =DTchamber;
                  DTLayerId DTLayer((*muHit)->geographicalId());
                  muonsDTMuontrackDirection->push_back(static_cast<int>(timeMapDT[muonR].direction()));
                  muonsDTMuontrackInOut->push_back(timeMapDT[muonR].timeAtIpInOut());
                  muonsDTMuontrackOutIn->push_back(timeMapDT[muonR].timeAtIpOutIn());
                  muonsDTMuontrackSector->push_back( DTchamber.sector() );
+                 nrOfMuHits++; //it is probably not completely correct
+                 if(std::find(sectorsOfDT.begin(), sectorsOfDT.end(), DTchamber.sector()) == sectorsOfDT.end())
+                     sectorsOfDT.push_back(DTchamber.sector());
+                 if( !( (DTchamber.sector()>1 && DTchamber.sector()<7) || (DTchamber.sector() == 13) ) )
+                     topOnly = false;
+                 if(DTLayer.layer() == 0)
+                     DTlayer0=true;
+                 if(DTLayer.layer() == 1)
+                     DTlayer1=true;
+                 if(DTLayer.layer() == 2)
+                     DTlayer2=true;
+                 if(DTLayer.layer() == 3)
+                     DTlayer3=true;
+                 if(DTLayer.layer() == 4)
+                     DTlayer4=true;
              }
          }
+             if(topOnly)
+             {
+                 muonsDTMuontrackInOutTop->push_back(timeMapDT[muonR].timeAtIpInOut()); 
+                 muonsDTMuontrackOutInTop->push_back(timeMapDT[muonR].timeAtIpOutIn()) ;
+                 muonsDTMuontrackInOutErrTop->push_back(timeMapDT[muonR].timeAtIpInOutErr()); 
+                 muonsDTMuontrackOutInErrTop->push_back(timeMapDT[muonR].timeAtIpOutInErr()) ;
+                 innerXtop->push_back( muTrack->innerPosition().x());
+                 innerYtop->push_back( muTrack->innerPosition().y());
+                 innerZtop->push_back( muTrack->innerPosition().z());
+                 outerXtop->push_back( muTrack->outerPosition().x());
+                 outerYtop->push_back( muTrack->outerPosition().y());
+                 outerZtop->push_back( muTrack->outerPosition().z());
+                 outerEtatop->push_back( muTrack->outerEta());
+                 muonsDTMuontrackLastWheel->push_back( lastDTchamber.wheel() );
+                 innerVZtop->push_back( muTrack->vz());
+                 Etatop->push_back( muTrack->eta());
+
+             }
      }
+
+   if(topOnly == false) //@MJ@ TODO not forget to remove that
+         continue;
 
   
    if(muTrack.isNull()) //only global muons
@@ -817,23 +949,51 @@ cout << " after good track " << endl;
               CTCmbtimeVtxrErr->push_back(timec.timeAtIpOutInErr());
               CTDttimeVtxr->push_back(timedt.timeAtIpOutIn());
               CTDttimeVtxrErr->push_back(timedt.timeAtIpOutInErr());
-              CTCsctimeVtxr->push_back(timecsc.timeAtIpOutIn());
-              CTCsctimeVtxrErr->push_back(timecsc.timeAtIpOutInErr());
+              //CTCsctimeVtxr->push_back(timecsc.timeAtIpOutIn());
+              //CTCsctimeVtxrErr->push_back(timecsc.timeAtIpOutInErr());
+              CTCsctimeVtxr->push_back(timecsc.timeAtIpOutIn() );
+              CTCsctimeVtxrErr->push_back(timecsc.timeAtIpOutInErr()  );
 
               CTCmbtimeVtx->push_back(timec.timeAtIpInOut());
               CTCmbtimeVtxErr->push_back(timec.timeAtIpInOutErr());
               CTDttimeVtx->push_back(timedt.timeAtIpInOut());
               CTDttimeVtxErr->push_back(timedt.timeAtIpInOutErr());
-              CTCsctimeVtx->push_back(timecsc.timeAtIpInOut());
-              CTCsctimeVtxErr->push_back(timecsc.timeAtIpInOutErr());
+              CTCsctimeVtx->push_back(timecsc.timeAtIpInOut() );
+              CTCsctimeVtxErr->push_back(timecsc.timeAtIpInOutErr() );
+
+              CTCombinedTimeOutInInOutDiff->push_back(timec.timeAtIpOutIn() - timec.timeAtIpInOut() );
+              CTCombinedTimeOutInInOutDiffErr->push_back(timec.timeAtIpOutInErr() - timec.timeAtIpInOutErr() );
 
               CTMuontrackDirection->push_back(trackDirection);
               CTDTMuontrackDirection->push_back(DTtrackDirection);
 
+              CTDTlayer0->push_back(DTlayer0);
+              CTDTlayer1->push_back(DTlayer1);
+              CTDTlayer2->push_back(DTlayer2);
+              CTDTlayer3->push_back(DTlayer3);
+              CTDTlayer4->push_back(DTlayer4);
+              CTnrOfMuHits->push_back(nrOfMuHits);
+              CTsectorsOfDT->push_back(sectorsOfDT.size());
 
               CTMuonCombinedInverseBeta->push_back(timec.inverseBeta());
               CTMuonCombinedFreeInverseBeta->push_back(timec.freeInverseBeta());
+              CTDTFreeInverseBeta->push_back(timedt.freeInverseBeta());
               //CTMuontrackPhi->push_back((*glbTrack).phi());
+
+
+              if(outerXtop->size() != 0)
+              {
+                 CTouterXtop->push_back(outerXtop->at(0));
+                 CTouterYtop->push_back( outerYtop->at(0));
+                 CTouterZtop->push_back( outerZtop->at(0));
+                 CTouterEtatop->push_back(outerEtatop->at(0) );
+                 CTmuonsDTMuontrackLastWheel->push_back( muonsDTMuontrackLastWheel->at(0) );
+              }
+              CTinnerXtop->push_back( track->innerPosition().x());
+              CTinnerYtop->push_back( track->innerPosition().y());
+              CTinnerZtop->push_back( track->innerPosition().z());
+              CTinnerVZtop->push_back( track->vz());
+              CTEtatop->push_back( track->eta());
 
 		if(theStripDet->toGlobal(hit->localPosition()).phi() > 0)
 		{
@@ -1055,6 +1215,8 @@ cout << " after good track " << endl;
   iEvent.put(std::move(nrofevents),       "nrofevents"        );
   iEvent.put(std::move(CTCmbtimeVtxr),       "CTCmbtimeVtxr"        );
   iEvent.put(std::move(CTCmbtimeVtxrErr),       "CTCmbtimeVtxrErr"        );
+  iEvent.put(std::move(CTCombinedTimeOutInInOutDiff),       "CTCombinedTimeOutInInOutDiff"        );
+  iEvent.put(std::move(CTCombinedTimeOutInInOutDiffErr),       "CTCombinedTimeOutInInOutDiffErr"        );
   iEvent.put(std::move(CTDttimeVtxr),       "CTDttimeVtxr"        );
   iEvent.put(std::move(CTDttimeVtxrErr),       "CTDttimeVtxrErr"        );
   iEvent.put(std::move(CTCsctimeVtxr),       "CTCsctimeVtxr"        );
@@ -1073,16 +1235,52 @@ cout << " after good track " << endl;
   iEvent.put(std::move(CTDTMuontrackDirection),       "CTDTMuontrackDirection"        );
   iEvent.put(std::move(CTMuonCombinedInverseBeta),       "CTMuonCombinedInverseBeta"        );
   iEvent.put(std::move(CTMuonCombinedFreeInverseBeta),       "CTMuonCombinedFreeInverseBeta"        );
+  iEvent.put(std::move(CTDTFreeInverseBeta),       "CTDTFreeInverseBeta"        );
   //iEvent.put(std::move(CTMuontrackPhi),       "CTMuontrackPhi"        );
   iEvent.put(std::move(CTCombinedTimeForInOut),       "CTCombinedTimeForInOut"        );
   iEvent.put(std::move(CTCombinedTimeForOutIn),       "CTCombinedTimeForOutIn"        );
 
+  iEvent.put(std::move(CTDTlayer0),       "CTDTlayer0"        );
+  iEvent.put(std::move(CTDTlayer1),       "CTDTlayer1"        );
+  iEvent.put(std::move(CTDTlayer2),       "CTDTlayer2"        );
+  iEvent.put(std::move(CTDTlayer3),       "CTDTlayer3"        );
+  iEvent.put(std::move(CTDTlayer4),       "CTDTlayer4"        );
+  iEvent.put(std::move(CTnrOfMuHits),       "CTnrOfMuHits"        );
+  iEvent.put(std::move(CTsectorsOfDT),       "CTsectorsOfDT"        );
 
   iEvent.put(std::move(muonsDTMuontrackDirection),       "muonsDTMuontrackDirection"        );
   iEvent.put(std::move(muonsDTMuontrackSector),       "muonsDTMuontrackSector"        );
 
   iEvent.put(std::move(muonsDTMuontrackInOut),       "muonsDTMuontrackInOut"        );
   iEvent.put(std::move(muonsDTMuontrackOutIn),       "muonsDTMuontrackOutIn"        );
+
+  iEvent.put(std::move(muonsDTMuontrackInOutTop),       "muonsDTMuontrackInOutTop"        );
+  iEvent.put(std::move(muonsDTMuontrackOutInTop),       "muonsDTMuontrackOutInTop"        );
+  iEvent.put(std::move(muonsDTMuontrackInOutErrTop),       "muonsDTMuontrackInOutErrTop"        );
+  iEvent.put(std::move(muonsDTMuontrackOutInErrTop),       "muonsDTMuontrackOutInErrTop"        );
+  iEvent.put(std::move(innerXtop),       "innerXtop"        );
+  iEvent.put(std::move(innerYtop),       "innerYtop"        );
+  iEvent.put(std::move(innerZtop),       "innerZtop"        );
+  iEvent.put(std::move(innerVZtop),       "innerVZtop"        );
+  iEvent.put(std::move(Etatop),       "Etatop"        );
+  iEvent.put(std::move(outerXtop),       "outerXtop"        );
+  iEvent.put(std::move(outerYtop),       "outerYtop"        );
+  iEvent.put(std::move(outerZtop),       "outerZtop"        );
+  iEvent.put(std::move(outerEtatop),       "outerEtatop"        );
+  iEvent.put(std::move(muonsDTMuontrackLastWheel),       "muonsDTMuontrackLastWheel"        );
+
+
+  iEvent.put(std::move(CTouterXtop),       "CTouterXtop"        );
+  iEvent.put(std::move(CTouterYtop),       "CTouterYtop"        );
+  iEvent.put(std::move(CTouterZtop),       "CTouterZtop"        );
+  iEvent.put(std::move(CTouterEtatop),       "CTouterEtatop"        );
+  iEvent.put(std::move(CTmuonsDTMuontrackLastWheel),       "CTmuonsDTMuontrackLastWheel"        );
+  iEvent.put(std::move(CTinnerXtop),       "CTinnerXtop"        );
+  iEvent.put(std::move(CTinnerYtop),       "CTinnerYtop"        );
+  iEvent.put(std::move(CTinnerZtop),       "CTinnerZtop"        );
+  iEvent.put(std::move(CTinnerVZtop),       "CTinnerVZtop"        );
+  iEvent.put(std::move(CTEtatop),       "CTEtatop"        );
+
   /*iEvent.put(std::move(passHLTL1SingleMu3v1), "passHLTL1SingleMu3v1" ); 
   iEvent.put(std::move(passHLTL1SingleMu5v1), "passHLTL1SingleMu5v1" ); 
   iEvent.put(std::move(passHLTL1SingleMu7v1), "passHLTL1SingleMu7v1" );
