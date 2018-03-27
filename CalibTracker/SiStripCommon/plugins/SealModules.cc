@@ -23,6 +23,7 @@ DEFINE_FWK_SERVICE(SiStripDetInfoFileReader);
 #include "CalibTracker/SiStripCommon/interface/ShallowTracksProducer.h"
 #include "CalibTracker/SiStripCommon/interface/ShallowSimTracksProducer.h"
 #include "CalibTracker/SiStripCommon/interface/ShallowGainCalibration.h"
+#include "CalibTracker/SiStripCommon/interface/ShallowTrackClustersProducerSlim.h"
 
 DEFINE_FWK_MODULE(ShallowTree);
 DEFINE_FWK_MODULE(ShallowEventDataProducer);
@@ -34,3 +35,4 @@ DEFINE_FWK_MODULE(ShallowSimhitClustersProducer);
 DEFINE_FWK_MODULE(ShallowTracksProducer);
 DEFINE_FWK_MODULE(ShallowSimTracksProducer);
 DEFINE_FWK_MODULE(ShallowGainCalibration);
+DEFINE_FWK_MODULE(ShallowTrackClustersProducerSlim);
