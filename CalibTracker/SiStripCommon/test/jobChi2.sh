@@ -1,0 +1,1 @@
+./distributionsChi2TestGeneral /opt/sbg/data/data6/cms/mjansova/CMSSW_10_0_2/src/CalibTracker/SiStripCommon/test/test_shallowTrackAndCluster_ZBData.root  /opt/sbg/scratch1/cms/mjansova/store/tmp/MCtuning/FNAMEstep3.rootanalyzer.root EPERADC X2 X3 MOD LDOWN LUP SIDE CTparameters
