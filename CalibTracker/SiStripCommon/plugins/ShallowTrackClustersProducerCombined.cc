@@ -18,6 +18,7 @@
 #include "Geometry/CommonTopologies/interface/StripTopology.h"
 #include "FWCore/Framework/interface/ESHandle.h"
 #include "FWCore/Framework/interface/Event.h"
+#include "FWCore/Framework/interface/EventSetup.h"
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 #include "boost/foreach.hpp"
 #include "RecoLocalTracker/SiStripClusterizer/interface/SiStripClusterInfo.h"
@@ -25,12 +26,19 @@
 #include "Geometry/Records/interface/TrackerTopologyRcd.h"
 #include "DataFormats/SiStripDigi/interface/SiStripProcessedRawDigi.h"
 #include "FWCore/Common/interface/TriggerNames.h"
+#include "RecoLocalTracker/ClusterParameterEstimator/interface/StripClusterParameterEstimator.h"
+#include "CalibTracker/Records/interface/SiStripQualityRcd.h"
+#include "CalibFormats/SiStripObjects/interface/SiStripQuality.h"
+#include "DataFormats/DetId/interface/DetIdCollection.h"
+#include "CalibFormats/SiStripObjects/interface/SiStripGain.h" 
+#include "CalibTracker/Records/interface/SiStripGainRcd.h"
 
 #include "CalibTracker/Records/interface/SiStripDependentRecords.h"
 #include <map>
 #include <iostream>
 #include <fstream>
 #include "TMath.h"
+#include "RecoLocalTracker/Records/interface/TkStripCPERecord.h"
 
 using namespace std;
 
@@ -44,6 +52,7 @@ ShallowTrackClustersProducerCombined::ShallowTrackClustersProducerCombined(const
      clusters_token_( consumes< edmNew::DetSetVector<SiStripCluster> >( iConfig.getParameter<edm::InputTag>("Clusters") ) ),
      theVertexToken_(consumes<std::vector<reco::Vertex> >          (iConfig.getParameter<edm::InputTag>("vertices"))),
      theDigisToken_    (consumes<edm::DetSetVector<SiStripProcessedRawDigi> > (edm::InputTag("siStripProcessedRawDigis", ""))),
+     zsdigis_token_    ( consumes< DetIdCollection >(iConfig.getParameter<edm::InputTag>("siStripDigis")) ),
      Suffix       ( iConfig.getParameter<std::string>("Suffix")    ),
      Prefix       ( iConfig.getParameter<std::string>("Prefix") ),
      isData       ( iConfig.getParameter<bool>("isData") )
@@ -53,11 +62,23 @@ ShallowTrackClustersProducerCombined::ShallowTrackClustersProducerCombined(const
   produces <std::vector<unsigned> >      ( Prefix + "Idx"        );
   produces <std::vector<float> >         ( Prefix + "Charge"        );
   produces <std::vector<unsigned> >      ( Prefix + "Width"        );
+  produces <std::vector<unsigned> >      ( Prefix + "Barystrip"        );
+  produces <std::vector<unsigned> >      ( Prefix + "Firststrip"        );
+  produces <std::vector<float> >      ( Prefix + "Seedgain"        );
+  produces <std::vector<float> >      ( Prefix + "PrevGain"        );
+  produces <std::vector<float> >      ( Prefix + "PrevGainTick"        );
   produces <std::vector<float> >         ( Prefix + "LocalTrackPhi"        );
   produces <std::vector<float> >         ( Prefix + "LocalTrackTheta"        );
+  produces <std::vector<float> >         ( Prefix + "TrajLocErrX"        );
+  produces <std::vector<float> >         ( Prefix + "TrajLocErrY"        );
+  //produces <std::vector<float> >         ( Prefix + "ClusterLocErrX"        );
+  //produces <std::vector<float> >         ( Prefix + "ClusterLocErrY"        );
+  produces <std::vector<unsigned> >         ( Prefix + "TrajHitValid"        );
   produces <std::vector<int> >           ( Prefix + "Subdetid"        );
   produces <std::vector<int> >           ( Prefix + "Layerwheel"        );
   produces <std::vector<unsigned> >      ( Prefix + "Detid"        );
+  produces <std::vector<unsigned> >      ( Prefix + "SiStripQualBad"        );
+  //produces <std::vector<unsigned> >      ( Prefix + "SiStripModIsBad"        );
   produces <std::vector<float> >         ( Prefix + "LocalTrackX"        );
   produces <std::vector<float> >         ( Prefix + "LocalTrackY"        );
   produces <std::vector<float> >         ( Prefix + "LocalTrackZ"        );
@@ -89,11 +110,23 @@ produce(edm::Event& iEvent, const edm::EventSetup& iSetup) {
   auto Idx  = std::make_unique <std::vector<unsigned> >();
   auto Charge  = std::make_unique<std::vector<float> >();
   auto Width  = std::make_unique<std::vector<unsigned> >();
+  auto Barystrip  = std::make_unique<std::vector<unsigned> >();
+  auto Firststrip  = std::make_unique<std::vector<unsigned> >();
+  auto  Seedgain = std::make_unique<std::vector<float> >();
+  auto  PrevGain = std::make_unique<std::vector<float> >();
+  auto  PrevGainTick = std::make_unique<std::vector<float> >();
   auto LocalTrackPhi  = std::make_unique<std::vector<float> >();
   auto LocalTrackTheta  = std::make_unique<std::vector<float> >();
+  auto  TrajLocErrX = std::make_unique<std::vector<float> >();
+  auto  TrajLocErrY = std::make_unique<std::vector<float> >();
+  //auto  ClusterLocErrX = std::make_unique<std::vector<float> >();
+  //auto  ClusterLocErrY = std::make_unique<std::vector<float> >();
+  auto  TrajHitValid = std::make_unique<std::vector<unsigned> >();
   auto Subdetid  = std::make_unique<std::vector<int> >();
   auto Layerwheel  = std::make_unique<std::vector<int> >();
   auto Detid  = std::make_unique<std::vector<unsigned> >();
+  auto  SiStripQualBad = std::make_unique<std::vector<unsigned> >();
+  //auto  SiStripModIsBad = std::make_unique<std::vector<unsigned> >();
   auto LocalTrackX  = std::make_unique<std::vector<float> >();
   auto LocalTrackY  = std::make_unique<std::vector<float> >();
   auto LocalTrackZ  = std::make_unique<std::vector<float> >();
@@ -127,6 +160,17 @@ produce(edm::Event& iEvent, const edm::EventSetup& iSetup) {
   iSetup.get<TrackerTopologyRcd>().get(tTopoHandle);
   const TrackerTopology* const tTopo = tTopoHandle.product();
 
+  //edm::ESHandle<StripClusterParameterEstimator> parameterestimator;
+  //iSetup.get<TkStripCPERecord>().get("StripCPEfromTrackAngle", parameterestimator); 
+  //const StripClusterParameterEstimator &stripcpe(*parameterestimator);
+
+  edm::ESHandle<SiStripGain> gainHandle; iSetup.get<SiStripGainRcd>().get(gainHandle);
+
+  edm::ESHandle<SiStripQuality> SiStripQuality_;
+  iSetup.get<SiStripQualityRcd>().get(SiStripQuality_);
+
+  edm::Handle< DetIdCollection > fedErrorIds;
+  iEvent.getByToken(zsdigis_token_, fedErrorIds );
 
   TrajectoryStateCombiner combiner;
 
@@ -192,7 +236,8 @@ produce(edm::Event& iEvent, const edm::EventSetup& iSetup) {
 				}
 
 				const StripGeomDetUnit* theStripDet = dynamic_cast<const StripGeomDetUnit*>( theTrackerGeometry->idToDet( hit->geographicalId() ) );
-	
+
+                                //StripClusterParameterEstimator::LocalValues parameterscl=stripcpe.localParameters(*cluster_ptr,*theStripDet);	
  			//LocalVector drift = shallow::drift( theStripDet, *magfield, *SiStripLorentzAngle);
 
                                 uint32_t eventNr = iEvent.id().event();				
@@ -202,9 +247,10 @@ produce(edm::Event& iEvent, const edm::EventSetup& iSetup) {
                       //float langle = (SiStripLorentzAngle.isValid()) ? SiStripLorentzAngle->getLorentzAngle(id) : 0.;
                       //lorentzAngle->push_back(langle);
                       Width->push_back(        cluster_ptr->amplitudes().size()                              );
-		      //barystrip->push_back(    cluster_ptr->barycenter()                                     );
 		      //middlestrip->push_back(  info.firstStrip() + info.width()/2.0                    );
 		      Charge->push_back(       info.charge()                                           );
+		      Barystrip->push_back(    cluster_ptr->barycenter()                                     );
+		      Firststrip->push_back(    info.firstStrip()                                      );
 		      //noise->push_back(        info.noiseRescaledByGain()                              );
 		      //ston->push_back(         info.signalOverNoise()                                  );
 		      //seedstrip->push_back(    info.maxStrip()                                         );
@@ -212,8 +258,14 @@ produce(edm::Event& iEvent, const edm::EventSetup& iSetup) {
 		      //seedcharge->push_back(   info.maxCharge()                                        );
 		      //seednoise->push_back(    info.stripNoisesRescaledByGain().at(info.maxIndex())   );
 		      //seednoisepure->push_back(     info.stripNoises().at(info.maxIndex())                  );
-		      //seedgain->push_back(     info.stripGains().at(info.maxIndex())                  );
-	 
+		      
+		      Seedgain->push_back(     info.stripGains().at(info.maxIndex())                  );
+
+                      int APVId = (info.firstStrip())/128;	
+                      if(gainHandle.isValid()){ 
+                          PrevGain->push_back(gainHandle->getApvGain(APVId,gainHandle->getRange(id, 1),1)); 
+                          PrevGainTick->push_back(gainHandle->getApvGain(APVId,gainHandle->getRange(id, 0),1));           
+                      } 
 
 	              LocalTrackTheta->push_back(  (theStripDet->toLocal(tsos.globalDirection())).theta() ); 
 		      LocalTrackPhi->push_back(    (theStripDet->toLocal(tsos.globalDirection())).phi() );   
@@ -225,7 +277,39 @@ produce(edm::Event& iEvent, const edm::EventSetup& iSetup) {
 		      BdotZ->push_back(       (theStripDet->surface()).toLocal( magfield->inTesla(theStripDet->surface().position())).z() );
 		      BdotMag->push_back(       (theStripDet->surface()).toLocal( magfield->inTesla(theStripDet->surface().position())).mag() );
 
+                      //brand new
+                      TrajLocErrX->push_back(sqrt(tsos.localError().positionError().xx()));
+                      TrajLocErrY->push_back(sqrt(tsos.localError().positionError().yy()));
+                      //ClusterLocErrX->push_back(sqrt(parameterscl.second.xx()) );
+                      //ClusterLocErrY->push_back(sqrt(parameterscl.second.yy()) );
+                      //ClusterLocErrX->push_back(0 );
+                      //ClusterLocErrY->push_back(0 );
+                      TrajHitValid->push_back(hit->isValid());
 
+                      uint32_t QualBad =0;
+        	      if ( SiStripQuality_->getBadApvs(id)!=0 ) {
+  		          QualBad = 1; 
+	              } else {
+		          QualBad = 0; 
+                      }
+                      for (unsigned int ii=0;ii< fedErrorIds->size();ii++) {
+                          if (id == (*fedErrorIds)[ii].rawId() )
+		              QualBad = 1;
+                      }
+
+                      //uint32_t ModIsBad = 2;
+                      //float xerr = sqrt(tsos.localError().positionError().xx());
+                      //double error = sqrt(parameterscl.second.xx() + xerr*xerr);
+                      //double separation = abs(parameterscl.first.x() - (theStripDet->toLocal(tsos.globalPosition())).x() );
+                      //double sigma = separation/error;
+                      /*double sigma = 0;
+                      if(sigma<999.0)
+                          ModIsBad=0;
+                      else
+                          ModIsBad=1;
+*/
+                      SiStripQualBad->push_back(QualBad);
+                      //SiStripModIsBad->push_back(ModIsBad); //TKlayers<11 ? not sure if this relaly makes sense, but ok...
 		      Detid->push_back(            id                 );
 		      Subdetid->push_back(         moduleV.subdetid      );
 		      //side->push_back(             moduleV.side          );
@@ -304,11 +388,23 @@ produce(edm::Event& iEvent, const edm::EventSetup& iSetup) {
   iEvent.put(std::move(Idx),        Prefix + "Idx"        );
   iEvent.put(std::move(Charge),       Prefix +  "Charge"        );
   iEvent.put(std::move(Width),       Prefix +  "Width"        );
+  iEvent.put(std::move(Barystrip),       Prefix +  "Barystrip"        );
+  iEvent.put(std::move(Firststrip),       Prefix +  "Firststrip"        );
+  iEvent.put(std::move(Seedgain),       Prefix +  "Seedgain"        );
+  iEvent.put(std::move(PrevGain),       Prefix +  "PrevGain"        );
+  iEvent.put(std::move(PrevGainTick),       Prefix +  "PrevGainTick"        );
   iEvent.put(std::move(LocalTrackPhi),        Prefix + "LocalTrackPhi"        );
   iEvent.put(std::move(LocalTrackTheta),       Prefix +  "LocalTrackTheta"        );
+  iEvent.put(std::move(TrajLocErrX),       Prefix +  "TrajLocErrX"        );
+  iEvent.put(std::move(TrajLocErrY),       Prefix +  "TrajLocErrY"        );
+  //iEvent.put(std::move(ClusterLocErrX),       Prefix +  "ClusterLocErrX"        );
+  //iEvent.put(std::move(ClusterLocErrY),       Prefix +  "ClusterLocErrY"        );
+  iEvent.put(std::move(TrajHitValid),       Prefix +  "TrajHitValid"        );
   iEvent.put(std::move(Subdetid),    Prefix +     "Subdetid"        );
   iEvent.put(std::move(Layerwheel),      Prefix +   "Layerwheel"        );
   iEvent.put(std::move(Detid),      Prefix +   "Detid"        );
+  iEvent.put(std::move(SiStripQualBad),      Prefix +   "SiStripQualBad"        );
+  //iEvent.put(std::move(SiStripModIsBad),      Prefix +   "SiStripModIsBad"        );
   iEvent.put(std::move(LocalTrackX),       Prefix +  "LocalTrackX"        );
   iEvent.put(std::move(LocalTrackY),       Prefix +  "LocalTrackY"        );
   iEvent.put(std::move(LocalTrackZ),        Prefix + "LocalTrackZ"        );

@@ -64,6 +64,8 @@
 #include "DataFormats/SiStripDetId/interface/StripSubdetector.h"
 #include "DataFormats/TrackReco/interface/DeDxHit.h"
 #include "DataFormats/TrackReco/interface/TrackDeDxHits.h"
+#include "DataFormats/DetId/interface/DetIdCollection.h"
+//#include "RecoLocalTracker/ClusterParameterEstimator/interface/StripClusterParameterEstimator.h"
 
 #include <ext/hash_map>
 
@@ -71,6 +73,7 @@ class SiStripClusterInfo;
 class SiStripProcessedRawDigi;
 class TrackerTopology;
 class SiStripLorentzAngle;
+//class StripClusterParameterEstimator;
 
 class ShallowTrackClustersProducerCombined : public edm::EDProducer {
 public:
@@ -81,6 +84,7 @@ private:
   const edm::EDGetTokenT< edmNew::DetSetVector<SiStripCluster> > clusters_token_;
   edm::EDGetTokenT<std::vector<reco::Vertex> >          theVertexToken_;
   edm::EDGetTokenT<edm::DetSetVector<SiStripProcessedRawDigi> > theDigisToken_;
+  const edm::EDGetTokenT<DetIdCollection> zsdigis_token_;
   edm::EDGetTokenT<edm::TriggerResults> theTriggerToken_;
   std::string Suffix;
   std::string Prefix;
